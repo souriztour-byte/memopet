@@ -1,0 +1,13 @@
+.topics {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 40px;
+}
+.group {
+  padding-bottom: 48px;
+}
+.groupTitle {
+  font-size: 1.5rem;
+  margin-bottom: 18px;
+}

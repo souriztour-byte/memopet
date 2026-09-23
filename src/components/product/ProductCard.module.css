@@ -1,0 +1,132 @@
+.prod {
+  position: relative;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+.prod:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow);
+}
+.pic {
+  background: var(--tile, var(--lilac));
+  aspect-ratio: 16 / 11;
+  position: relative;
+  overflow: hidden;
+}
+.tag {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: var(--surface);
+  color: var(--ink);
+  font-family: var(--display);
+  font-weight: 600;
+  font-size: 0.72rem;
+  padding: 4px 10px;
+  border-radius: 999px;
+  z-index: 1;
+}
+.tag + .tag {
+  left: auto;
+  right: 10px;
+}
+.body {
+  padding: 14px 16px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+}
+.for {
+  font-size: 0.78rem;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: 700;
+}
+.body h3 {
+  font-size: 1rem;
+}
+/* Stretched link: the whole card opens the product page. */
+.link {
+  text-decoration: none;
+  color: inherit;
+}
+.link::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+.link:hover {
+  text-decoration: underline;
+}
+.link:focus-visible {
+  outline: none;
+}
+.link:focus-visible::after {
+  outline: 3px solid var(--pink);
+  outline-offset: -3px;
+  border-radius: 20px;
+}
+.row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  margin-top: auto;
+  padding-top: 10px;
+}
+.price {
+  font-family: var(--display);
+  font-weight: 700;
+  color: var(--pink);
+  font-size: 1.1rem;
+  font-variant-numeric: tabular-nums;
+}
+.add {
+  position: relative;
+  z-index: 2;
+  border: 0;
+  background: var(--purple);
+  color: var(--on-accent);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  border-radius: 12px;
+  padding: 9px 12px;
+  font: 600 0.82rem var(--body);
+  text-decoration: none;
+  white-space: nowrap;
+  transition: transform 0.15s;
+}
+.add:hover {
+  transform: scale(1.06);
+}
+.add:disabled {
+  opacity: 0.7;
+  cursor: progress;
+}
+.add svg {
+  width: 18px;
+  height: 18px;
+}
+.ok {
+  background: var(--pink);
+}
+@media (max-width: 420px) {
+  .body {
+    padding: 12px;
+  }
+  .body h3 {
+    font-size: 0.92rem;
+  }
+}

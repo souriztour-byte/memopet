@@ -1,0 +1,24 @@
+.status {
+  padding-block: 64px 112px;
+  display: grid;
+  justify-items: start;
+  gap: 16px;
+}
+.art {
+  width: min(320px, 100%);
+  aspect-ratio: 16 / 10;
+  border-radius: 20px;
+  background: var(--tile);
+  margin-bottom: 8px;
+}
+.art svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 8px;
+}

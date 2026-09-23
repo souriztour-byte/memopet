@@ -1,0 +1,147 @@
+.layout {
+  display: grid;
+  grid-template-columns: 1.05fr 0.95fr;
+  gap: 48px;
+  align-items: start;
+  padding-block: 40px 64px;
+}
+@media (max-width: 900px) {
+  .layout {
+    grid-template-columns: 1fr;
+    gap: 28px;
+    padding-block: 24px 48px;
+  }
+}
+
+/* Gallery */
+.gallery {
+  display: grid;
+  gap: 12px;
+  min-width: 0;
+}
+.stage {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: var(--tile, var(--lilac));
+  border: 1px solid var(--line);
+}
+.stagePhoto {
+  object-fit: cover;
+}
+.stageArt {
+  position: absolute;
+  inset: 12%;
+  width: 76%;
+  height: 76%;
+}
+.tag {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  background: var(--surface);
+  color: var(--ink);
+  font-family: var(--display);
+  font-weight: 600;
+  font-size: 0.8rem;
+  padding: 5px 12px;
+  border-radius: 999px;
+}
+.thumbs {
+  display: flex;
+  gap: 10px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  overflow-x: auto;
+}
+.thumb {
+  position: relative;
+  display: block;
+  width: 72px;
+  height: 72px;
+  border-radius: 14px;
+  overflow: hidden;
+  border: 2px solid var(--line);
+  background: var(--tile, var(--lilac));
+  padding: 0;
+  cursor: pointer;
+}
+.thumb[aria-pressed="true"] {
+  border-color: var(--purple);
+}
+
+/* Info column */
+.info {
+  display: grid;
+  gap: 18px;
+  align-content: start;
+}
+.title {
+  font-size: clamp(2rem, 4vw, 2.8rem);
+  margin-top: -6px;
+}
+.price {
+  font-family: var(--display);
+  font-weight: 700;
+  color: var(--pink);
+  font-size: 1.6rem;
+  font-variant-numeric: tabular-nums;
+}
+.option {
+  border: 0;
+  margin: 0;
+  padding: 0;
+  min-width: 0;
+}
+.option legend {
+  font-family: var(--display);
+  font-weight: 600;
+  padding: 0;
+  margin-bottom: 10px;
+}
+.chosen {
+  color: var(--muted);
+  font-weight: 500;
+}
+.values {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.buy {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  gap: 16px;
+  padding-top: 4px;
+}
+.qtyWrap {
+  display: grid;
+  gap: 8px;
+}
+.qtyLabel {
+  font-family: var(--display);
+  font-weight: 600;
+}
+.qty {
+  border: 1.5px solid var(--line);
+  border-radius: 999px;
+  padding: 6px 8px;
+  background: var(--surface);
+}
+.qty button {
+  width: 34px;
+  height: 34px;
+  border: 0;
+  background: var(--lilac);
+}
+.qty output {
+  min-width: 34px;
+}
+.addBtn {
+  flex: 1;
+  min-width: 200px;
+  padding-block: 15px;
+}

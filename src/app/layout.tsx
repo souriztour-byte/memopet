@@ -15,9 +15,11 @@ const poppins = Poppins({
   variable: "--font-poppins",
   display: "swap",
 });
+// Nunito Sans is a variable font: loading it without a `weight` list fetches the
+// same files and covers the prototype's 400/600/700. Listing the weights makes
+// Google repeat each file per weight, which breaks the Turbopack production build.
 const nunitoSans = Nunito_Sans({
   subsets: ["latin"],
-  weight: ["400", "600", "700"],
   variable: "--font-nunito-sans",
   display: "swap",
 });

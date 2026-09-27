@@ -42,7 +42,7 @@ cp .env.example .env.local   # optional — leave Shopify empty for demo mode
 npm run dev                  # http://localhost:3000
 ```
 
-Other scripts: `npm run build`, `npm start`, `npm run lint`.
+Other scripts: `npm run build`, `npm start`, `npm run lint`, `npm run typecheck`.
 
 ## Connecting Shopify
 

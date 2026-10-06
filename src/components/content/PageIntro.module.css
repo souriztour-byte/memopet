@@ -1,0 +1,15 @@
+.intro {
+  padding-block: 56px 40px;
+}
+.intro h1 {
+  margin-top: 12px;
+  font-size: clamp(2.1rem, 4.6vw, 3.2rem);
+}
+.intro :global(.lead) {
+  margin-top: 14px;
+}
+@media (max-width: 860px) {
+  .intro {
+    padding-block: 36px 28px;
+  }
+}

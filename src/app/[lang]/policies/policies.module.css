@@ -1,0 +1,130 @@
+/* Index */
+.cards {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+@media (max-width: 720px) {
+  .cards {
+    grid-template-columns: 1fr;
+  }
+}
+.card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  height: 100%;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  padding: 24px;
+  text-decoration: none;
+  color: inherit;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow);
+}
+.card h2 {
+  font-size: 1.2rem;
+}
+.card p {
+  color: var(--muted);
+  font-size: 0.95rem;
+  margin-top: 6px;
+}
+.arrow {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--lilac);
+  color: var(--purple);
+  display: grid;
+  place-items: center;
+  flex: none;
+}
+.arrow svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* Single policy */
+.layout {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  gap: 56px;
+  align-items: start;
+  padding-block: 56px 96px;
+}
+.side {
+  position: sticky;
+  top: calc(var(--header-h) + 24px);
+}
+.side ul {
+  list-style: none;
+  margin: 12px 0 0;
+  padding: 0;
+  display: grid;
+  gap: 4px;
+}
+.side a {
+  display: block;
+  padding: 8px 12px;
+  border-radius: 12px;
+  text-decoration: none;
+  color: var(--muted);
+  font-family: var(--display);
+  font-weight: 500;
+  font-size: 0.95rem;
+}
+.side a:hover {
+  color: var(--purple-ink);
+  background: var(--lilac);
+}
+.side a[aria-current="page"] {
+  background: var(--lilac);
+  color: var(--purple-ink);
+  font-weight: 600;
+}
+.article {
+  min-width: 0;
+}
+.header {
+  margin-bottom: 28px;
+}
+.header h1 {
+  font-size: clamp(2rem, 4vw, 2.8rem);
+  margin-bottom: 10px;
+}
+@media (max-width: 860px) {
+  .layout {
+    grid-template-columns: 1fr;
+    gap: 24px;
+    padding-block: 32px 72px;
+  }
+  .side {
+    position: static;
+  }
+  .side ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .side a {
+    border: 1.5px solid var(--line);
+    border-radius: 999px;
+    padding: 7px 14px;
+    font-size: 0.88rem;
+  }
+}
+/* Wide policy tables scroll instead of overflowing the page on phones. */
+.article :global(.prose) {
+  overflow-x: auto;
+}

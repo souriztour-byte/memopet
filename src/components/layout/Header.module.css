@@ -1,0 +1,125 @@
+.announcement {
+  text-align: center;
+  background: var(--purple);
+  color: #fff;
+  padding: 9px 16px;
+  font-size: 0.82rem;
+}
+.announcementLink {
+  color: inherit;
+  font-weight: 700;
+  text-underline-offset: 3px;
+}
+.top {
+  position: sticky;
+  top: env(safe-area-inset-top, 0px);
+  z-index: 20;
+  background: color-mix(in srgb, var(--bg) 88%, transparent);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--line);
+}
+.bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  height: var(--header-h);
+  position: relative;
+}
+.logoLink {
+  display: block;
+  flex: none;
+}
+.logo {
+  height: 54px;
+  width: auto;
+  display: block;
+}
+.nav ul {
+  display: flex;
+  gap: 28px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  font-family: var(--display);
+  font-weight: 500;
+  font-size: 0.95rem;
+}
+.nav a {
+  text-decoration: none;
+  color: var(--muted);
+}
+.nav a:hover,
+.nav a[aria-current="page"] {
+  color: var(--purple);
+}
+.nav a[aria-current="page"] {
+  font-weight: 600;
+}
+/* Scoped under .bar so it outranks the global .btn display rule. */
+.bar .menuToggle {
+  display: none;
+}
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: none;
+}
+/* The language switch sits next to the cart; inside the menu on phones. */
+.nav .langMenu {
+  display: none;
+}
+
+@media (max-width: 1100px) {
+  .nav ul {
+    gap: 18px;
+  }
+}
+/* The nav collapses into the Menu button below 1000px — the Spanish labels and
+   the language switch need the extra room. */
+@media (max-width: 1000px) {
+  .bar .menuToggle {
+    display: inline-flex;
+    padding: 9px 12px;
+    margin-left: auto;
+  }
+  .nav ul {
+    display: none;
+  }
+  .nav ul.isOpen {
+    display: flex;
+    position: absolute;
+    top: var(--header-h);
+    left: 0;
+    right: 0;
+    padding: 24px var(--gutter);
+    flex-direction: column;
+    gap: 18px;
+    background: var(--surface);
+    border-bottom: 1px solid var(--line);
+    box-shadow: var(--shadow);
+  }
+}
+@media (max-width: 820px) {
+  .bar {
+    gap: 8px;
+  }
+  .logo {
+    height: 42px;
+  }
+}
+@media (max-width: 560px) {
+  .actions .langBar {
+    display: none;
+  }
+  .nav .langMenu {
+    display: block;
+  }
+}
+@media (max-width: 380px) {
+  .logo {
+    height: 34px;
+  }
+}

@@ -1,0 +1,31 @@
+.layout {
+  display: grid;
+  grid-template-columns: 1.6fr 1fr;
+  gap: 32px;
+  align-items: start;
+}
+.lines {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  padding: 8px 24px;
+}
+.summary > :first-child {
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  position: sticky;
+  top: calc(var(--header-h) + 16px);
+}
+.empty {
+  display: grid;
+  gap: 20px;
+  justify-items: start;
+}
+@media (max-width: 860px) {
+  .layout {
+    grid-template-columns: 1fr;
+  }
+  .lines {
+    padding: 4px 16px;
+  }
+}

@@ -1,0 +1,47 @@
+"use client";
+
+import { useState, useTransition } from "react";
+import { useCart } from "@/components/cart/CartProvider";
+import { CheckIcon, PlusIcon } from "@/components/ui/icons";
+import { fmt } from "@/i18n/format";
+import { useI18n } from "@/i18n/I18nProvider";
+
+type Props = {
+  merchandiseId: string;
+  title: string;
+  className?: string;
+  okClassName?: string;
+};
+
+/** The prototype's "+ Add" button: adds one, flashes a check mark. */
+export function QuickAdd({ merchandiseId, title, className, okClassName }: Props) {
+  const { addItem } = useCart();
+  const { dict } = useI18n();
+  const [pending, startTransition] = useTransition();
+  const [ok, setOk] = useState(false);
+
+  return (
+    <button
+      type="button"
+      className={`${className ?? ""} ${ok ? (okClassName ?? "") : ""}`}
+      aria-label={fmt(dict.product.quickAddLabel, { title })}
+      disabled={pending}
+      onClick={() =>
+        startTransition(async () => {
+          if (await addItem(merchandiseId, 1)) {
+            setOk(true);
+            setTimeout(() => setOk(false), 900);
+          }
+        })
+      }
+    >
+      {ok ? (
+        <CheckIcon />
+      ) : (
+        <>
+          <PlusIcon /> {dict.product.quickAdd}
+        </>
+      )}
+    </button>
+  );
+}

@@ -65,6 +65,44 @@ npm run dev                  # http://localhost:3000 → /en or /es
 
 Other scripts: `npm run build`, `npm start`, `npm run lint`, `npm run typecheck`.
 
+## Going live on mimipets.shop
+
+The site is hosted on **Vercel**, from the makers of Next.js. The domain stays registered at
+**GoDaddy**, where only two DNS records change.
+
+1. **Deploy.** Sign in at vercel.com with GitHub, choose *Add New → Project* and import
+   `souriztour-byte/memopet`. Let Vercel's GitHub app see the repository. Keep the detected
+   settings (Next.js), add any variables from `.env.example` you have values for, then click
+   *Deploy*. Vercel builds `main` and deploys again on every push.
+2. **Add the domain.** In the project, open *Settings → Domains* and add `mimipets.shop`. Keep
+   `mimipets.shop` as the main address, and set `www.mimipets.shop` to **redirect to it**.
+   Vercel then lists the DNS records to create.
+3. **Point GoDaddy at Vercel.** In GoDaddy, go to *My Products → mimipets.shop → DNS*:
+   - **A** record, name `@`: change the value (*Parked* on a new domain) to the IP Vercel
+     shows, usually `76.76.21.21`. Delete any other `@` A records.
+   - **CNAME** record, name `www`: change the value to the one Vercel shows, usually
+     `cname.vercel-dns.com`.
+   - If Vercel asks for a **TXT** record named `_vercel`, add it exactly as shown.
+   - Turn off GoDaddy *Forwarding* for the domain if it is on. Leave MX records alone;
+     they handle email.
+4. **Wait.** When DNS has updated, Vercel's Domains page shows *Valid Configuration*. This
+   usually takes minutes but can take up to 48 hours. Vercel then sets up HTTPS on its own.
+5. **Redeploy once** (*Deployments → ⋯ → Redeploy*). The sitemap, robots.txt and canonical
+   links then use `https://mimipets.shop`. On Vercel they follow the project's production
+   domain; set `NEXT_PUBLIC_SITE_URL` to choose the address yourself.
+
+**Plan:** Vercel's free *Hobby* plan is for non-commercial use only. A store that sells needs
+the *Pro* plan.
+
+**Checkout domain (once Shopify is connected):** Shopify's hosted checkout opens on
+`*.myshopify.com` by default. To run it on your own domain:
+1. In Shopify admin, go to *Settings → Domains → Connect existing domain* and add
+   `checkout.mimipets.shop`.
+2. At GoDaddy, add the CNAME record Shopify shows.
+3. Back in Shopify, set that domain's *Target* to *Online Store* and its type to *Primary*.
+
+Only that subdomain points to Shopify. `mimipets.shop` itself stays on Vercel.
+
 ## Connecting Shopify
 
 1. In Shopify admin, install the **Headless** sales channel and create a storefront. You can also
@@ -118,8 +156,8 @@ The route checks each webhook’s HMAC signature before it clears the cache (bot
 Business facts are never hard-coded. Set these and the Contact page, FAQ and policies pick them up:
 
 ```
-NEXT_PUBLIC_SITE_URL=https://mimipets.com
-NEXT_PUBLIC_SUPPORT_EMAIL=hello@mimipets.com
+NEXT_PUBLIC_SITE_URL=https://mimipets.shop
+NEXT_PUBLIC_SUPPORT_EMAIL=hello@mimipets.shop
 NEXT_PUBLIC_INSTAGRAM_HANDLE=mimipets
 NEXT_PUBLIC_LEGAL_BUSINESS_NAME=...
 NEXT_PUBLIC_LEGAL_BUSINESS_ADDRESS=...

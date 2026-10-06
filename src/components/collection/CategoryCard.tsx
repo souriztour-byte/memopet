@@ -2,17 +2,25 @@ import Link from "next/link";
 import { Illustration } from "@/components/art/Illustration";
 import { ArrowIcon } from "@/components/ui/icons";
 import { Photo } from "@/components/ui/Photo";
+import { localizePath } from "@/i18n/config";
+import { getI18n } from "@/i18n/server";
 import { collectionPresentation } from "@/lib/commerce/presentation";
 import type { Collection } from "@/lib/commerce/types";
 import styles from "./CategoryCard.module.css";
 
-export function CategoryCard({ collection }: { collection: Collection }) {
+export async function CategoryCard({ collection }: { collection: Collection }) {
+  const { lang, dict } = await getI18n();
   const look = collectionPresentation(collection.handle, collection.title);
   const photo = collection.image
     ? { src: collection.image.url, alt: collection.image.altText || collection.title }
-    : look.photo;
+    : look.photo
+      ? { src: look.photo.src, alt: dict.photos[look.photo.alt] }
+      : null;
   return (
-    <Link href={`/collections/${collection.handle}`} className={`${styles.cat} ${look.tile}`}>
+    <Link
+      href={localizePath(lang, `/collections/${collection.handle}`)}
+      className={`${styles.cat} ${look.tile}`}
+    >
       <span className={styles.pic}>
         <Illustration name={look.illustration} className={styles.art} />
         {photo ? (

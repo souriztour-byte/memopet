@@ -1,3 +1,4 @@
+import { getI18n } from "@/i18n/server";
 import type { Collection } from "@/lib/commerce/types";
 import { CategoryCard } from "./CategoryCard";
 import styles from "./CategoryCard.module.css";
@@ -12,10 +13,11 @@ export function CategoryGrid({ collections }: { collections: Collection[] }) {
   );
 }
 
-export function PhotoCredit() {
+export async function PhotoCredit() {
+  const { dict } = await getI18n();
   return (
     <p className="photo-credit">
-      Category photography on Unsplash:{" "}
+      {dict.photos.credit}{" "}
       <a href="https://unsplash.com/photos/RR9yB4GWvzA" target="_blank" rel="noopener noreferrer">
         Natasha Connell
       </a>

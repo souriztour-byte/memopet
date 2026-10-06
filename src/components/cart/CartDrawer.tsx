@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import { useI18n } from "@/i18n/I18nProvider";
 import { CartLines } from "./CartLines";
 import { useCart } from "./CartProvider";
 import { CartSummary } from "./CartSummary";
@@ -8,6 +9,8 @@ import styles from "./Cart.module.css";
 
 export function CartDrawer() {
   const { cart, ready, demoMode, isOpen, closeCart } = useCart();
+  const { dict } = useI18n();
+  const t = dict.cart;
   const ref = useRef<HTMLDialogElement>(null);
 
   // Keep the native <dialog> (focus trap, Esc, inert page) in sync with state.
@@ -25,7 +28,7 @@ export function CartDrawer() {
     <dialog
       ref={ref}
       className={styles.drawer}
-      aria-label="Your cart"
+      aria-label={t.title}
       onClose={closeCart}
       onClick={(e) => {
         if (e.target === ref.current) closeCart();
@@ -33,21 +36,21 @@ export function CartDrawer() {
     >
       <div className={styles.panel}>
         <header className={styles.header}>
-          <h2>Your cart</h2>
-          <button type="button" className="x" onClick={closeCart} aria-label="Close cart">
+          <h2>{t.title}</h2>
+          <button type="button" className="x" onClick={closeCart} aria-label={t.close}>
             ×
           </button>
         </header>
         <div className={styles.items}>
           {!ready ? (
-            <p className={styles.empty}>Loading your cart…</p>
+            <p className={styles.empty}>{t.loading}</p>
           ) : lines.length ? (
             <CartLines lines={lines} onNavigate={closeCart} />
           ) : (
             <p className={styles.empty}>
-              Your cart is empty.
+              {t.empty}
               <br />
-              Tap + on a product to add it.
+              {t.emptyHint}
             </p>
           )}
         </div>

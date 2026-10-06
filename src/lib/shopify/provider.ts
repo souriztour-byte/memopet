@@ -1,6 +1,7 @@
 import "server-only";
 
-import { illustrationFor, readTag, tileFor } from "@/lib/commerce/presentation";
+import { shopifyLanguage, type Locale } from "@/i18n/config";
+import { illustrationFor, readLocalizedTag, tileFor } from "@/lib/commerce/presentation";
 import type {
   Cart,
   Collection,
@@ -90,7 +91,7 @@ type UserErrors = { userErrors: { message: string }[] };
 
 /* ─── Reshaping ──────────────────────────────────────────────────────── */
 
-function reshapeSummary(p: RawProductCard): ProductSummary {
+function reshapeSummary(p: RawProductCard, lang: Locale): ProductSummary {
   const illustration = illustrationFor(p.tags, p.productType, p.title);
   const variants = p.variants.nodes;
   return {
@@ -100,8 +101,8 @@ function reshapeSummary(p: RawProductCard): ProductSummary {
     availableForSale: p.availableForSale,
     featuredImage: p.featuredImage,
     priceRange: p.priceRange,
-    badge: readTag(p.tags, "badge"),
-    petType: readTag(p.tags, "pet"),
+    badge: readLocalizedTag(p.tags, "badge", lang),
+    petType: readLocalizedTag(p.tags, "pet", lang),
     illustration,
     tile: tileFor(illustration),
     singleVariantId: variants.length === 1 && variants[0].availableForSale ? variants[0].id : null,
@@ -109,13 +110,13 @@ function reshapeSummary(p: RawProductCard): ProductSummary {
   };
 }
 
-function reshapeProduct(p: RawProduct): Product {
+function reshapeProduct(p: RawProduct, lang: Locale): Product {
   // Shopify always returns a "Title" option for products without variants.
   const options = p.options
     .map((o) => ({ name: o.name, values: o.optionValues.map((v) => v.name) }))
     .filter((o) => !(o.name === "Title" && o.values.length === 1 && o.values[0] === "Default Title"));
   return {
-    ...reshapeSummary(p),
+    ...reshapeSummary(p, lang),
     vendor: p.vendor || null,
     description: p.description,
     descriptionHtml: p.descriptionHtml,
@@ -176,21 +177,20 @@ const COLLECTION_SORT: Record<string, { sortKey: string; reverse: boolean }> = {
   newest: { sortKey: "CREATED", reverse: true },
 };
 
-export async function getProducts({
-  query,
-  sort = "featured",
-  collection,
-  limit = 100,
-}: ProductQuery = {}): Promise<ProductSummary[]> {
+export async function getProducts(
+  lang: Locale,
+  { query, sort = "featured", collection, limit = 100 }: ProductQuery = {},
+): Promise<ProductSummary[]> {
+  const language = shopifyLanguage[lang];
   if (collection) {
     const { sortKey, reverse } = COLLECTION_SORT[sort] ?? COLLECTION_SORT.featured;
     const data = await storefrontFetch<{
       collection: { products: Nodes<RawProductCard> } | null;
     }>(COLLECTION_PRODUCTS_QUERY, {
-      variables: { handle: collection, first: limit, sortKey, reverse },
+      variables: { handle: collection, first: limit, sortKey, reverse, language },
       tags: [TAGS.collections, TAGS.products],
     });
-    const products = (data.collection?.products.nodes ?? []).map(reshapeSummary);
+    const products = (data.collection?.products.nodes ?? []).map((p) => reshapeSummary(p, lang));
     // Collection product lists have no text search argument; filter here.
     const q = query?.trim().toLowerCase();
     return q ? products.filter((p) => p.title.toLowerCase().includes(q)) : products;
@@ -204,18 +204,19 @@ export async function getProducts({
       query: q || null,
       sortKey: q && sort === "featured" ? "RELEVANCE" : sortKey,
       reverse,
+      language,
     },
     tags: [TAGS.products],
   });
-  return data.products.nodes.map(reshapeSummary);
+  return data.products.nodes.map((p) => reshapeSummary(p, lang));
 }
 
-export async function getProduct(handle: string): Promise<Product | null> {
+export async function getProduct(lang: Locale, handle: string): Promise<Product | null> {
   const data = await storefrontFetch<{ product: RawProduct | null }>(PRODUCT_QUERY, {
-    variables: { handle },
+    variables: { handle, language: shopifyLanguage[lang] },
     tags: [TAGS.products],
   });
-  return data.product ? reshapeProduct(data.product) : null;
+  return data.product ? reshapeProduct(data.product, lang) : null;
 }
 
 export async function getProductHandles(): Promise<{ handle: string; updatedAt: string | null }[]> {
@@ -226,9 +227,9 @@ export async function getProductHandles(): Promise<{ handle: string; updatedAt: 
   return data.products.nodes;
 }
 
-export async function getCollections(): Promise<Collection[]> {
+export async function getCollections(lang: Locale): Promise<Collection[]> {
   const data = await storefrontFetch<{ collections: Nodes<Collection> }>(COLLECTIONS_QUERY, {
-    variables: { first: 50 },
+    variables: { first: 50, language: shopifyLanguage[lang] },
     tags: [TAGS.collections],
   });
   // Convention: prefix a handle with "hidden-" to keep it off the storefront.
@@ -237,9 +238,9 @@ export async function getCollections(): Promise<Collection[]> {
   );
 }
 
-export async function getCollection(handle: string): Promise<Collection | null> {
+export async function getCollection(lang: Locale, handle: string): Promise<Collection | null> {
   const data = await storefrontFetch<{ collection: Collection | null }>(COLLECTION_QUERY, {
-    variables: { handle },
+    variables: { handle, language: shopifyLanguage[lang] },
     tags: [TAGS.collections],
   });
   return data.collection;
@@ -249,7 +250,9 @@ export async function getCollection(handle: string): Promise<Collection | null> 
 
 type RawPolicy = { title: string; body: string } | null;
 
-export async function getShopPolicies(): Promise<Partial<Record<PolicyHandle, ShopPolicy>>> {
+export async function getShopPolicies(
+  lang: Locale,
+): Promise<Partial<Record<PolicyHandle, ShopPolicy>>> {
   const { shop } = await storefrontFetch<{
     shop: {
       privacyPolicy: RawPolicy;
@@ -257,7 +260,7 @@ export async function getShopPolicies(): Promise<Partial<Record<PolicyHandle, Sh
       shippingPolicy: RawPolicy;
       termsOfService: RawPolicy;
     };
-  }>(POLICIES_QUERY, { tags: [TAGS.policies] });
+  }>(POLICIES_QUERY, { variables: { language: shopifyLanguage[lang] }, tags: [TAGS.policies] });
 
   const out: Partial<Record<PolicyHandle, ShopPolicy>> = {};
   const add = (handle: PolicyHandle, p: RawPolicy) => {
@@ -278,53 +281,61 @@ function assertNoUserErrors(result: UserErrors) {
   }
 }
 
-export async function getCart(cartId: string): Promise<Cart | null> {
+export async function getCart(lang: Locale, cartId: string): Promise<Cart | null> {
   const data = await storefrontFetch<{ cart: RawCart | null }>(CART_QUERY, {
-    variables: { cartId },
+    variables: { cartId, language: shopifyLanguage[lang] },
     revalidate: false,
   });
   return data.cart ? reshapeCart(data.cart) : null;
 }
 
+/** Creates the cart in the shopper's language, so Shopify checkout opens in it too. */
 export async function createCart(
+  lang: Locale,
   lines: { merchandiseId: string; quantity: number }[],
 ): Promise<Cart> {
   const data = await storefrontFetch<{ cartCreate: UserErrors & { cart: RawCart } }>(
     CART_CREATE_MUTATION,
-    { variables: { lines }, revalidate: false },
+    { variables: { lines, language: shopifyLanguage[lang] }, revalidate: false },
   );
   assertNoUserErrors(data.cartCreate);
   return reshapeCart(data.cartCreate.cart);
 }
 
 export async function addCartLines(
+  lang: Locale,
   cartId: string,
   lines: { merchandiseId: string; quantity: number }[],
 ): Promise<Cart> {
   const data = await storefrontFetch<{ cartLinesAdd: UserErrors & { cart: RawCart } }>(
     CART_LINES_ADD_MUTATION,
-    { variables: { cartId, lines }, revalidate: false },
+    { variables: { cartId, lines, language: shopifyLanguage[lang] }, revalidate: false },
   );
   assertNoUserErrors(data.cartLinesAdd);
   return reshapeCart(data.cartLinesAdd.cart);
 }
 
 export async function updateCartLines(
+  lang: Locale,
   cartId: string,
   lines: { id: string; quantity: number }[],
 ): Promise<Cart> {
   const data = await storefrontFetch<{ cartLinesUpdate: UserErrors & { cart: RawCart } }>(
     CART_LINES_UPDATE_MUTATION,
-    { variables: { cartId, lines }, revalidate: false },
+    { variables: { cartId, lines, language: shopifyLanguage[lang] }, revalidate: false },
   );
   assertNoUserErrors(data.cartLinesUpdate);
   return reshapeCart(data.cartLinesUpdate.cart);
 }
 
-export async function removeCartLines(cartId: string, lineIds: string[]): Promise<Cart> {
+export async function removeCartLines(
+  lang: Locale,
+  cartId: string,
+  lineIds: string[],
+): Promise<Cart> {
   const data = await storefrontFetch<{ cartLinesRemove: UserErrors & { cart: RawCart } }>(
     CART_LINES_REMOVE_MUTATION,
-    { variables: { cartId, lineIds }, revalidate: false },
+    { variables: { cartId, lineIds, language: shopifyLanguage[lang] }, revalidate: false },
   );
   assertNoUserErrors(data.cartLinesRemove);
   return reshapeCart(data.cartLinesRemove.cart);

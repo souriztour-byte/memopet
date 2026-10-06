@@ -1,6 +1,12 @@
 /**
  * Storefront API GraphQL documents.
  * Reference: https://shopify.dev/docs/api/storefront
+ *
+ * Every operation that returns shopper-facing text takes `$language` and runs
+ * `@inContext(language: $language)`, so translated titles, descriptions, options and policies come back in the
+ * shopper's language (Shopify falls back to the store's default language when
+ * a translation is missing). A cart created this way also opens Shopify's
+ * checkout in that language.
  */
 
 const IMAGE = /* GraphQL */ `
@@ -165,7 +171,13 @@ const CART = /* GraphQL */ `
 `;
 
 export const PRODUCTS_QUERY = /* GraphQL */ `
-  query Products($first: Int!, $query: String, $sortKey: ProductSortKeys, $reverse: Boolean) {
+  query Products(
+    $first: Int!
+    $query: String
+    $sortKey: ProductSortKeys
+    $reverse: Boolean
+    $language: LanguageCode
+  ) @inContext(language: $language) {
     products(first: $first, query: $query, sortKey: $sortKey, reverse: $reverse) {
       nodes {
         ...ProductCardFields
@@ -176,7 +188,7 @@ export const PRODUCTS_QUERY = /* GraphQL */ `
 `;
 
 export const PRODUCT_QUERY = /* GraphQL */ `
-  query Product($handle: String!) {
+  query Product($handle: String!, $language: LanguageCode) @inContext(language: $language) {
     product(handle: $handle) {
       ...ProductDetailFields
     }
@@ -196,7 +208,7 @@ export const PRODUCT_HANDLES_QUERY = /* GraphQL */ `
 `;
 
 export const COLLECTIONS_QUERY = /* GraphQL */ `
-  query Collections($first: Int!) {
+  query Collections($first: Int!, $language: LanguageCode) @inContext(language: $language) {
     collections(first: $first, sortKey: TITLE) {
       nodes {
         ...CollectionFields
@@ -208,7 +220,7 @@ export const COLLECTIONS_QUERY = /* GraphQL */ `
 `;
 
 export const COLLECTION_QUERY = /* GraphQL */ `
-  query Collection($handle: String!) {
+  query Collection($handle: String!, $language: LanguageCode) @inContext(language: $language) {
     collection(handle: $handle) {
       ...CollectionFields
     }
@@ -223,7 +235,8 @@ export const COLLECTION_PRODUCTS_QUERY = /* GraphQL */ `
     $first: Int!
     $sortKey: ProductCollectionSortKeys
     $reverse: Boolean
-  ) {
+    $language: LanguageCode
+  ) @inContext(language: $language) {
     collection(handle: $handle) {
       products(first: $first, sortKey: $sortKey, reverse: $reverse) {
         nodes {
@@ -236,7 +249,7 @@ export const COLLECTION_PRODUCTS_QUERY = /* GraphQL */ `
 `;
 
 export const POLICIES_QUERY = /* GraphQL */ `
-  query Policies {
+  query Policies($language: LanguageCode) @inContext(language: $language) {
     shop {
       privacyPolicy {
         title
@@ -259,7 +272,7 @@ export const POLICIES_QUERY = /* GraphQL */ `
 `;
 
 export const CART_QUERY = /* GraphQL */ `
-  query Cart($cartId: ID!) {
+  query Cart($cartId: ID!, $language: LanguageCode) @inContext(language: $language) {
     cart(id: $cartId) {
       ...CartFields
     }
@@ -268,7 +281,8 @@ export const CART_QUERY = /* GraphQL */ `
 `;
 
 export const CART_CREATE_MUTATION = /* GraphQL */ `
-  mutation CartCreate($lines: [CartLineInput!]) {
+  mutation CartCreate($lines: [CartLineInput!], $language: LanguageCode)
+  @inContext(language: $language) {
     cartCreate(input: { lines: $lines }) {
       cart {
         ...CartFields
@@ -282,7 +296,8 @@ export const CART_CREATE_MUTATION = /* GraphQL */ `
 `;
 
 export const CART_LINES_ADD_MUTATION = /* GraphQL */ `
-  mutation CartLinesAdd($cartId: ID!, $lines: [CartLineInput!]!) {
+  mutation CartLinesAdd($cartId: ID!, $lines: [CartLineInput!]!, $language: LanguageCode)
+  @inContext(language: $language) {
     cartLinesAdd(cartId: $cartId, lines: $lines) {
       cart {
         ...CartFields
@@ -296,7 +311,11 @@ export const CART_LINES_ADD_MUTATION = /* GraphQL */ `
 `;
 
 export const CART_LINES_UPDATE_MUTATION = /* GraphQL */ `
-  mutation CartLinesUpdate($cartId: ID!, $lines: [CartLineUpdateInput!]!) {
+  mutation CartLinesUpdate(
+    $cartId: ID!
+    $lines: [CartLineUpdateInput!]!
+    $language: LanguageCode
+  ) @inContext(language: $language) {
     cartLinesUpdate(cartId: $cartId, lines: $lines) {
       cart {
         ...CartFields
@@ -310,7 +329,8 @@ export const CART_LINES_UPDATE_MUTATION = /* GraphQL */ `
 `;
 
 export const CART_LINES_REMOVE_MUTATION = /* GraphQL */ `
-  mutation CartLinesRemove($cartId: ID!, $lineIds: [ID!]!) {
+  mutation CartLinesRemove($cartId: ID!, $lineIds: [ID!]!, $language: LanguageCode)
+  @inContext(language: $language) {
     cartLinesRemove(cartId: $cartId, lineIds: $lineIds) {
       cart {
         ...CartFields

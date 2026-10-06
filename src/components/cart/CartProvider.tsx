@@ -11,6 +11,7 @@ import {
   type ReactNode,
 } from "react";
 import { addItemAction, updateItemAction } from "@/app/actions/cart";
+import { useI18n } from "@/i18n/I18nProvider";
 import type { Cart } from "@/lib/commerce/types";
 
 type CartContextValue = {
@@ -37,6 +38,7 @@ export function useCart() {
 }
 
 export function CartProvider({ children, demoMode }: { children: ReactNode; demoMode: boolean }) {
+  const { lang, dict } = useI18n();
   const [cart, setCart] = useState<Cart | null>(null);
   const [ready, setReady] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
@@ -50,9 +52,10 @@ export function CartProvider({ children, demoMode }: { children: ReactNode; demo
     toastTimer.current = setTimeout(() => setToast(null), 2200);
   }, []);
 
+  // (Re)load the cart whenever the language changes, so product names follow it.
   useEffect(() => {
     let cancelled = false;
-    fetch("/api/cart", { cache: "no-store" })
+    fetch(`/api/cart?lang=${lang}`, { cache: "no-store" })
       .then((res) => (res.ok ? res.json() : { cart: null }))
       .then((data: { cart: Cart | null }) => {
         if (!cancelled) setCart(data.cart);
@@ -64,34 +67,34 @@ export function CartProvider({ children, demoMode }: { children: ReactNode; demo
     return () => {
       cancelled = true;
     };
-  }, []);
+  }, [lang]);
 
   const addItem = useCallback(
     async (merchandiseId: string, quantity = 1) => {
-      const result = await addItemAction(merchandiseId, quantity);
+      const result = await addItemAction(lang, merchandiseId, quantity);
       if (!result.ok) {
         notify(result.error);
         return false;
       }
       setCart(result.cart);
-      notify("Added to cart");
+      notify(dict.cart.added);
       return true;
     },
-    [notify],
+    [lang, dict, notify],
   );
 
   const updateItem = useCallback(
     async (lineId: string, quantity: number) => {
       setPendingLineId(lineId);
       try {
-        const result = await updateItemAction(lineId, quantity);
+        const result = await updateItemAction(lang, lineId, quantity);
         if (result.ok) setCart(result.cart);
         else notify(result.error);
       } finally {
         setPendingLineId(null);
       }
     },
-    [notify],
+    [lang, notify],
   );
 
   const value = useMemo<CartContextValue>(

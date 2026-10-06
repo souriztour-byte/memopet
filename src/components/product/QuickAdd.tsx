@@ -3,6 +3,8 @@
 import { useState, useTransition } from "react";
 import { useCart } from "@/components/cart/CartProvider";
 import { CheckIcon, PlusIcon } from "@/components/ui/icons";
+import { fmt } from "@/i18n/format";
+import { useI18n } from "@/i18n/I18nProvider";
 
 type Props = {
   merchandiseId: string;
@@ -14,6 +16,7 @@ type Props = {
 /** The prototype's "+ Add" button: adds one, flashes a check mark. */
 export function QuickAdd({ merchandiseId, title, className, okClassName }: Props) {
   const { addItem } = useCart();
+  const { dict } = useI18n();
   const [pending, startTransition] = useTransition();
   const [ok, setOk] = useState(false);
 
@@ -21,7 +24,7 @@ export function QuickAdd({ merchandiseId, title, className, okClassName }: Props
     <button
       type="button"
       className={`${className ?? ""} ${ok ? (okClassName ?? "") : ""}`}
-      aria-label={`Add ${title} to cart`}
+      aria-label={fmt(dict.product.quickAddLabel, { title })}
       disabled={pending}
       onClick={() =>
         startTransition(async () => {
@@ -36,7 +39,7 @@ export function QuickAdd({ merchandiseId, title, className, okClassName }: Props
         <CheckIcon />
       ) : (
         <>
-          <PlusIcon /> Add
+          <PlusIcon /> {dict.product.quickAdd}
         </>
       )}
     </button>

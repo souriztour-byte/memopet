@@ -2,7 +2,7 @@
  * Store-wide settings. Anything that is a business fact (contact details,
  * legal entity) comes from environment variables so nothing is invented in
  * code — when a value is missing the UI says "Coming soon" instead, exactly
- * like the prototype did.
+ * like the prototype did. Interface text lives in `src/i18n/dictionaries`.
  */
 
 const clean = (value: string | undefined) => {
@@ -13,12 +13,8 @@ const clean = (value: string | undefined) => {
 const instagramHandle = clean(process.env.NEXT_PUBLIC_INSTAGRAM_HANDLE)?.replace(/^@/, "") ?? null;
 
 export const siteConfig = {
-  name: "MimoPets",
-  tagline: "Little things. Happier pets.",
-  description:
-    "Explore MimoPets: our bestselling paw washer, plus cozy comfort beds for cats and dogs.",
+  name: "MimiPets",
   url: clean(process.env.NEXT_PUBLIC_SITE_URL) ?? "http://localhost:3000",
-  announcement: "Our bestselling Paw Washer is here",
   /** Handle of the hero product (the paw washer) — match it to the Shopify product handle. */
   featuredProductHandle:
     clean(process.env.NEXT_PUBLIC_FEATURED_PRODUCT_HANDLE) ?? "silicone-paw-washer",
@@ -36,10 +32,11 @@ export const siteConfig = {
   },
 } as const;
 
+/** Header navigation; labels come from `dict.nav`. */
 export const navLinks = [
-  { href: "/shop", label: "Shop all" },
-  { href: "/collections", label: "Categories" },
-  { href: "/how-to-order", label: "How to order" },
-  { href: "/faq", label: "FAQ" },
-  { href: "/contact", label: "Contact" },
+  { href: "/shop", key: "shop" },
+  { href: "/collections", key: "collections" },
+  { href: "/how-to-order", key: "howToOrder" },
+  { href: "/faq", key: "faq" },
+  { href: "/contact", key: "contact" },
 ] as const;

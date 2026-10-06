@@ -5,6 +5,8 @@ import { useMemo, useState, useTransition } from "react";
 import { Illustration } from "@/components/art/Illustration";
 import { useCart } from "@/components/cart/CartProvider";
 import { BagIcon } from "@/components/ui/icons";
+import { fmt } from "@/i18n/format";
+import { useI18n } from "@/i18n/I18nProvider";
 import type { Image as ImageType, Product, ProductVariant } from "@/lib/commerce/types";
 import { MAX_QTY } from "@/lib/limits";
 import { Price } from "./Price";
@@ -22,6 +24,8 @@ function initialSelection(product: Product): Selection {
 
 export function ProductDetail({ product }: { product: Product }) {
   const { addItem } = useCart();
+  const { dict } = useI18n();
+  const t = dict.product;
   const [selection, setSelection] = useState<Selection>(() => initialSelection(product));
   const [quantity, setQuantity] = useState(1);
   const [pending, startTransition] = useTransition();
@@ -73,14 +77,14 @@ export function ProductDetail({ product }: { product: Product }) {
           {product.badge ? <span className={styles.tag}>{product.badge}</span> : null}
         </div>
         {images.length > 1 ? (
-          <ul className={styles.thumbs} aria-label="Product photos">
+          <ul className={styles.thumbs} aria-label={t.photos}>
             {images.map((img, i) => (
               <li key={img.url}>
                 <button
                   type="button"
                   className={`${styles.thumb} ${product.tile}`}
                   aria-pressed={img.url === active?.url}
-                  aria-label={`Show photo ${i + 1} of ${images.length}`}
+                  aria-label={fmt(t.showPhoto, { index: i + 1, total: images.length })}
                   onClick={() => setActiveUrl(img.url)}
                 >
                   <Image src={img.url} alt="" fill sizes="80px" className={styles.stagePhoto} />
@@ -131,12 +135,12 @@ export function ProductDetail({ product }: { product: Product }) {
         <div className={styles.buy}>
           <div className={styles.qtyWrap}>
             <span className={styles.qtyLabel} id="qty-label">
-              Quantity
+              {t.quantity}
             </span>
             <span className={`qty ${styles.qty}`} role="group" aria-labelledby="qty-label">
               <button
                 type="button"
-                aria-label="Decrease quantity"
+                aria-label={t.decrease}
                 onClick={() => setQuantity((q) => Math.max(1, q - 1))}
                 disabled={quantity <= 1}
               >
@@ -145,7 +149,7 @@ export function ProductDetail({ product }: { product: Product }) {
               <output aria-live="polite">{quantity}</output>
               <button
                 type="button"
-                aria-label="Increase quantity"
+                aria-label={t.increase}
                 onClick={() => setQuantity((q) => Math.min(MAX_QTY, q + 1))}
                 disabled={quantity >= MAX_QTY}
               >
@@ -165,7 +169,7 @@ export function ProductDetail({ product }: { product: Product }) {
             }
           >
             <BagIcon />
-            {!variant ? "Choose an option" : !available ? "Sold out" : pending ? "Adding…" : "Add to cart"}
+            {!variant ? t.chooseOption : !available ? t.soldOut : pending ? t.adding : t.addToCart}
           </button>
         </div>
       </div>

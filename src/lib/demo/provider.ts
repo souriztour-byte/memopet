@@ -5,7 +5,8 @@ import type {
   ProductQuery,
   ProductSummary,
 } from "@/lib/commerce/types";
-import { DEMO_COLLECTIONS, DEMO_PRODUCTS } from "./catalog";
+import type { Locale } from "@/i18n/config";
+import { getDemoCatalog } from "./catalog";
 
 const toSummary = ({
   id,
@@ -37,14 +38,13 @@ const toSummary = ({
 
 const price = (p: ProductSummary) => Number(p.priceRange.minVariantPrice.amount);
 
-export async function getProducts({
-  query,
-  sort = "featured",
-  collection,
-  limit = 100,
-}: ProductQuery = {}): Promise<ProductSummary[]> {
+export async function getProducts(
+  lang: Locale,
+  { query, sort = "featured", collection, limit = 100 }: ProductQuery = {},
+): Promise<ProductSummary[]> {
   const q = query?.trim().toLowerCase();
-  const list = DEMO_PRODUCTS.filter((p) => !collection || p.collections.includes(collection))
+  const list = getDemoCatalog(lang)
+    .products.filter((p) => !collection || p.collections.includes(collection))
     .filter((p) => !q || `${p.title} ${p.petType ?? ""}`.toLowerCase().includes(q))
     .map(toSummary);
   if (sort === "price-asc") list.sort((a, b) => price(a) - price(b));
@@ -52,8 +52,8 @@ export async function getProducts({
   return list.slice(0, limit);
 }
 
-export async function getProduct(handle: string): Promise<Product | null> {
-  const found = DEMO_PRODUCTS.find((p) => p.handle === handle);
+export async function getProduct(lang: Locale, handle: string): Promise<Product | null> {
+  const found = getDemoCatalog(lang).products.find((p) => p.handle === handle);
   if (!found) return null;
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { collections, ...product } = found;
@@ -61,37 +61,38 @@ export async function getProduct(handle: string): Promise<Product | null> {
 }
 
 export async function getProductHandles() {
-  return DEMO_PRODUCTS.map((p) => ({ handle: p.handle, updatedAt: p.updatedAt }));
+  // Handles are the same in every language.
+  return getDemoCatalog("en").products.map((p) => ({ handle: p.handle, updatedAt: p.updatedAt }));
 }
 
-export async function getCollections(): Promise<Collection[]> {
-  return DEMO_COLLECTIONS;
+export async function getCollections(lang: Locale): Promise<Collection[]> {
+  return getDemoCatalog(lang).collections;
 }
 
-export async function getCollection(handle: string): Promise<Collection | null> {
-  return DEMO_COLLECTIONS.find((c) => c.handle === handle) ?? null;
+export async function getCollection(lang: Locale, handle: string): Promise<Collection | null> {
+  return getDemoCatalog(lang).collections.find((c) => c.handle === handle) ?? null;
 }
 
 /* ─── Cart (lines are kept in a cookie by lib/commerce) ──────────────── */
 
 export type DemoLine = { merchandiseId: string; quantity: number };
 
-export function findVariant(merchandiseId: string) {
-  for (const product of DEMO_PRODUCTS) {
+export function findVariant(merchandiseId: string, lang: Locale = "en") {
+  for (const product of getDemoCatalog(lang).products) {
     const variant = product.variants.find((v) => v.id === merchandiseId);
     if (variant) return { product, variant };
   }
   return null;
 }
 
-export function buildCart(lines: DemoLine[]): Cart {
+export function buildCart(lines: DemoLine[], lang: Locale): Cart {
   const cartLines: Cart["lines"] = [];
   let subtotal = 0;
   let totalQuantity = 0;
   let currencyCode = "USD";
 
   for (const line of lines) {
-    const match = findVariant(line.merchandiseId);
+    const match = findVariant(line.merchandiseId, lang);
     if (!match) continue;
     const { product, variant } = match;
     const unit = Number(variant.price.amount);

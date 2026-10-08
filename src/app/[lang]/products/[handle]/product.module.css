@@ -73,3 +73,14 @@
   width: 18px;
   height: 18px;
 }
+
+@media (prefers-reduced-motion: no-preference) {
+  .facts li:hover .icon svg {
+    animation: fact-hop 0.6s ease;
+  }
+}
+@keyframes fact-hop {
+  40% {
+    transform: translateY(-4px) rotate(-8deg);
+  }
+}

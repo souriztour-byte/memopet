@@ -237,3 +237,61 @@
     width: min(280px, 100%);
   }
 }
+
+/* Icons that move: delivery facts bob in turn, the chip's truck drives and its
+   chat bubble pops. */
+@media (prefers-reduced-motion: no-preference) {
+  .factIcon svg {
+    animation: icon-bob 3s ease-in-out infinite;
+  }
+  .facts li:nth-child(2) .factIcon svg {
+    animation-name: icon-drive;
+    animation-delay: -1s;
+  }
+  .facts li:nth-child(3) .factIcon svg {
+    animation-name: icon-turn;
+    animation-delay: -2s;
+  }
+  .c1 .dot svg {
+    animation: icon-drive 2.4s ease-in-out infinite;
+  }
+  .c2 .dot svg {
+    animation: icon-pop 3s ease-in-out infinite;
+  }
+}
+@keyframes icon-bob {
+  50% {
+    transform: translateY(-3px);
+  }
+}
+@keyframes icon-drive {
+  0%,
+  100% {
+    transform: translateX(-2px);
+  }
+  50% {
+    transform: translateX(2px) translateY(-1px);
+  }
+}
+@keyframes icon-turn {
+  0%,
+  100% {
+    transform: rotate(0deg);
+  }
+  50% {
+    transform: rotate(-25deg);
+  }
+}
+@keyframes icon-pop {
+  0%,
+  70%,
+  100% {
+    transform: scale(1);
+  }
+  80% {
+    transform: scale(1.2);
+  }
+  90% {
+    transform: scale(0.95);
+  }
+}

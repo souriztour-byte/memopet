@@ -29,10 +29,10 @@ const ART: Record<IllustrationName, React.ReactNode> = {
 <rect x="96" y="50" width="32" height="22" rx="5" fill="#B82A5B"/>
 <rect x="76" y="68" width="72" height="110" rx="18" fill="#D4336A"/>
 <rect x="88" y="98" width="48" height="52" rx="10" fill="#FFFFFF"/><g transform="translate(112 126) scale(0.8)" fill="#6C4AB6"><ellipse cx="-14" cy="-6" rx="5" ry="6.5" transform="rotate(-25 -14 -6)"/><ellipse cx="-5" cy="-15" rx="5" ry="7"/><ellipse cx="5" cy="-15" rx="5" ry="7"/><ellipse cx="14" cy="-6" rx="5" ry="6.5" transform="rotate(25 14 -6)"/><path d="M0 16 C-12 9 -16 3 -14 -2 C-12 -7 -4 -8 0 -2 C4 -8 12 -7 14 -2 C16 3 12 9 0 16 Z"/></g>
-<g transform="rotate(-30 232 128)"><rect x="222" y="128" width="20" height="62" rx="10" fill="#6C4AB6"/>
+<g className="art-wiggle"><g transform="rotate(-30 232 128)"><rect x="222" y="128" width="20" height="62" rx="10" fill="#6C4AB6"/>
 <rect x="198" y="84" width="68" height="48" rx="14" fill="#5A3AA3"/>
-<g stroke="#FFF4E0" strokeWidth="4" strokeLinecap="round"><path d="M208 84 v-12 M220 84 v-12 M232 84 v-12 M244 84 v-12 M256 84 v-12"/></g></g>
-<g fill="#FFFFFF" stroke="#D8CBF3" strokeWidth="3"><circle cx="170" cy="56" r="12"/><circle cx="190" cy="36" r="8"/><circle cx="60" cy="70" r="10"/><circle cx="48" cy="48" r="6"/></g>
+<g stroke="#FFF4E0" strokeWidth="4" strokeLinecap="round"><path d="M208 84 v-12 M220 84 v-12 M232 84 v-12 M244 84 v-12 M256 84 v-12"/></g></g></g>
+<g className="art-bubbles" fill="#FFFFFF" stroke="#D8CBF3" strokeWidth="3"><circle cx="170" cy="56" r="12"/><circle cx="190" cy="36" r="8"/><circle cx="60" cy="70" r="10"/><circle cx="48" cy="48" r="6"/></g>
     </g>
   ),
   beds: (
@@ -41,6 +41,7 @@ const ART: Record<IllustrationName, React.ReactNode> = {
 <ellipse cx="160" cy="184" rx="130" ry="8" fill="#000" opacity=".07"/>
 <ellipse cx="160" cy="146" rx="128" ry="40" fill="#6C4AB6"/>
 <ellipse cx="160" cy="136" rx="102" ry="26" fill="#D8CBF3"/>
+<g className="art-breathe">
 <path d="M214 134 C236 150 190 160 150 150" fill="none" stroke="#F2A65A" strokeWidth="13" strokeLinecap="round"/>
 <ellipse cx="170" cy="124" rx="58" ry="24" fill="#F2A65A"/>
 <path d="M150 104 C160 110 176 110 186 104 M200 108 C206 114 212 118 218 118" fill="none" stroke="#D98A3D" strokeWidth="4" strokeLinecap="round"/>
@@ -50,7 +51,8 @@ const ART: Record<IllustrationName, React.ReactNode> = {
 <path d="M104 116 q5 5 10 0 M122 116 q5 5 10 0" fill="none" stroke="#2B2240" strokeWidth="3" strokeLinecap="round"/>
 <path d="M115 124 h6 l-3 3 z" fill="#D4336A"/>
 <ellipse cx="146" cy="136" rx="10" ry="6" fill="#FFF4E0"/>
-{z(214, 70, 22)}{z(236, 52, 16)}{z(252, 38, 12)}
+</g>
+<g className="art-z">{z(214, 70, 22)}{z(236, 52, 16)}{z(252, 38, 12)}</g>
     </g>
   ),
   sofa: (
@@ -63,7 +65,7 @@ const ART: Record<IllustrationName, React.ReactNode> = {
 <rect x="80" y="106" width="160" height="30" rx="15" fill="#D8CBF3"/>
 <rect x="34" y="94" width="48" height="76" rx="24" fill="#6C4AB6"/><rect x="238" y="94" width="48" height="76" rx="24" fill="#6C4AB6"/>
 <rect x="42" y="100" width="32" height="14" rx="7" fill="#FFFFFF" opacity=".18"/><rect x="246" y="100" width="32" height="14" rx="7" fill="#FFFFFF" opacity=".18"/>
-<g transform="translate(14 -26)">
+<g className="art-breathe"><g transform="translate(14 -26)">
 <path d="M214 134 C236 150 190 160 150 150" fill="none" stroke="#F2A65A" strokeWidth="13" strokeLinecap="round"/>
 <ellipse cx="170" cy="124" rx="58" ry="24" fill="#F2A65A"/>
 <path d="M150 104 C160 110 176 110 186 104 M200 108 C206 114 212 118 218 118" fill="none" stroke="#D98A3D" strokeWidth="4" strokeLinecap="round"/>
@@ -73,9 +75,9 @@ const ART: Record<IllustrationName, React.ReactNode> = {
 <path d="M104 116 q5 5 10 0 M122 116 q5 5 10 0" fill="none" stroke="#2B2240" strokeWidth="3" strokeLinecap="round"/>
 <path d="M115 124 h6 l-3 3 z" fill="#D4336A"/>
 <ellipse cx="146" cy="136" rx="10" ry="6" fill="#FFF4E0"/>
-</g>
-<path transform="translate(270 40) scale(1.1)" d="M0 12 C-10 5 -13 0 -12 -4 C-11 -9 -3 -10 0 -4 C3 -10 11 -9 12 -4 C13 0 10 5 0 12 Z" fill="#D4336A"/>
-<path transform="translate(292 22) scale(.7)" d="M0 12 C-10 5 -13 0 -12 -4 C-11 -9 -3 -10 0 -4 C3 -10 11 -9 12 -4 C13 0 10 5 0 12 Z" fill="#6C4AB6"/>
+</g></g>
+<g className="art-heart"><path transform="translate(270 40) scale(1.1)" d="M0 12 C-10 5 -13 0 -12 -4 C-11 -9 -3 -10 0 -4 C3 -10 11 -9 12 -4 C13 0 10 5 0 12 Z" fill="#D4336A"/></g>
+<g className="art-heart" style={{ animationDelay: "-0.9s" }}><path transform="translate(292 22) scale(.7)" d="M0 12 C-10 5 -13 0 -12 -4 C-11 -9 -3 -10 0 -4 C3 -10 11 -9 12 -4 C13 0 10 5 0 12 Z" fill="#6C4AB6"/></g>
     </g>
   ),
   "sleeping-bag": (
@@ -83,6 +85,7 @@ const ART: Record<IllustrationName, React.ReactNode> = {
 <ellipse cx="160" cy="184" rx="130" ry="8" fill="#000" opacity=".07"/>
 <path d="M58 150 C50 110 92 94 150 98 L250 104 C286 108 296 160 262 170 C220 182 110 184 78 176 C64 172 60 162 58 150 Z" fill="#D4336A"/>
 <ellipse cx="104" cy="132" rx="52" ry="30" fill="#FFF4E0"/>
+<g className="art-nod">
 <ellipse cx="80" cy="118" rx="12" ry="26" transform="rotate(20 80 118)" fill="#9C6440"/>
 <ellipse cx="128" cy="118" rx="12" ry="26" transform="rotate(-20 128 118)" fill="#9C6440"/>
 <circle cx="104" cy="114" r="28" fill="#E9B27A"/>
@@ -90,11 +93,12 @@ const ART: Record<IllustrationName, React.ReactNode> = {
 <ellipse cx="104" cy="120" rx="6" ry="4.5" fill="#2B2240"/>
 <path d="M89 108 q5 5 10 0 M109 108 q5 5 10 0" fill="none" stroke="#2B2240" strokeWidth="3" strokeLinecap="round"/>
 <path d="M100 130 q4 4 8 0" fill="none" stroke="#2B2240" strokeWidth="2.5" strokeLinecap="round"/>
+</g>
 <path d="M132 104 C150 126 152 150 136 176 L262 170 C296 160 286 108 250 104 Z" fill="#B82A5B"/>
 <path d="M132 104 C150 126 152 150 136 176" fill="none" stroke="#F8C8D8" strokeWidth="7" strokeLinecap="round"/>
 <g fill="none" stroke="#F8C8D8" strokeWidth="3" strokeLinecap="round" strokeDasharray="2 9" opacity=".8"><path d="M182 108 C192 128 192 152 180 174"/><path d="M226 106 C236 128 236 152 224 172"/></g>
 <g fill="#FFF4E0"><ellipse cx="128" cy="158" rx="10" ry="7"/><ellipse cx="114" cy="162" rx="9" ry="6"/></g>
-{z(150, 70, 22)}{z(172, 52, 16)}{z(188, 38, 12)}
+<g className="art-z">{z(150, 70, 22)}{z(172, 52, 16)}{z(188, 38, 12)}</g>
     </g>
   ),
   toys: (
@@ -140,7 +144,7 @@ export function HeroIllustration({ className, width, height }: ArtProps) {
     <svg className={className} width={width} height={height} viewBox="30 30 340 340" aria-hidden="true" focusable="false">
 
 <ellipse cx="200" cy="366" rx="150" ry="12" fill="#000" opacity=".08"/>
-<path d="M186 336 C214 318 206 270 230 252" fill="none" stroke="#F2A65A" strokeWidth="16" strokeLinecap="round"/>
+<g className="art-tail"><path d="M186 336 C214 318 206 270 230 252" fill="none" stroke="#F2A65A" strokeWidth="16" strokeLinecap="round"/></g>
 <ellipse cx="135" cy="290" rx="58" ry="70" fill="#F2A65A"/>
 <ellipse cx="135" cy="282" rx="26" ry="42" fill="#FFF4E0"/>
 <ellipse cx="113" cy="356" rx="18" ry="10" fill="#FFF4E0"/><ellipse cx="157" cy="356" rx="18" ry="10" fill="#FFF4E0"/>
@@ -149,14 +153,15 @@ export function HeroIllustration({ className, width, height }: ArtProps) {
 <circle cx="135" cy="196" r="52" fill="#F2A65A"/>
 <path d="M118 152 q4 10 0 18 M135 148 v16 M152 152 q-4 10 0 18" stroke="#D98A3D" strokeWidth="5" fill="none" strokeLinecap="round"/>
 <ellipse cx="135" cy="214" rx="22" ry="15" fill="#FFF4E0"/>
-<ellipse cx="115" cy="194" rx="7" ry="8" fill="#2B2240"/><ellipse cx="155" cy="194" rx="7" ry="8" fill="#2B2240"/>
-<circle cx="117" cy="191" r="2.5" fill="#FFFFFF"/><circle cx="157" cy="191" r="2.5" fill="#FFFFFF"/>
+<g className="art-blink"><ellipse cx="115" cy="194" rx="7" ry="8" fill="#2B2240"/><ellipse cx="155" cy="194" rx="7" ry="8" fill="#2B2240"/>
+<circle cx="117" cy="191" r="2.5" fill="#FFFFFF"/><circle cx="157" cy="191" r="2.5" fill="#FFFFFF"/></g>
 <path d="M130 206 h10 l-5 6 z" fill="#D4336A"/>
 <path d="M127 218 q4 5 8 0 q4 5 8 0" fill="none" stroke="#2B2240" strokeWidth="2.5" strokeLinecap="round"/>
 <g stroke="#D98A3D" strokeWidth="2.5" strokeLinecap="round"><path d="M98 212 l-22 -4 M98 220 l-22 4 M172 212 l22 -4 M172 220 l22 4"/></g>
 <ellipse cx="270" cy="292" rx="66" ry="72" fill="#E9B27A"/>
 <ellipse cx="270" cy="290" rx="30" ry="46" fill="#FFF4E0"/>
 <ellipse cx="244" cy="358" rx="20" ry="11" fill="#FFF4E0"/><ellipse cx="296" cy="358" rx="20" ry="11" fill="#FFF4E0"/>
+<g className="art-tilt">
 <circle cx="270" cy="186" r="58" fill="#E9B27A"/>
 <ellipse cx="218" cy="190" rx="20" ry="46" transform="rotate(18 218 190)" fill="#9C6440"/>
 <ellipse cx="322" cy="190" rx="20" ry="46" transform="rotate(-18 322 190)" fill="#9C6440"/>
@@ -165,9 +170,10 @@ export function HeroIllustration({ className, width, height }: ArtProps) {
 <path d="M262 228 q8 14 16 0" fill="#D4336A"/>
 <circle cx="248" cy="178" r="7" fill="#2B2240"/><circle cx="292" cy="178" r="7" fill="#2B2240"/>
 <circle cx="250" cy="175" r="2.5" fill="#FFFFFF"/><circle cx="294" cy="175" r="2.5" fill="#FFFFFF"/>
+</g>
 <path d="M224 244 Q270 264 316 244" fill="none" stroke="#D4336A" strokeWidth="11" strokeLinecap="round"/>
 <path transform="translate(270 262) scale(1.1)" d="M0 12 C-10 5 -13 0 -12 -4 C-11 -9 -3 -10 0 -4 C3 -10 11 -9 12 -4 C13 0 10 5 0 12 Z" fill="#FFC857" stroke="#E8A93A" strokeWidth="1.5"/>
-<path transform="translate(204 92) scale(2.6)" d="M0 12 C-10 5 -13 0 -12 -4 C-11 -9 -3 -10 0 -4 C3 -10 11 -9 12 -4 C13 0 10 5 0 12 Z" fill="#D4336A"/><path transform="translate(160 66) scale(1.1)" d="M0 12 C-10 5 -13 0 -12 -4 C-11 -9 -3 -10 0 -4 C3 -10 11 -9 12 -4 C13 0 10 5 0 12 Z" fill="#6C4AB6"/><path transform="translate(250 58) scale(0.9)" d="M0 12 C-10 5 -13 0 -12 -4 C-11 -9 -3 -10 0 -4 C3 -10 11 -9 12 -4 C13 0 10 5 0 12 Z" fill="#D4336A"/>
+<g className="art-heart"><path transform="translate(204 92) scale(2.6)" d="M0 12 C-10 5 -13 0 -12 -4 C-11 -9 -3 -10 0 -4 C3 -10 11 -9 12 -4 C13 0 10 5 0 12 Z" fill="#D4336A"/></g><g className="art-heart" style={{ animationDelay: "-0.6s" }}><path transform="translate(160 66) scale(1.1)" d="M0 12 C-10 5 -13 0 -12 -4 C-11 -9 -3 -10 0 -4 C3 -10 11 -9 12 -4 C13 0 10 5 0 12 Z" fill="#6C4AB6"/></g><g className="art-heart" style={{ animationDelay: "-1.2s" }}><path transform="translate(250 58) scale(0.9)" d="M0 12 C-10 5 -13 0 -12 -4 C-11 -9 -3 -10 0 -4 C3 -10 11 -9 12 -4 C13 0 10 5 0 12 Z" fill="#D4336A"/></g>
     </svg>
   );
 }

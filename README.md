@@ -36,6 +36,11 @@ Every page is its own route, in each language (`/en/shop`, `/es/shop`, …):
 Plus `sitemap.xml` (both languages, with hreflang links), `robots.txt`, a 404 page per language
 and `/api/revalidate` for Shopify webhooks.
 
+**Share images**: every page has a generated preview image for WhatsApp, Instagram, Facebook
+and others, in its own language. Product pages show the product's photo (or drawing), name and
+price; see `opengraph-image.tsx` and `src/lib/og/`. There is also an iPhone home-screen icon
+(`src/app/apple-icon.tsx`) and a web manifest.
+
 ## Languages
 
 - **URLs**: `en` and `es` prefixes. A visit without one — `/`, or an old link such as `/shop` —
@@ -139,7 +144,7 @@ These conventions keep the storefront looking like the prototype:
   - `pet:Cat & dog` → the small “for” line above the title
   - Shopify can’t translate tags, so add Spanish ones too: `badge-es:Más vendido`,
     `pet-es:Gato y perro`. Without them, Spanish pages show the plain `badge:` / `pet:` text.
-  - `art:care` / `art:beds` / `art:toys` / `art:collars` → illustration shown while a product
+  - `art:care` / `art:beds` / `art:sofa` / `art:sleeping-bag` / `art:toys` / `art:collars` → illustration shown while a product
     has no photo. It is guessed from the title (English or Spanish) when there is no tag.
 - **Policies**: policies written in *Settings → Policies* replace the local drafts automatically,
   one by one, in each language.

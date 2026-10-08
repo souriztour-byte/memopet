@@ -26,7 +26,6 @@ export async function generateMetadata(props: PageProps<"/[lang]/products/[handl
   const product = await getProduct(lang, handle);
   if (!product) return {};
   const description = product.seo.description || product.description.slice(0, 160);
-  const image = product.featuredImage;
   return {
     title: product.seo.title || product.title,
     description,
@@ -37,7 +36,7 @@ export async function generateMetadata(props: PageProps<"/[lang]/products/[handl
       locale: ogLocale[lang],
       title: product.title,
       description,
-      images: image ? [{ url: image.url, alt: image.altText || product.title }] : undefined,
+      // The image is ./opengraph-image.tsx: photo or illustration, name and price.
     },
   };
 }
@@ -99,20 +98,7 @@ export default async function ProductPage(props: PageProps<"/[lang]/products/[ha
         </ol>
       </nav>
 
-      <ProductDetail product={product} />
-
-      <div className={styles.details}>
-        <section aria-labelledby="about-title">
-          <h2 id="about-title" className={styles.h2}>
-            {t.about}
-          </h2>
-          {product.descriptionHtml ? (
-            <div className="prose" dangerouslySetInnerHTML={{ __html: product.descriptionHtml }} />
-          ) : (
-            <p className="muted">{product.description}</p>
-          )}
-        </section>
-
+      <ProductDetail product={product}>
         <aside aria-labelledby="delivery-title" className={styles.facts}>
           <h2 id="delivery-title" className={styles.h2}>
             {t.delivery}
@@ -161,6 +147,19 @@ export default async function ProductPage(props: PageProps<"/[lang]/products/[ha
             </Link>
           </p>
         </aside>
+      </ProductDetail>
+
+      <div className={styles.details}>
+        <section aria-labelledby="about-title">
+          <h2 id="about-title" className={styles.h2}>
+            {t.about}
+          </h2>
+          {product.descriptionHtml ? (
+            <div className="prose" dangerouslySetInnerHTML={{ __html: product.descriptionHtml }} />
+          ) : (
+            <p className="muted">{product.description}</p>
+          )}
+        </section>
       </div>
 
       {related.length ? (

@@ -16,7 +16,7 @@ export type Image = {
 };
 
 /** Built-in SVG art from the prototype, used when a product has no photo. */
-export type Illustration = "care" | "beds" | "toys" | "collars";
+export type Illustration = "care" | "beds" | "sofa" | "sleeping-bag" | "toys" | "collars";
 
 export type SelectedOption = {
   name: string;

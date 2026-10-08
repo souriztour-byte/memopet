@@ -77,7 +77,7 @@ const PRODUCTS: ProductDef[] = [
     title: { en: "Luxury Cat Sofa Bed", es: "Sofá cama de lujo para gatos" },
     badge: { en: "Premium", es: "Premium" },
     petType: { en: "Cat", es: "Gato" },
-    illustration: "beds",
+    illustration: "sofa",
     tile: "t2",
     description: {
       en: ["A sofa-style comfort bed for cats who love to curl up."],
@@ -92,8 +92,8 @@ const PRODUCTS: ProductDef[] = [
     title: { en: "Warming Sleeping Bag Bed", es: "Cama saco de dormir térmica" },
     badge: null,
     petType: { en: "Dog", es: "Perro" },
-    illustration: "beds",
-    tile: "t2",
+    illustration: "sleeping-bag",
+    tile: "t1",
     description: {
       en: ["A sleeping-bag style comfort bed for dogs who love to curl up."],
       es: ["Una cama confortable con forma de saco de dormir para perros a los que les encanta acurrucarse."],

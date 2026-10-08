@@ -10,7 +10,8 @@ type PhotoAlt = Exclude<keyof Dictionary["photos"], "credit">;
  * In Shopify, add product tags to control them:
  *   badge:Best seller   → card label (badge-es:… for the Spanish site)
  *   pet:Cat & dog       → "for" line on the card (pet-es:… for the Spanish site)
- *   art:beds            → fallback illustration when a product has no photo
+ *   art:sofa            → fallback illustration when a product has no photo
+ *                         (care, beds, sofa, sleeping-bag, toys, collars)
  */
 export function readTag(tags: string[], key: string) {
   const prefix = `${key}:`;
@@ -27,14 +28,16 @@ export function readLocalizedTag(tags: string[], key: string, lang: string) {
   return readTag(tags, `${key}-${lang}`) ?? readTag(tags, key);
 }
 
-const ILLUSTRATIONS: Illustration[] = ["care", "beds", "toys", "collars"];
+const ILLUSTRATIONS: Illustration[] = ["care", "beds", "sofa", "sleeping-bag", "toys", "collars"];
 
 export function illustrationFor(tags: string[], productType = "", title = ""): Illustration {
   const explicit = readTag(tags, "art");
   if (explicit && (ILLUSTRATIONS as string[]).includes(explicit)) return explicit as Illustration;
   const hay = `${productType} ${title} ${tags.join(" ")}`.toLowerCase();
   // English and Spanish words, so both languages pick the same art.
-  if (/\b(bed|sofa|sleep|cushion|blanket|cama|sof[aá]|saco|coj[ií]n|manta)/.test(hay)) return "beds";
+  if (/\b(sleeping[ -]?bag|saco)/.test(hay)) return "sleeping-bag";
+  if (/\b(sofa|couch|sof[aá])/.test(hay)) return "sofa";
+  if (/\b(bed|sleep|cushion|blanket|cama|coj[ií]n|manta)/.test(hay)) return "beds";
   if (/\b(toy|ball|chew|juguete|pelota|mordedor)/.test(hay)) return "toys";
   if (/\b(collar|leash|harness|correa|arn[eé]s)/.test(hay)) return "collars";
   return "care";
@@ -43,7 +46,7 @@ export function illustrationFor(tags: string[], productType = "", title = ""): I
 /** Tile colours from the prototype: care → cream, beds → pink, other → lilac. */
 export function tileFor(illustration: Illustration): "t1" | "t2" | "t3" {
   if (illustration === "care") return "t3";
-  if (illustration === "beds") return "t2";
+  if (illustration === "beds" || illustration === "sofa") return "t2";
   return "t1";
 }
 

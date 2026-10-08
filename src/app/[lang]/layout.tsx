@@ -52,6 +52,8 @@ export async function generateMetadata(props: LayoutProps<"/[lang]">): Promise<M
       title,
       description,
     },
+    // Title, description and image come from each page's Open Graph tags.
+    twitter: { card: "summary_large_image" },
   };
 }
 

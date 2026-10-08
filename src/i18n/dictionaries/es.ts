@@ -80,6 +80,13 @@ export const es: Dictionary = {
     faqEyebrow: "Preguntas frecuentes",
     faqTitle: "Algunas respuestas útiles",
     faqLink: "Todas las preguntas",
+    factsLabel: "Envío y devoluciones",
+    factsPrepared: "Se prepara en {days}",
+    factsPreparedText: "En {share}",
+    factsDelivery: "{days} a {destination}",
+    factsDeliveryText: "Plazo de entrega estimado",
+    factsReturns: "Devoluciones en {days} días",
+    factsReturnsText: "Puedes cambiar de opinión en los {days} días siguientes a la entrega.",
   },
   shop: {
     metaTitle: "Todos los productos",

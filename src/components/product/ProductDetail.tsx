@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useMemo, useState, useTransition } from "react";
+import { useEffect, useMemo, useRef, useState, useTransition } from "react";
 import { Illustration } from "@/components/art/Illustration";
 import { useCart } from "@/components/cart/CartProvider";
 import { BagIcon } from "@/components/ui/icons";
@@ -22,7 +22,12 @@ function initialSelection(product: Product): Selection {
   return Object.fromEntries((variant?.selectedOptions ?? []).map((o) => [o.name, o.value]));
 }
 
-export function ProductDetail({ product }: { product: Product }) {
+/**
+ * Gallery, options and the buy box. `children` (the delivery facts) render under
+ * the Add to cart button. On phones, a bar with the button follows the reader
+ * once the main button has scrolled out of view.
+ */
+export function ProductDetail({ product, children }: { product: Product; children?: React.ReactNode }) {
   const { addItem } = useCart();
   const { dict } = useI18n();
   const t = dict.product;
@@ -32,6 +37,30 @@ export function ProductDetail({ product }: { product: Product }) {
 
   const variant = product.variants.find((v) => matches(v, selection)) ?? null;
   const available = Boolean(variant?.availableForSale);
+
+  const buyRef = useRef<HTMLDivElement>(null);
+  const [showBar, setShowBar] = useState(false);
+  useEffect(() => {
+    const el = buyRef.current;
+    if (!el) return;
+    const io = new IntersectionObserver(([entry]) =>
+      setShowBar(!entry.isIntersecting && entry.boundingClientRect.top < 0),
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+
+  const add = () =>
+    variant &&
+    startTransition(async () => {
+      if (await addItem(variant.id, quantity)) setQuantity(1);
+    });
+  const addLabel = !variant ? t.chooseOption : !available ? t.soldOut : pending ? t.adding : t.addToCart;
+  const price = variant ? (
+    <Price min={variant.price} compareAt={variant.compareAtPrice} />
+  ) : (
+    <Price min={product.priceRange.minVariantPrice} max={product.priceRange.maxVariantPrice} />
+  );
 
   // Photos: the selected variant's photo first, then the rest.
   const images = useMemo(() => {
@@ -98,13 +127,7 @@ export function ProductDetail({ product }: { product: Product }) {
       <div className={styles.info}>
         {product.petType ? <p className="eyebrow">{product.petType}</p> : null}
         <h1 className={styles.title}>{product.title}</h1>
-        <p className={styles.price}>
-          {variant ? (
-            <Price min={variant.price} compareAt={variant.compareAtPrice} />
-          ) : (
-            <Price min={product.priceRange.minVariantPrice} max={product.priceRange.maxVariantPrice} />
-          )}
-        </p>
+        <p className={styles.price}>{price}</p>
 
         {product.options.map((option) => (
           <fieldset key={option.name} className={styles.option}>
@@ -132,7 +155,7 @@ export function ProductDetail({ product }: { product: Product }) {
           </fieldset>
         ))}
 
-        <div className={styles.buy}>
+        <div className={styles.buy} ref={buyRef}>
           <div className={styles.qtyWrap}>
             <span className={styles.qtyLabel} id="qty-label">
               {t.quantity}
@@ -161,17 +184,27 @@ export function ProductDetail({ product }: { product: Product }) {
             type="button"
             className={`btn btn-pink ${styles.addBtn}`}
             disabled={!available || pending}
-            onClick={() =>
-              variant &&
-              startTransition(async () => {
-                if (await addItem(variant.id, quantity)) setQuantity(1);
-              })
-            }
+            onClick={add}
           >
             <BagIcon />
-            {!variant ? t.chooseOption : !available ? t.soldOut : pending ? t.adding : t.addToCart}
+            {addLabel}
           </button>
         </div>
+        {children}
+      </div>
+
+      <div className={styles.stickyBar} data-visible={showBar} aria-hidden={!showBar} inert={!showBar}>
+        <div className={styles.stickyInfo}>
+          <b>{product.title}</b>
+          <span>
+            {price}
+            {variant && product.options.length ? ` · ${variant.title}` : null}
+          </span>
+        </div>
+        <button type="button" className="btn btn-pink" disabled={!available || pending} onClick={add}>
+          <BagIcon />
+          {addLabel}
+        </button>
       </div>
     </div>
   );

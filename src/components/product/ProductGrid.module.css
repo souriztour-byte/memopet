@@ -3,6 +3,9 @@
   grid-template-columns: repeat(4, 1fr);
   gap: 18px;
 }
+.few {
+  grid-template-columns: repeat(3, 1fr);
+}
 @media (max-width: 1000px) {
   .products {
     grid-template-columns: repeat(3, 1fr);
@@ -11,5 +14,11 @@
 @media (max-width: 720px) {
   .products {
     grid-template-columns: repeat(2, 1fr);
+  }
+  /* An odd last card sits centred instead of hanging on the left. */
+  .products > :last-child:nth-child(odd) {
+    grid-column: 1 / -1;
+    justify-self: center;
+    width: calc(50% - 9px);
   }
 }

@@ -129,6 +129,89 @@
     transform: translateY(-8px);
   }
 }
+/* Delivery and returns facts under the hero (from src/lib/content/shipping.ts). */
+.facts {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin: 0 0 40px;
+  padding: 14px;
+  list-style: none;
+  background: var(--lilac);
+  border-radius: var(--radius);
+}
+.facts li {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  padding: 10px 12px;
+}
+.facts b {
+  display: block;
+  font-family: var(--display);
+  font-weight: 600;
+  color: var(--ink);
+}
+.facts small {
+  color: var(--muted);
+  font-size: 0.88rem;
+}
+.factIcon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--surface);
+  color: var(--purple);
+  display: grid;
+  place-items: center;
+  flex: none;
+}
+.factIcon svg {
+  width: 20px;
+  height: 20px;
+}
+@media (max-width: 860px) {
+  .facts {
+    grid-template-columns: 1fr;
+    gap: 0;
+    padding: 8px;
+    margin-bottom: 28px;
+  }
+}
+
+/* Gentle entrance for the hero, skipped for people who prefer less motion. */
+@media (prefers-reduced-motion: no-preference) {
+  .hero > div:first-child > * {
+    animation: rise 0.6s ease both;
+  }
+  .hero > div:first-child > :nth-child(2) {
+    animation-delay: 0.06s;
+  }
+  .hero > div:first-child > :nth-child(3) {
+    animation-delay: 0.12s;
+  }
+  .hero > div:first-child > :nth-child(4) {
+    animation-delay: 0.18s;
+  }
+  .hero > div:first-child > :nth-child(5) {
+    animation-delay: 0.24s;
+  }
+  .art {
+    animation: pop 0.7s 0.1s ease both;
+  }
+}
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+}
+@keyframes pop {
+  from {
+    opacity: 0;
+    transform: scale(0.94);
+  }
+}
 @media (max-width: 860px) {
   .hero {
     grid-template-columns: 1fr;

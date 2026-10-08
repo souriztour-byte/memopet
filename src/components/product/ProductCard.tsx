@@ -19,7 +19,7 @@ export async function ProductCard({ product, preload }: { product: ProductSummar
           image={product.featuredImage}
           illustration={product.illustration}
           alt={product.title}
-          sizes="(max-width: 720px) 50vw, (max-width: 1000px) 33vw, 280px"
+          sizes="(max-width: 720px) 50vw, (max-width: 1000px) 33vw, 380px"
           preload={preload}
         />
         {product.badge ? <span className={styles.tag}>{product.badge}</span> : null}

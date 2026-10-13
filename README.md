@@ -53,7 +53,7 @@ price; see `opengraph-image.tsx` and `src/lib/og/`. There is also an iPhone home
   have the same keys.
 - **Long-form copy**: the FAQ and the four policies are written per language in
   `src/content/faq/{en,es}.tsx` and `src/content/policies/{en,es}/`.
-- **Formatting**: prices use each language’s format (`$15` / `15 US$`), and dates too
+- **Formatting**: prices are in euros, in each language’s format (`€15` / `15 €`), and dates too
   (“6 October 2026” / “6 de octubre de 2026”).
 - **SEO**: each page has `<html lang>`, a canonical URL, `hreflang` alternates (with
   `x-default` → English) and `og:locale`.
@@ -175,7 +175,7 @@ The site states nothing that isn’t in one of these sources:
 | Content | Source |
 | --- | --- |
 | Colours, fonts, logo, illustrations, hero copy, card labels | HTML prototype (the wordmark now reads “mimipets”, using the prototype’s own letter shapes) |
-| Demo products and prices (Silicone Paw Washer $15, Luxury Cat Sofa Bed $45, Warming Sleeping Bag Bed $39) | HTML prototype (its sample data) |
+| Demo products and prices (Silicone Paw Washer 15, Luxury Cat Sofa Bed 45, Warming Sleeping Bag Bed 39 — shown in euros) | HTML prototype (its sample data; the prototype showed them in dollars) |
 | Paw washer: silicone brush in a cleaning cup, for cats and dogs, sizes S and M | Supplier listing (CJ Dropshipping) |
 | Ships from China; processing 1–3 days for ~90% of orders; delivery 8–18 days to Spain | Supplier listing, *CJPacket Ordinary* to ES — `src/lib/content/shipping.ts` |
 | FAQ and the four policies | Drafted from the facts above, in `src/content/` |
@@ -187,8 +187,9 @@ Supplier costs (for example €6.55 + €8.49 shipping) and supplier SKUs are **
 
 - [ ] **Spanish wording.** The Spanish text was translated from the English, not written by a
       native speaker. Have it proofread — especially the policies.
-- [ ] **Retail prices and currency.** Demo prices are the prototype’s samples, in USD. The
-      supplier listing is priced in EUR for delivery to Spain. Live prices come from Shopify.
+- [ ] **Retail prices.** Demo prices are the prototype’s sample amounts (15, 45 and 39), shown
+      in euros. Set your real prices in Shopify, with the store currency set to EUR; live prices
+      and currency come from Shopify.
 - [ ] **Paw washer colours.** The supplier offers many cup/brush colour combinations, but only
       “Blue and Light Blue” was legible in the reference. Create colour variants in Shopify with
       the exact names you sell.

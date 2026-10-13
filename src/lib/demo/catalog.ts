@@ -10,12 +10,13 @@ import { locales, type Locale } from "@/i18n/config";
  *     silicone brush, cat & dog use, and the S / M sizes
  * The Spanish text is a translation of the same facts.
  *
- * Prices are the prototype's sample prices. Once Shopify is connected, all
+ * Prices are the prototype's sample amounts, in euros. Once Shopify is connected, all
  * products, prices, variants and photos come from Shopify instead.
  */
 
-const USD = "USD";
-const money = (amount: number) => ({ amount: amount.toFixed(2), currencyCode: USD });
+/** The shop sells to Spain, so demo prices are in euros. */
+export const DEMO_CURRENCY = "EUR";
+const money = (amount: number) => ({ amount: amount.toFixed(2), currencyCode: DEMO_CURRENCY });
 const range = (amount: number) => ({ minVariantPrice: money(amount), maxVariantPrice: money(amount) });
 
 type Text = Record<Locale, string>;

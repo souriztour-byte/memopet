@@ -6,7 +6,7 @@ import type {
   ProductSummary,
 } from "@/lib/commerce/types";
 import type { Locale } from "@/i18n/config";
-import { getDemoCatalog } from "./catalog";
+import { DEMO_CURRENCY, getDemoCatalog } from "./catalog";
 
 const toSummary = ({
   id,
@@ -89,7 +89,7 @@ export function buildCart(lines: DemoLine[], lang: Locale): Cart {
   const cartLines: Cart["lines"] = [];
   let subtotal = 0;
   let totalQuantity = 0;
-  let currencyCode = "USD";
+  let currencyCode: string = DEMO_CURRENCY;
 
   for (const line of lines) {
     const match = findVariant(line.merchandiseId, lang);

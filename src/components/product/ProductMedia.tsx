@@ -19,6 +19,7 @@ export function ProductMedia({ image, illustration, alt, sizes, preload }: Props
         src={image.url}
         alt={image.altText || alt}
         fill
+        quality={90}
         sizes={sizes}
         preload={preload}
         className={styles.photo}

@@ -38,7 +38,7 @@ export async function ogFonts() {
 /**
  * Satori needs an absolute URL or the image data. Photos bundled in public/
  * (demo mode) are read from disk; Shopify CDN URLs are passed through.
- * next.config.ts adds public/products to this route's server bundle.
+ * next.config.ts adds public/photos to this route's server bundle.
  */
 export async function ogImageSrc(url: string) {
   if (!url.startsWith("/") || url.startsWith("//")) return url;

@@ -28,6 +28,7 @@ export async function CategoryCard({ collection }: { collection: Collection }) {
             src={photo.src}
             alt={photo.alt}
             fill
+            quality={90}
             sizes="(max-width: 540px) 100vw, 560px"
             className={styles.photo}
           />

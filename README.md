@@ -10,7 +10,7 @@ checkout come from Shopify through the **Storefront API**. The site is in **Engl
   Checkout runs on Shopify’s hosted checkout.
 - **Two languages**: every page exists at `/en/…` and `/es/…`, with an EN | ES switch in the header.
 - **Demo mode**: with no Shopify credentials the site runs on a local catalog of the shop’s four
-  products (`src/lib/demo/catalog.ts`, photos in `public/products/`), so you can develop and
+  products (`src/lib/demo/catalog.ts`, photos in `public/photos/`), so you can develop and
   review it before connecting a store.
 
 ## Pages
@@ -194,7 +194,7 @@ Supplier costs and supplier SKUs are **not** shown anywhere.
 - [ ] **Retail prices.** The four products have proposed prices (€16.90–€44.90). Check them
       against your costs and fees, then set them in Shopify with the store currency set to EUR;
       live prices and currency come from Shopify.
-- [ ] **Photos in Shopify.** The supplier photos are bundled in `public/products/` for demo mode.
+- [ ] **Photos in Shopify.** The product photos are bundled in `public/photos/` for demo mode.
       Upload them (or your own) to each product and variant in Shopify. The Silicone Paw Washer
       size chart comes in two versions (`sizes-en.jpg`, `sizes-es.jpg`) because of the decimal
       comma; in Shopify, use the English one or a chart without decimals.

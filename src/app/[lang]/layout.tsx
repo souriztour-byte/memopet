@@ -5,6 +5,7 @@ import { CartDrawer } from "@/components/cart/CartDrawer";
 import { CartProvider } from "@/components/cart/CartProvider";
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
+import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { hasLocale, locales, ogLocale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/dictionaries";
 import { fmt } from "@/i18n/format";
@@ -52,6 +53,8 @@ export async function generateMetadata(props: LayoutProps<"/[lang]">): Promise<M
       title,
       description,
     },
+    // Title, description and image come from each page's Open Graph tags.
+    twitter: { card: "summary_large_image" },
   };
 }
 
@@ -84,6 +87,7 @@ export default async function RootLayout({ children, params }: LayoutProps<"/[la
             <main id="main">{children}</main>
             <Footer />
             <CartDrawer />
+            <ScrollReveal />
           </CartProvider>
         </I18nProvider>
       </body>

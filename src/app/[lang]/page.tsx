@@ -6,7 +6,7 @@ import { CategoryGrid, PhotoCredit } from "@/components/collection/CategoryGrid"
 import { FaqList } from "@/components/content/FaqList";
 import { OrderSteps } from "@/components/content/OrderSteps";
 import { ProductGrid } from "@/components/product/ProductGrid";
-import { ChatIcon, CheckIcon, TruckIcon } from "@/components/ui/icons";
+import { ChatIcon, CheckIcon, ClockIcon, ReturnIcon, TruckIcon } from "@/components/ui/icons";
 import { Photo } from "@/components/ui/Photo";
 import { featuredFaqIds, getFaqGroups } from "@/content/faq";
 import { alternatesFor, hasLocale, localizePath } from "@/i18n/config";
@@ -15,6 +15,8 @@ import { fmt } from "@/i18n/format";
 import { getCollections, getProducts } from "@/lib/commerce";
 import { HERO_PHOTO } from "@/lib/commerce/presentation";
 import { siteConfig } from "@/lib/config";
+import { policySettings } from "@/lib/content/policy-settings";
+import { getShipping } from "@/lib/content/shipping";
 import styles from "./home.module.css";
 
 export const revalidate = 3600;
@@ -30,6 +32,8 @@ export default async function HomePage(props: PageProps<"/[lang]">) {
   const dict = getDictionary(lang);
   const t = dict.home;
   const href = (path: string) => localizePath(lang, path);
+  const shipping = getShipping(lang, dict);
+  const returnDays = policySettings.returnWindowDays;
 
   const [collections, products] = await Promise.all([
     getCollections(lang),
@@ -104,6 +108,41 @@ export default async function HomePage(props: PageProps<"/[lang]">) {
           </div>
         </div>
       </section>
+
+      <ul className={styles.facts} aria-label={t.factsLabel}>
+        <li>
+          <span className={styles.factIcon}>
+            <ClockIcon />
+          </span>
+          <span>
+            <b>{fmt(t.factsPrepared, { days: shipping.processing.days })}</b>
+            <small>{fmt(t.factsPreparedText, { share: shipping.processing.share })}</small>
+          </span>
+        </li>
+        <li>
+          <span className={styles.factIcon}>
+            <TruckIcon />
+          </span>
+          <span>
+            <b>
+              {fmt(t.factsDelivery, {
+                days: shipping.primaryEstimate.days,
+                destination: shipping.primaryEstimate.destination,
+              })}
+            </b>
+            <small>{t.factsDeliveryText}</small>
+          </span>
+        </li>
+        <li>
+          <span className={styles.factIcon}>
+            <ReturnIcon />
+          </span>
+          <span>
+            <b>{fmt(t.factsReturns, { days: returnDays })}</b>
+            <small>{fmt(t.factsReturnsText, { days: returnDays })}</small>
+          </span>
+        </li>
+      </ul>
 
       <section className="block" id="categories" aria-labelledby="categories-title">
         <div className="head">

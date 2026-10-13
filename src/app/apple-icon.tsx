@@ -1,0 +1,36 @@
+import { ImageResponse } from "next/og";
+
+/** Home-screen icon for iPhone and iPad: the paw-heart mark on white. */
+export const size = { width: 180, height: 180 };
+export const contentType = "image/png";
+
+export default function AppleIcon() {
+  return new ImageResponse(
+    (
+      <div
+        style={{
+          width: "100%",
+          height: "100%",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          background: "#FFFFFF",
+        }}
+      >
+        <svg width={128} height={144} viewBox="20 12 160 180">
+          <g fill="#6C4AB6">
+            <ellipse cx="46" cy="84" rx="17" ry="22" transform="rotate(-25 46 84)" />
+            <ellipse cx="80" cy="46" rx="18" ry="24" transform="rotate(-8 80 46)" />
+            <ellipse cx="120" cy="46" rx="18" ry="24" transform="rotate(8 120 46)" />
+            <ellipse cx="154" cy="84" rx="17" ry="22" transform="rotate(25 154 84)" />
+          </g>
+          <path
+            d="M100 184 C54 156 38 132 44 108 C50 84 84 78 100 102 C116 78 150 84 156 108 C162 132 146 156 100 184 Z"
+            fill="#D4336A"
+          />
+        </svg>
+      </div>
+    ),
+    size,
+  );
+}

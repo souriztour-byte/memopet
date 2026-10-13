@@ -145,3 +145,61 @@
   min-width: 200px;
   padding-block: 15px;
 }
+
+/* Phone-only bar that follows the reader once the main button is off screen. */
+.stickyBar {
+  display: none;
+}
+@media (max-width: 720px) {
+  .stickyBar {
+    position: fixed;
+    inset: auto 0 0;
+    z-index: 30;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 16px calc(10px + env(safe-area-inset-bottom));
+    background: var(--surface);
+    border-top: 1px solid var(--line);
+    box-shadow: 0 -8px 24px rgb(43 34 64 / 0.08);
+    transform: translateY(110%);
+    transition: transform 0.25s ease;
+  }
+  .stickyBar[data-visible="true"] {
+    transform: none;
+  }
+  /* Keep the bottom of the page (footer) clear of the bar. */
+  :global(body):has(.stickyBar) {
+    padding-bottom: calc(72px + env(safe-area-inset-bottom));
+  }
+  .stickyBar .btn,
+  .stickyBar button {
+    flex: none;
+    padding-inline: 18px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .stickyBar {
+    transition: none;
+  }
+}
+.stickyInfo {
+  display: grid;
+  min-width: 0;
+  flex: 1;
+  line-height: 1.25;
+}
+.stickyInfo b {
+  font-family: var(--display);
+  font-weight: 600;
+  font-size: 0.92rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.stickyInfo span {
+  color: var(--pink);
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 0.9rem;
+}

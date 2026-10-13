@@ -20,6 +20,7 @@ export function proxy(request: NextRequest) {
 }
 
 export const config = {
-  // Skip API routes, Next.js internals and files such as /icon.svg, /robots.txt, /sitemap.xml.
-  matcher: ["/((?!api/|_next/|.*\\.[^/]+$).*)"],
+  // Skip API routes, Next.js internals, the generated /apple-icon and files such
+  // as /icon.svg, /robots.txt, /sitemap.xml, /manifest.webmanifest.
+  matcher: ["/((?!api/|_next/|apple-icon|.*\\.[^/]+$).*)"],
 };

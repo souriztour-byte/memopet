@@ -180,3 +180,35 @@
     height: 52px;
   }
 }
+
+/* The bag bounces and the count pops when something is added. */
+.bag {
+  display: inline-flex;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .bump {
+    animation: bag-bounce 0.7s ease;
+  }
+  .badge {
+    animation: badge-pop 0.35s ease;
+  }
+}
+@keyframes bag-bounce {
+  25% {
+    transform: translateY(-4px) rotate(-12deg) scale(1.2);
+  }
+  55% {
+    transform: rotate(8deg);
+  }
+  80% {
+    transform: rotate(-3deg);
+  }
+}
+@keyframes badge-pop {
+  from {
+    transform: scale(0.4);
+  }
+  70% {
+    transform: scale(1.2);
+  }
+}

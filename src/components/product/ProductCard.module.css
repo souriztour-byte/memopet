@@ -20,6 +20,14 @@
   position: relative;
   overflow: hidden;
 }
+.pic > svg,
+.pic img {
+  transition: transform 0.35s ease;
+}
+.prod:hover .pic > svg,
+.prod:hover .pic img {
+  transform: scale(1.04);
+}
 .tag {
   position: absolute;
   top: 10px;

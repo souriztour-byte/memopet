@@ -9,8 +9,9 @@ checkout come from Shopify through the **Storefront API**. The site is in **Engl
 - **Shopify Storefront API** (GraphQL) for catalog, collections, cart and store policies.
   Checkout runs on Shopify’s hosted checkout.
 - **Two languages**: every page exists at `/en/…` and `/es/…`, with an EN | ES switch in the header.
-- **Demo mode**: with no Shopify credentials the site runs on a small local catalog taken from
-  the prototype, so you can develop and review it before connecting a store.
+- **Demo mode**: with no Shopify credentials the site runs on a local catalog of the shop’s four
+  products (`src/lib/demo/catalog.ts`, photos in `public/products/`), so you can develop and
+  review it before connecting a store.
 
 ## Pages
 
@@ -36,6 +37,11 @@ Every page is its own route, in each language (`/en/shop`, `/es/shop`, …):
 Plus `sitemap.xml` (both languages, with hreflang links), `robots.txt`, a 404 page per language
 and `/api/revalidate` for Shopify webhooks.
 
+**Share images**: every page has a generated preview image for WhatsApp, Instagram, Facebook
+and others, in its own language. Product pages show the product's photo (or drawing), name and
+price; see `opengraph-image.tsx` and `src/lib/og/`. There is also an iPhone home-screen icon
+(`src/app/apple-icon.tsx`) and a web manifest.
+
 ## Languages
 
 - **URLs**: `en` and `es` prefixes. A visit without one — `/`, or an old link such as `/shop` —
@@ -48,7 +54,7 @@ and `/api/revalidate` for Shopify webhooks.
   have the same keys.
 - **Long-form copy**: the FAQ and the four policies are written per language in
   `src/content/faq/{en,es}.tsx` and `src/content/policies/{en,es}/`.
-- **Formatting**: prices use each language’s format (`$15` / `15 US$`), and dates too
+- **Formatting**: prices are in euros, in each language’s format (`€15` / `15 €`), and dates too
   (“6 October 2026” / “6 de octubre de 2026”).
 - **SEO**: each page has `<html lang>`, a canonical URL, `hreflang` alternates (with
   `x-default` → English) and `og:locale`.
@@ -139,7 +145,7 @@ These conventions keep the storefront looking like the prototype:
   - `pet:Cat & dog` → the small “for” line above the title
   - Shopify can’t translate tags, so add Spanish ones too: `badge-es:Más vendido`,
     `pet-es:Gato y perro`. Without them, Spanish pages show the plain `badge:` / `pet:` text.
-  - `art:care` / `art:beds` / `art:toys` / `art:collars` → illustration shown while a product
+  - `art:care` / `art:beds` / `art:sofa` / `art:sleeping-bag` / `art:toys` / `art:collars` → illustration shown while a product
     has no photo. It is guessed from the title (English or Spanish) when there is no tag.
 - **Policies**: policies written in *Settings → Policies* replace the local drafts automatically,
   one by one, in each language.
@@ -170,27 +176,27 @@ The site states nothing that isn’t in one of these sources:
 | Content | Source |
 | --- | --- |
 | Colours, fonts, logo, illustrations, hero copy, card labels | HTML prototype (the wordmark now reads “mimipets”, using the prototype’s own letter shapes) |
-| Demo products and prices (Silicone Paw Washer $15, Luxury Cat Sofa Bed $45, Warming Sleeping Bag Bed $39) | HTML prototype (its sample data) |
-| Paw washer: silicone brush in a cleaning cup, for cats and dogs, sizes S and M | Supplier listing (CJ Dropshipping) |
+| Product names, card badges | HTML prototype (Silicone Paw Washer, Luxury Cat Sofa Bed, Warming Sleeping Bag Bed); the Paw Washer Cup is named after its listing |
+| Product details: materials, measurements, colours, sizes, what’s in the box, photos | Supplier listings (CJ Dropshipping), one per product |
+| Retail prices, in euros with VAT included | Proposed by the shop to cover supplier cost and shipping to Spain |
 | Ships from China; processing 1–3 days for ~90% of orders; delivery 8–18 days to Spain | Supplier listing, *CJPacket Ordinary* to ES — `src/lib/content/shipping.ts` |
 | FAQ and the four policies | Drafted from the facts above, in `src/content/` |
 | Spanish text | Translations of the English text — same facts, nothing added |
 
-Supplier costs (for example €6.55 + €8.49 shipping) and supplier SKUs are **not** shown anywhere.
+Supplier costs and supplier SKUs are **not** shown anywhere.
 
 ## Before launch — please confirm
 
 - [ ] **Spanish wording.** The Spanish text was translated from the English, not written by a
       native speaker. Have it proofread — especially the policies.
-- [ ] **Retail prices and currency.** Demo prices are the prototype’s samples, in USD. The
-      supplier listing is priced in EUR for delivery to Spain. Live prices come from Shopify.
-- [ ] **Paw washer colours.** The supplier offers many cup/brush colour combinations, but only
-      “Blue and Light Blue” was legible in the reference. Create colour variants in Shopify with
-      the exact names you sell.
-- [ ] **Product photos.** None are bundled; upload them in Shopify. Until then, the prototype’s
-      illustrations are shown.
-- [ ] **Bed details.** No specifications were available for the two beds, so their descriptions
-      only restate the product names.
+- [ ] **Retail prices.** The four products have proposed prices (€16.90–€44.90). Check them
+      against your costs and fees, then set them in Shopify with the store currency set to EUR;
+      live prices and currency come from Shopify.
+- [ ] **Photos in Shopify.** The supplier photos are bundled in `public/products/` for demo mode.
+      Upload them (or your own) to each product and variant in Shopify.
+- [ ] **Sizes and sets not listed.** The cat sofa bed also comes in XL and 2XL, and some
+      products are sold in multi-piece sets. Only the sizes with published measurements are
+      listed; add others in Shopify if you want to sell them.
 - [ ] **Delivery estimates for other countries.** Only Spain is known. Add more to
       `src/lib/content/shipping.ts`.
 - [ ] **Policies.** The drafts use a 14-day return window (`src/lib/content/policy-settings.ts`)

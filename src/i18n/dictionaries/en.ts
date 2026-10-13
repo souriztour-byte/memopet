@@ -83,6 +83,13 @@ export const en = {
     faqEyebrow: "FAQ",
     faqTitle: "A few helpful answers",
     faqLink: "All questions",
+    factsLabel: "Delivery and returns",
+    factsPrepared: "Prepared in {days}",
+    factsPreparedText: "For {share}",
+    factsDelivery: "{days} to {destination}",
+    factsDeliveryText: "Estimated delivery time",
+    factsReturns: "{days}-day returns",
+    factsReturnsText: "Change your mind within {days} days of delivery.",
   },
   shop: {
     metaTitle: "Shop all",

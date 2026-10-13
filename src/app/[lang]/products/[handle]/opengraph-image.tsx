@@ -23,7 +23,9 @@ export default async function Image({ params }: { params: Promise<{ lang: string
   const { minVariantPrice: min, maxVariantPrice: max } = product.priceRange;
   const price =
     min.amount === max.amount ? formatMoney(min, lang) : `${formatMoney(min, lang)} – ${formatMoney(max, lang)}`;
-  const photo = product.featuredImage ? await ogImageSrc(product.featuredImage.url) : null;
+  // The first gallery photo is square, like the frame here (the card photo may be wider).
+  const source = product.images[0] ?? product.featuredImage;
+  const photo = source ? await ogImageSrc(source.url) : null;
 
   return new ImageResponse(
     (

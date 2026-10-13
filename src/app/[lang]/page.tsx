@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { HeroIllustration } from "@/components/art/Illustration";
-import { CategoryGrid, PhotoCredit } from "@/components/collection/CategoryGrid";
+import { CategoryGrid } from "@/components/collection/CategoryGrid";
 import { FaqList } from "@/components/content/FaqList";
 import { OrderSteps } from "@/components/content/OrderSteps";
 import { ProductGrid } from "@/components/product/ProductGrid";
@@ -155,7 +155,6 @@ export default async function HomePage(props: PageProps<"/[lang]">) {
           </Link>
         </div>
         <CategoryGrid collections={collections} />
-        <PhotoCredit />
       </section>
 
       <section className="block" id="products" aria-labelledby="products-title">

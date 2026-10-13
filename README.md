@@ -136,7 +136,7 @@ The storefront asks Shopify for each page’s language (`@inContext(language: EN
 These conventions keep the storefront looking like the prototype:
 
 - **Collections**: create `grooming-care` (“Grooming & care”) and `comfort-beds` (“Comfort &
-  beds”). They reuse the prototype’s category photos. Other collections work too; prefix a handle
+  beds”). They use the shop’s own product photos. Other collections work too; prefix a handle
   with `hidden-` to keep it off the site. Handles stay the same in both languages.
 - **Paw washer handle**: the hero and announcement bar link to `silicone-paw-washer`. If your
   product handle is different, set `NEXT_PUBLIC_FEATURED_PRODUCT_HANDLE`.
@@ -177,7 +177,9 @@ The site states nothing that isn’t in one of these sources:
 | --- | --- |
 | Colours, fonts, logo, illustrations, hero copy, card labels | HTML prototype (the wordmark now reads “mimipets”, using the prototype’s own letter shapes) |
 | Product names, card badges | HTML prototype (Silicone Paw Washer, Luxury Cat Sofa Bed, Warming Sleeping Bag Bed); the Paw Washer Cup is named after its listing |
-| Product details: materials, measurements, colours, sizes, what’s in the box, photos | Supplier listings (CJ Dropshipping), one per product. The paw washer studio shots are the supplier photos cut out and set on the shop’s cream background; their size charts are redrawn with the listed measurements |
+| Product details: materials, measurements, colours, sizes, what’s in the box, photos | Supplier listings (CJ Dropshipping), one per product. The paw washer studio shots are the supplier photos cut out and set on the shop’s cream background; the size charts are redrawn with the listed measurements |
+| AI-retouched photos (sofa, sleeping bag bed and Paw Washer Cup studio shots, the sofa and bed lifestyle photos) | The supplier photos, cleaned up with an AI image tool by the shop owner, checked against the originals for shape and colour |
+| AI-generated scenes of a dog using each paw washer | Made with an AI image tool by the shop owner; each is labelled “AI-generated illustration” under the photo |
 | Retail prices, in euros with VAT included | Proposed by the shop to cover supplier cost and shipping to Spain |
 | Ships from China; processing 1–3 days for ~90% of orders; delivery 8–18 days to Spain | Supplier listing, *CJPacket Ordinary* to ES — `src/lib/content/shipping.ts` |
 | FAQ and the four policies | Drafted from the facts above, in `src/content/` |

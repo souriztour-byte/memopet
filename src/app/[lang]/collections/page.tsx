@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { CategoryGrid, PhotoCredit } from "@/components/collection/CategoryGrid";
+import { CategoryGrid } from "@/components/collection/CategoryGrid";
 import { PageIntro } from "@/components/content/PageIntro";
 import { alternatesFor, hasLocale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/dictionaries";
@@ -31,7 +31,6 @@ export default async function CollectionsPage(props: PageProps<"/[lang]/collecti
       <PageIntro eyebrow={t.eyebrow} title={t.title} />
       <section className="block" aria-label={t.listLabel}>
         <CategoryGrid collections={collections} />
-        <PhotoCredit />
       </section>
     </div>
   );

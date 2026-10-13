@@ -49,9 +49,8 @@ export const es: Dictionary = {
   },
   photos: {
     hero: "Un perro y un gato disfrutando juntos al aire libre",
-    groomingCare: "Un perro bañándose en una bañera",
-    comfortBeds: "Un gato blanco y negro durmiendo en una cama para mascotas",
-    credit: "Fotografías de las categorías en Unsplash:",
+    groomingCare: "Un corgi descansando junto al vaso limpiapatas",
+    comfortBeds: "Un gato gris tumbado en el sofá cama",
   },
   home: {
     eyebrow: "Nuestro más vendido",

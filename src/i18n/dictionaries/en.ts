@@ -52,9 +52,8 @@ export const en = {
   },
   photos: {
     hero: "A dog and cat enjoying time together outdoors",
-    groomingCare: "A dog being washed in a bathtub",
-    comfortBeds: "A white and black cat sleeping in a pet bed",
-    credit: "Category photography on Unsplash:",
+    groomingCare: "A corgi resting next to the paw washer cup",
+    comfortBeds: "A grey cat lounging on the cat sofa bed",
   },
   home: {
     eyebrow: "Our bestseller",

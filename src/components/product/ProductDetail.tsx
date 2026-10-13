@@ -116,6 +116,7 @@ export function ProductDetail({ product, children }: { product: Product; childre
           )}
           {product.badge ? <span className={styles.tag}>{product.badge}</span> : null}
         </div>
+        {active?.note ? <p className={styles.photoNote}>{active.note}</p> : null}
         {images.length > 1 ? (
           <ul className={styles.thumbs} aria-label={t.photos}>
             {images.map((img, i) => (

@@ -177,7 +177,7 @@ The site states nothing that isn’t in one of these sources:
 | --- | --- |
 | Colours, fonts, logo, illustrations, hero copy, card labels | HTML prototype (the wordmark now reads “mimipets”, using the prototype’s own letter shapes) |
 | Product names, card badges | HTML prototype (Silicone Paw Washer, Luxury Cat Sofa Bed, Warming Sleeping Bag Bed); the Paw Washer Cup is named after its listing |
-| Product details: materials, measurements, colours, sizes, what’s in the box, photos | Supplier listings (CJ Dropshipping), one per product |
+| Product details: materials, measurements, colours, sizes, what’s in the box, photos | Supplier listings (CJ Dropshipping), one per product. The paw washer studio shots are the supplier photos cut out and set on the shop’s cream background; their size charts are redrawn with the listed measurements |
 | Retail prices, in euros with VAT included | Proposed by the shop to cover supplier cost and shipping to Spain |
 | Ships from China; processing 1–3 days for ~90% of orders; delivery 8–18 days to Spain | Supplier listing, *CJPacket Ordinary* to ES — `src/lib/content/shipping.ts` |
 | FAQ and the four policies | Drafted from the facts above, in `src/content/` |
@@ -193,7 +193,9 @@ Supplier costs and supplier SKUs are **not** shown anywhere.
       against your costs and fees, then set them in Shopify with the store currency set to EUR;
       live prices and currency come from Shopify.
 - [ ] **Photos in Shopify.** The supplier photos are bundled in `public/products/` for demo mode.
-      Upload them (or your own) to each product and variant in Shopify.
+      Upload them (or your own) to each product and variant in Shopify. The Silicone Paw Washer
+      size chart comes in two versions (`sizes-en.jpg`, `sizes-es.jpg`) because of the decimal
+      comma; in Shopify, use the English one or a chart without decimals.
 - [ ] **Sizes and sets not listed.** The cat sofa bed also comes in XL and 2XL, and some
       products are sold in multi-piece sets. Only the sizes with published measurements are
       listed; add others in Shopify if you want to sell them.

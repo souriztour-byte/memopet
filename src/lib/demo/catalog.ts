@@ -56,8 +56,10 @@ type ProductDef = {
   options: OptionDef[];
   /** One entry per variant: its value key for each option (in order), price and photo. */
   variants: { values: string[]; price: number; photo?: string }[];
-  /** Files in public/products/<handle>/. The first one is the card photo. */
-  photos: { file: string; alt: Text }[];
+  /** Files in public/products/<handle>/ (one per language when the photo has numbers on it). */
+  photos: { file: string | Text; alt: Text }[];
+  /** A 16:11 version of the first photo for product cards, so nothing gets cropped. */
+  card?: string;
 };
 
 const PRODUCTS: ProductDef[] = [
@@ -95,21 +97,25 @@ const PRODUCTS: ProductDef[] = [
       { name: SIZE, values: [{ key: "s", label: same("S") }, { key: "m", label: same("M") }] },
     ],
     variants: [
-      { values: ["blue", "s"], price: 17.9, photo: "blue.jpg" },
-      { values: ["blue", "m"], price: 22.9, photo: "blue.jpg" },
-      { values: ["pink", "s"], price: 17.9, photo: "pink.jpg" },
-      { values: ["pink", "m"], price: 22.9, photo: "pink.jpg" },
-      { values: ["green", "m"], price: 22.9, photo: "green.jpg" },
+      { values: ["blue", "s"], price: 17.9, photo: "blue-studio.jpg" },
+      { values: ["blue", "m"], price: 22.9, photo: "blue-studio.jpg" },
+      { values: ["pink", "s"], price: 17.9, photo: "pink-studio.jpg" },
+      { values: ["pink", "m"], price: 22.9, photo: "pink-studio.jpg" },
+      { values: ["green", "m"], price: 22.9, photo: "green-studio.jpg" },
     ],
+    card: "card.jpg",
     photos: [
       { file: "dog-and-cats.jpg", alt: { en: "A dog and two cats with the blue paw washer", es: "Un perro y dos gatos con el limpiapatas azul" } },
-      { file: "blue.jpg", alt: { en: "Blue silicone paw washer", es: "Limpiapatas de silicona azul" } },
-      { file: "pink.jpg", alt: { en: "Pink silicone paw washer", es: "Limpiapatas de silicona rosa" } },
-      { file: "green.jpg", alt: { en: "Green silicone paw washer", es: "Limpiapatas de silicona verde" } },
-      { file: "colours.jpg", alt: { en: "The paw washer in blue, green and pink", es: "El limpiapatas en azul, verde y rosa" } },
-      { file: "dogs.jpg", alt: { en: "Dogs behind the paw washers, showing the bristles inside", es: "Perros detrás de los limpiapatas, con las cerdas a la vista" } },
-      { file: "bristles.jpg", alt: { en: "Close-up of the soft silicone bristles", es: "Detalle de las cerdas de silicona suaves" } },
-      { file: "sizes.jpg", alt: { en: "Size S and size M with their measurements", es: "Talla S y talla M con sus medidas" } },
+      { file: "blue-studio.jpg", alt: { en: "Blue silicone paw washer", es: "Limpiapatas de silicona azul" } },
+      { file: "pink-studio.jpg", alt: { en: "Pink silicone paw washer", es: "Limpiapatas de silicona rosa" } },
+      { file: "green-studio.jpg", alt: { en: "Green silicone paw washer", es: "Limpiapatas de silicona verde" } },
+      { file: "colours-studio.jpg", alt: { en: "The paw washer in pink, blue and green", es: "El limpiapatas en rosa, azul y verde" } },
+      { file: "from-above.jpg", alt: { en: "Paw washers from above, showing the soft bristles inside", es: "Limpiapatas vistos desde arriba, con las cerdas suaves del interior" } },
+      { file: "dogs-framed.jpg", alt: { en: "Dogs behind the paw washers, showing the bristles inside", es: "Perros detrás de los limpiapatas, con las cerdas a la vista" } },
+      {
+        file: { en: "sizes-en.jpg", es: "sizes-es.jpg" },
+        alt: { en: "Size S: 9 cm wide, 13.7 cm tall. Size M: 11 cm wide, 16.5 cm tall", es: "Talla S: 9 cm de ancho y 13,7 cm de alto. Talla M: 11 cm de ancho y 16,5 cm de alto" },
+      },
     ],
   },
   {
@@ -209,8 +215,7 @@ const PRODUCTS: ProductDef[] = [
       { file: "pink.jpg", alt: { en: "Pink paw washer cup", es: "Vaso limpiapatas rosa" } },
       { file: "colours.jpg", alt: { en: "The cup in three colours, cleaning a small dog's paw", es: "El vaso en tres colores, limpiando la pata de un perro pequeño" } },
       { file: "brushes.jpg", alt: { en: "The soft silicone bristles inside the cup", es: "Las cerdas de silicona suave del interior" } },
-      { file: "size-s.jpg", alt: { en: "Size S: 9 × 13 cm", es: "Talla S: 9 × 13 cm" } },
-      { file: "size-l.jpg", alt: { en: "Size L: 10 × 15 cm", es: "Talla L: 10 × 15 cm" } },
+      { file: "sizes.jpg", alt: { en: "Size S: 9 × 13 cm. Size L: 10 × 15 cm", es: "Talla S: 9 × 13 cm. Talla L: 10 × 15 cm" } },
     ],
   },
   {
@@ -253,12 +258,20 @@ const escapeHtml = (s: string) =>
 export type DemoProduct = Product & { collections: string[] };
 
 function buildProduct(def: ProductDef, lang: Locale): DemoProduct {
+  const fileOf = (p: ProductDef["photos"][number]) => (typeof p.file === "string" ? p.file : p.file[lang]);
+  const image = (file: string, alt: Text, height = 800): Image => ({
+    url: `/products/${def.handle}/${file}`,
+    altText: alt[lang],
+    width: 800,
+    height,
+  });
   const photo = (file: string): Image => {
-    const found = def.photos.find((p) => p.file === file);
+    const found = def.photos.find((p) => fileOf(p) === file);
     if (!found) throw new Error(`Missing photo ${file} for ${def.handle}`);
-    return { url: `/products/${def.handle}/${file}`, altText: found.alt[lang], width: 800, height: 800 };
+    return image(file, found.alt);
   };
-  const images = def.photos.map((p) => photo(p.file));
+  const images = def.photos.map((p) => photo(fileOf(p)));
+  const card = def.card ? image(def.card, def.photos[0].alt, 550) : null;
 
   const label = (option: OptionDef, key: string) => {
     const value = option.values.find((v) => v.key === key);
@@ -289,7 +302,7 @@ function buildProduct(def: ProductDef, lang: Locale): DemoProduct {
     title: def.title[lang],
     collections: def.collections,
     availableForSale: true,
-    featuredImage: images[0] ?? null,
+    featuredImage: card ?? images[0] ?? null,
     images,
     priceRange: {
       minVariantPrice: money(Math.min(...prices)),

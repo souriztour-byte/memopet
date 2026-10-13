@@ -64,7 +64,7 @@ export default async function ProductPage(props: PageProps<"/[lang]/products/[ha
     "@type": "Product",
     name: product.title,
     description: product.description,
-    image: product.images.map((i) => i.url),
+    image: product.images.map((i) => new URL(i.url, siteConfig.url).href),
     url: `${siteConfig.url}${href(`/products/${product.handle}`)}`,
     inLanguage: lang,
     ...(product.vendor ? { brand: { "@type": "Brand", name: product.vendor } } : {}),

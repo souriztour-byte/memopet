@@ -1,5 +1,5 @@
 import { readFile } from "node:fs/promises";
-import { join } from "node:path";
+import { join, sep } from "node:path";
 import { Logo } from "@/components/brand/Logo";
 import { siteConfig } from "@/lib/config";
 
@@ -33,6 +33,20 @@ export async function ogFonts() {
     { name: "Poppins", data: semiBold, weight: 600 as const, style: "normal" as const },
     { name: "Poppins", data: bold, weight: 700 as const, style: "normal" as const },
   ];
+}
+
+/**
+ * Satori needs an absolute URL or the image data. Photos bundled in public/
+ * (demo mode) are read from disk; Shopify CDN URLs are passed through.
+ * next.config.ts adds public/products to this route's server bundle.
+ */
+export async function ogImageSrc(url: string) {
+  if (!url.startsWith("/") || url.startsWith("//")) return url;
+  const root = join(process.cwd(), "public");
+  const file = join(root, decodeURIComponent(url.split("?")[0]));
+  if (!file.startsWith(root + sep)) throw new Error(`Image outside public/: ${url}`);
+  const type = file.endsWith(".png") ? "image/png" : "image/jpeg";
+  return `data:${type};base64,${(await readFile(file)).toString("base64")}`;
 }
 
 const host = () => {

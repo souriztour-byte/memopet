@@ -4,7 +4,7 @@ import { hasLocale } from "@/i18n/config";
 import { getProduct } from "@/lib/commerce";
 import { siteConfig } from "@/lib/config";
 import { formatMoney } from "@/lib/format";
-import { OgFrame, ogContentType, ogFonts, ogSize, ogTile } from "@/lib/og/frame";
+import { OgFrame, ogContentType, ogFonts, ogImageSrc, ogSize, ogTile } from "@/lib/og/frame";
 
 /** Share image for a product: its photo (or illustration), name and price. */
 export const alt = siteConfig.name;
@@ -23,7 +23,7 @@ export default async function Image({ params }: { params: Promise<{ lang: string
   const { minVariantPrice: min, maxVariantPrice: max } = product.priceRange;
   const price =
     min.amount === max.amount ? formatMoney(min, lang) : `${formatMoney(min, lang)} – ${formatMoney(max, lang)}`;
-  const photo = product.featuredImage;
+  const photo = product.featuredImage ? await ogImageSrc(product.featuredImage.url) : null;
 
   return new ImageResponse(
     (
@@ -45,7 +45,7 @@ export default async function Image({ params }: { params: Promise<{ lang: string
             }}
           >
             {photo ? (
-              <img src={photo.url} alt="" width={500} height={500} style={{ objectFit: "cover" }} />
+              <img src={photo} alt="" width={500} height={500} style={{ objectFit: "cover" }} />
             ) : (
               <Illustration name={product.illustration} width={440} height={275} />
             )}

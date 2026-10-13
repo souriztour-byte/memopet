@@ -76,16 +76,27 @@ export function ProductDetail({ product, children }: { product: Product; childre
     images[0] ??
     null;
 
+  const hasValue = (v: ProductVariant, name: string, value: string) =>
+    v.selectedOptions.some((o) => o.name === name && o.value === value);
+
+  // If the new value doesn't come with the other current choices (e.g. a colour
+  // only made in one size), switch to the closest variant that has it.
   const choose = (name: string, value: string) => {
-    setSelection((s) => ({ ...s, [name]: value }));
+    const next = { ...selection, [name]: value };
+    if (!product.variants.some((v) => v.availableForSale && matches(v, next))) {
+      const shared = (v: ProductVariant) => v.selectedOptions.filter((o) => next[o.name] === o.value).length;
+      const closest = product.variants
+        .filter((v) => v.availableForSale && hasValue(v, name, value))
+        .sort((a, b) => shared(b) - shared(a))[0];
+      if (closest) Object.assign(next, Object.fromEntries(closest.selectedOptions.map((o) => [o.name, o.value])));
+    }
+    setSelection(next);
     setActiveUrl(null);
   };
 
-  // A value is selectable if some available variant has it together with the other current choices.
+  // A value is selectable if some available variant has it.
   const isValueAvailable = (name: string, value: string) =>
-    product.variants.some(
-      (v) => v.availableForSale && matches(v, { ...selection, [name]: value }),
-    );
+    product.variants.some((v) => v.availableForSale && hasValue(v, name, value));
 
   return (
     <div className={styles.layout}>

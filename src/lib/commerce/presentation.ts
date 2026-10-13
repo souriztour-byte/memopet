@@ -2,7 +2,7 @@ import type { Dictionary } from "@/i18n/dictionaries/en";
 import type { Illustration } from "./types";
 
 /** Alt text for the prototype's photos lives in `dict.photos`. */
-type PhotoAlt = Exclude<keyof Dictionary["photos"], "credit">;
+type PhotoAlt = keyof Dictionary["photos"];
 
 /**
  * Presentation details that Shopify has no native field for.
@@ -57,15 +57,16 @@ type CollectionPresentation = {
 };
 
 /**
- * Category photography from the prototype (Unsplash). Keyed by collection
- * handle — create collections with these handles in Shopify to reuse them.
+ * Category photos: the shop's own product photos (public/products). Keyed by
+ * collection handle — create collections with these handles in Shopify to
+ * reuse them, or give a collection its own image there.
  */
 const COLLECTION_PRESENTATION: Record<string, CollectionPresentation> = {
   "grooming-care": {
     tile: "t3",
     illustration: "care",
     photo: {
-      src: "https://images.unsplash.com/photo-1672426637977-1c84fb473464?auto=format&fit=crop&w=1200&q=80",
+      src: "/products/paw-washer-cup/corgi.jpg",
       alt: "groomingCare",
     },
   },
@@ -73,7 +74,7 @@ const COLLECTION_PRESENTATION: Record<string, CollectionPresentation> = {
     tile: "t2",
     illustration: "beds",
     photo: {
-      src: "https://images.unsplash.com/photo-1564350711178-50a75122c3ea?auto=format&fit=crop&w=1200&q=80",
+      src: "/products/luxury-cat-sofa-bed/cat-lounging-hd.jpg",
       alt: "comfortBeds",
     },
   },

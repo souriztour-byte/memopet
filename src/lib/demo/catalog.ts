@@ -40,6 +40,11 @@ const COLLECTIONS: { handle: string; title: Text; description: Text }[] = [
 const SIZE: Text = { en: "Size", es: "Talla" };
 const COLOUR: Text = { en: "Colour", es: "Color" };
 const same = (label: string): Text => ({ en: label, es: label });
+/** Shown under images that were made with AI rather than photographed. */
+const AI_SCENE: Text = {
+  en: "AI-generated illustration of the product in use",
+  es: "Ilustración generada con IA del producto en uso",
+};
 
 type OptionDef = { name: Text; values: { key: string; label: Text }[] };
 
@@ -56,8 +61,11 @@ type ProductDef = {
   options: OptionDef[];
   /** One entry per variant: its value key for each option (in order), price and photo. */
   variants: { values: string[]; price: number; photo?: string }[];
-  /** Files in public/products/<handle>/ (one per language when the photo has numbers on it). */
-  photos: { file: string | Text; alt: Text }[];
+  /**
+   * Files in public/products/<handle>/ (one per language when the photo has text on it),
+   * with their pixel size (default 800) and an optional note shown under the photo.
+   */
+  photos: { file: string | Text; alt: Text; size?: number; note?: Text }[];
   /** A 16:11 version of the first photo for product cards, so nothing gets cropped. */
   card?: string;
 };
@@ -106,6 +114,7 @@ const PRODUCTS: ProductDef[] = [
     card: "card.jpg",
     photos: [
       { file: "dog-and-cats.jpg", alt: { en: "A dog and two cats with the blue paw washer", es: "Un perro y dos gatos con el limpiapatas azul" } },
+      { file: "in-use-ai.jpg", size: 1200, note: AI_SCENE, alt: { en: "A dog with one paw in the blue paw washer", es: "Un perro con una pata dentro del limpiapatas azul" } },
       { file: "blue-studio.jpg", alt: { en: "Blue silicone paw washer", es: "Limpiapatas de silicona azul" } },
       { file: "pink-studio.jpg", alt: { en: "Pink silicone paw washer", es: "Limpiapatas de silicona rosa" } },
       { file: "green-studio.jpg", alt: { en: "Green silicone paw washer", es: "Limpiapatas de silicona verde" } },
@@ -152,19 +161,27 @@ const PRODUCTS: ProductDef[] = [
       { name: SIZE, values: [{ key: "m", label: same("M") }, { key: "l", label: same("L") }] },
     ],
     variants: [
-      { values: ["coffee", "m"], price: 34.9, photo: "coffee.jpg" },
-      { values: ["coffee", "l"], price: 42.9, photo: "coffee.jpg" },
-      { values: ["beige", "m"], price: 34.9, photo: "beige.jpg" },
-      { values: ["beige", "l"], price: 42.9, photo: "beige.jpg" },
-      { values: ["pink", "m"], price: 34.9, photo: "pink.jpg" },
-      { values: ["pink", "l"], price: 42.9, photo: "pink.jpg" },
+      { values: ["coffee", "m"], price: 34.9, photo: "coffee-studio.jpg" },
+      { values: ["coffee", "l"], price: 42.9, photo: "coffee-studio.jpg" },
+      { values: ["beige", "m"], price: 34.9, photo: "beige-studio.jpg" },
+      { values: ["beige", "l"], price: 42.9, photo: "beige-studio.jpg" },
+      { values: ["pink", "m"], price: 34.9, photo: "pink-studio.jpg" },
+      { values: ["pink", "l"], price: 42.9, photo: "pink-studio.jpg" },
     ],
     photos: [
-      { file: "cat-lounging.jpg", alt: { en: "A grey cat lounging on the sofa bed", es: "Un gato gris tumbado en el sofá cama" } },
+      { file: "cat-lounging-hd.jpg", size: 1200, alt: { en: "A grey cat lounging on the sofa bed", es: "Un gato gris tumbado en el sofá cama" } },
       { file: "cat-playing.jpg", alt: { en: "A grey cat climbing onto the sofa bed", es: "Un gato gris subiendo al sofá cama" } },
-      { file: "coffee.jpg", alt: { en: "Coffee sofa bed with its size chart", es: "Sofá cama color café con su tabla de tallas" } },
-      { file: "beige.jpg", alt: { en: "Beige sofa bed with its size chart", es: "Sofá cama beige con su tabla de tallas" } },
-      { file: "pink.jpg", alt: { en: "Pink sofa bed with its size chart", es: "Sofá cama rosa con su tabla de tallas" } },
+      { file: "coffee-studio.jpg", size: 1200, alt: { en: "Coffee sofa bed with its matching cushion", es: "Sofá cama color café con su cojín a juego" } },
+      { file: "beige-studio.jpg", size: 1200, alt: { en: "Beige sofa bed with its matching cushion", es: "Sofá cama beige con su cojín a juego" } },
+      { file: "pink-studio.jpg", size: 1200, alt: { en: "Pink sofa bed with its matching cushion", es: "Sofá cama rosa con su cojín a juego" } },
+      {
+        file: { en: "sizes-en.jpg", es: "sizes-es.jpg" },
+        size: 1200,
+        alt: {
+          en: "Size M: 55 × 38 × 18 cm, for cats up to about 4 kg. Size L: 65 × 46 × 30 cm, for cats up to about 9 kg",
+          es: "Talla M: 55 × 38 × 18 cm, para gatos de hasta unos 4 kg. Talla L: 65 × 46 × 30 cm, para gatos de hasta unos 9 kg",
+        },
+      },
     ],
   },
   {
@@ -201,18 +218,19 @@ const PRODUCTS: ProductDef[] = [
       { name: SIZE, values: [{ key: "s", label: same("S") }, { key: "l", label: same("L") }] },
     ],
     variants: [
-      { values: ["green", "s"], price: 16.9, photo: "green.jpg" },
-      { values: ["green", "l"], price: 19.9, photo: "green.jpg" },
-      { values: ["grey", "s"], price: 16.9, photo: "grey.jpg" },
-      { values: ["grey", "l"], price: 19.9, photo: "grey.jpg" },
-      { values: ["pink", "s"], price: 16.9, photo: "pink.jpg" },
-      { values: ["pink", "l"], price: 19.9, photo: "pink.jpg" },
+      { values: ["green", "s"], price: 16.9, photo: "green-studio.jpg" },
+      { values: ["green", "l"], price: 19.9, photo: "green-studio.jpg" },
+      { values: ["grey", "s"], price: 16.9, photo: "grey-studio.jpg" },
+      { values: ["grey", "l"], price: 19.9, photo: "grey-studio.jpg" },
+      { values: ["pink", "s"], price: 16.9, photo: "pink-studio.jpg" },
+      { values: ["pink", "l"], price: 19.9, photo: "pink-studio.jpg" },
     ],
     photos: [
       { file: "corgi.jpg", alt: { en: "A corgi resting next to the paw washer cup", es: "Un corgi descansando junto al vaso limpiapatas" } },
-      { file: "green.jpg", alt: { en: "Green paw washer cup", es: "Vaso limpiapatas verde" } },
-      { file: "grey.jpg", alt: { en: "Grey paw washer cup", es: "Vaso limpiapatas gris" } },
-      { file: "pink.jpg", alt: { en: "Pink paw washer cup", es: "Vaso limpiapatas rosa" } },
+      { file: "in-use-ai.jpg", size: 1200, note: AI_SCENE, alt: { en: "A corgi with one paw in the paw washer cup", es: "Un corgi con una pata dentro del vaso limpiapatas" } },
+      { file: "green-studio.jpg", size: 1200, alt: { en: "Green paw washer cup", es: "Vaso limpiapatas verde" } },
+      { file: "grey-studio.jpg", size: 1200, alt: { en: "Grey paw washer cup", es: "Vaso limpiapatas gris" } },
+      { file: "pink-studio.jpg", size: 1200, alt: { en: "Pink paw washer cup", es: "Vaso limpiapatas rosa" } },
       { file: "colours.jpg", alt: { en: "The cup in three colours, cleaning a small dog's paw", es: "El vaso en tres colores, limpiando la pata de un perro pequeño" } },
       { file: "brushes.jpg", alt: { en: "The soft silicone bristles inside the cup", es: "Las cerdas de silicona suave del interior" } },
       { file: "sizes.jpg", alt: { en: "Size S: 9 × 13 cm. Size L: 10 × 15 cm", es: "Talla S: 9 × 13 cm. Talla L: 10 × 15 cm" } },
@@ -244,10 +262,15 @@ const PRODUCTS: ProductDef[] = [
       { values: ["m"], price: 44.9 },
     ],
     photos: [
-      { file: "cat-sleeping.jpg", alt: { en: "A cat asleep in the sleeping bag bed", es: "Un gato dormido en la cama saco" } },
-      { file: "bed.jpg", alt: { en: "The grey sleeping bag bed with its cream lining", es: "La cama saco gris con su forro crema" } },
+      { file: "cat-sleeping-hd.jpg", size: 1200, alt: { en: "A cat asleep in the sleeping bag bed", es: "Un gato dormido en la cama saco" } },
+      { file: "bed-studio.jpg", size: 1200, alt: { en: "The grey sleeping bag bed with its cream lining", es: "La cama saco gris con su forro crema" } },
       { file: "ears.jpg", alt: { en: "Close-up of the plush bear ears", es: "Detalle de las orejitas de peluche" } },
       { file: "cats.jpg", alt: { en: "Cats curled up in the bed", es: "Gatos acurrucados en la cama" } },
+      {
+        file: { en: "sizes-en.jpg", es: "sizes-es.jpg" },
+        size: 1200,
+        alt: { en: "Size S: 42 × 42 × 30 cm. Size M: 52 × 52 × 32 cm", es: "Talla S: 42 × 42 × 30 cm. Talla M: 52 × 52 × 32 cm" },
+      },
     ],
   },
 ];
@@ -259,19 +282,19 @@ export type DemoProduct = Product & { collections: string[] };
 
 function buildProduct(def: ProductDef, lang: Locale): DemoProduct {
   const fileOf = (p: ProductDef["photos"][number]) => (typeof p.file === "string" ? p.file : p.file[lang]);
-  const image = (file: string, alt: Text, height = 800): Image => ({
+  const image = (file: string, alt: Text, width = 800, height = width): Image => ({
     url: `/products/${def.handle}/${file}`,
     altText: alt[lang],
-    width: 800,
+    width,
     height,
   });
   const photo = (file: string): Image => {
     const found = def.photos.find((p) => fileOf(p) === file);
     if (!found) throw new Error(`Missing photo ${file} for ${def.handle}`);
-    return image(file, found.alt);
+    return { ...image(file, found.alt, found.size), note: found.note?.[lang] ?? null };
   };
   const images = def.photos.map((p) => photo(fileOf(p)));
-  const card = def.card ? image(def.card, def.photos[0].alt, 550) : null;
+  const card = def.card ? image(def.card, def.photos[0].alt, 800, 550) : null;
 
   const label = (option: OptionDef, key: string) => {
     const value = option.values.find((v) => v.key === key);

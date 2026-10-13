@@ -13,6 +13,8 @@ export type Image = {
   altText: string | null;
   width: number | null;
   height: number | null;
+  /** Shown under the photo on the product page, e.g. that it is an AI illustration. */
+  note?: string | null;
 };
 
 /** Built-in SVG art from the prototype, used when a product has no photo. */

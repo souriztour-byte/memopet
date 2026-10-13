@@ -558,15 +558,6 @@ section[id] {
 }
 
 /* Photo credit line from the prototype */
-.photo-credit {
-  font-size: 0.75rem;
-  color: var(--muted);
-  margin-top: 16px;
-}
-.photo-credit a {
-  text-underline-offset: 3px;
-}
-
 /* ── Living illustrations ─────────────────────────────────────────────────
    Small loops on the drawings in src/components/art/Illustration.tsx: hearts
    beat, the cat blinks and swishes its tail, the dog tilts its head, sleeping

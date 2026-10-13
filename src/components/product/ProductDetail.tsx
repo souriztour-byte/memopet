@@ -108,6 +108,7 @@ export function ProductDetail({ product, children }: { product: Product; childre
               alt={active.altText || product.title}
               fill
               preload
+              quality={90}
               sizes="(max-width: 900px) 100vw, 560px"
               className={styles.stagePhoto}
             />

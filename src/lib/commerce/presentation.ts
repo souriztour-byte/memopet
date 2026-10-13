@@ -57,7 +57,7 @@ type CollectionPresentation = {
 };
 
 /**
- * Category photos: the shop's own product photos (public/products). Keyed by
+ * Category photos: the shop's own product photos (public/photos). Keyed by
  * collection handle — create collections with these handles in Shopify to
  * reuse them, or give a collection its own image there.
  */
@@ -66,7 +66,7 @@ const COLLECTION_PRESENTATION: Record<string, CollectionPresentation> = {
     tile: "t3",
     illustration: "care",
     photo: {
-      src: "/products/paw-washer-cup/corgi.jpg",
+      src: "/photos/paw-washer-cup/corgi.jpg",
       alt: "groomingCare",
     },
   },
@@ -74,7 +74,7 @@ const COLLECTION_PRESENTATION: Record<string, CollectionPresentation> = {
     tile: "t2",
     illustration: "beds",
     photo: {
-      src: "/products/luxury-cat-sofa-bed/cat-lounging-hd.jpg",
+      src: "/photos/luxury-cat-sofa-bed/cat-lounging.jpg",
       alt: "comfortBeds",
     },
   },

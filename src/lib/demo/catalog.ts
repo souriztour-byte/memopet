@@ -11,7 +11,7 @@ import { locales, type Locale } from "@/i18n/config";
  *
  * Prices are the shop's proposed retail prices in euros (VAT included), set
  * to cover the supplier cost and shipping to Spain. Photos live in
- * public/products/<handle>/. Once Shopify is connected, all products, prices,
+ * public/photos/<handle>/. Once Shopify is connected, all products, prices,
  * variants and photos come from Shopify.
  */
 
@@ -62,10 +62,10 @@ type ProductDef = {
   /** One entry per variant: its value key for each option (in order), price and photo. */
   variants: { values: string[]; price: number; photo?: string }[];
   /**
-   * Files in public/products/<handle>/ (one per language when the photo has text on it),
-   * with their pixel size (default 800) and an optional note shown under the photo.
+   * Files in public/photos/<handle>/, 1200 px square (one per language when the photo has
+   * text on it), with an optional note shown under the photo.
    */
-  photos: { file: string | Text; alt: Text; size?: number; note?: Text }[];
+  photos: { file: string | Text; alt: Text; note?: Text }[];
   /** A 16:11 version of the first photo for product cards, so nothing gets cropped. */
   card?: string;
 };
@@ -105,22 +105,22 @@ const PRODUCTS: ProductDef[] = [
       { name: SIZE, values: [{ key: "s", label: same("S") }, { key: "m", label: same("M") }] },
     ],
     variants: [
-      { values: ["blue", "s"], price: 17.9, photo: "blue-studio.jpg" },
-      { values: ["blue", "m"], price: 22.9, photo: "blue-studio.jpg" },
-      { values: ["pink", "s"], price: 17.9, photo: "pink-studio.jpg" },
-      { values: ["pink", "m"], price: 22.9, photo: "pink-studio.jpg" },
-      { values: ["green", "m"], price: 22.9, photo: "green-studio.jpg" },
+      { values: ["blue", "s"], price: 17.9, photo: "blue.jpg" },
+      { values: ["blue", "m"], price: 22.9, photo: "blue.jpg" },
+      { values: ["pink", "s"], price: 17.9, photo: "pink.jpg" },
+      { values: ["pink", "m"], price: 22.9, photo: "pink.jpg" },
+      { values: ["green", "m"], price: 22.9, photo: "green.jpg" },
     ],
     card: "card.jpg",
     photos: [
       { file: "dog-and-cats.jpg", alt: { en: "A dog and two cats with the blue paw washer", es: "Un perro y dos gatos con el limpiapatas azul" } },
-      { file: "in-use-ai.jpg", size: 1200, note: AI_SCENE, alt: { en: "A dog with one paw in the blue paw washer", es: "Un perro con una pata dentro del limpiapatas azul" } },
-      { file: "blue-studio.jpg", alt: { en: "Blue silicone paw washer", es: "Limpiapatas de silicona azul" } },
-      { file: "pink-studio.jpg", alt: { en: "Pink silicone paw washer", es: "Limpiapatas de silicona rosa" } },
-      { file: "green-studio.jpg", alt: { en: "Green silicone paw washer", es: "Limpiapatas de silicona verde" } },
-      { file: "colours-studio.jpg", alt: { en: "The paw washer in pink, blue and green", es: "El limpiapatas en rosa, azul y verde" } },
+      { file: "in-use-ai.jpg", note: AI_SCENE, alt: { en: "A dog with one paw in the blue paw washer", es: "Un perro con una pata dentro del limpiapatas azul" } },
+      { file: "blue.jpg", alt: { en: "Blue silicone paw washer", es: "Limpiapatas de silicona azul" } },
+      { file: "pink.jpg", alt: { en: "Pink silicone paw washer", es: "Limpiapatas de silicona rosa" } },
+      { file: "green.jpg", alt: { en: "Green silicone paw washer", es: "Limpiapatas de silicona verde" } },
+      { file: "colours.jpg", alt: { en: "The paw washer in pink, blue and green", es: "El limpiapatas en rosa, azul y verde" } },
       { file: "from-above.jpg", alt: { en: "Paw washers from above, showing the soft bristles inside", es: "Limpiapatas vistos desde arriba, con las cerdas suaves del interior" } },
-      { file: "dogs-framed.jpg", alt: { en: "Dogs behind the paw washers, showing the bristles inside", es: "Perros detrás de los limpiapatas, con las cerdas a la vista" } },
+      { file: "dogs.jpg", alt: { en: "Dogs behind the paw washers, showing the bristles inside", es: "Perros detrás de los limpiapatas, con las cerdas a la vista" } },
       {
         file: { en: "sizes-en.jpg", es: "sizes-es.jpg" },
         alt: { en: "Size S: 9 cm wide, 13.7 cm tall. Size M: 11 cm wide, 16.5 cm tall", es: "Talla S: 9 cm de ancho y 13,7 cm de alto. Talla M: 11 cm de ancho y 16,5 cm de alto" },
@@ -161,22 +161,21 @@ const PRODUCTS: ProductDef[] = [
       { name: SIZE, values: [{ key: "m", label: same("M") }, { key: "l", label: same("L") }] },
     ],
     variants: [
-      { values: ["coffee", "m"], price: 34.9, photo: "coffee-studio.jpg" },
-      { values: ["coffee", "l"], price: 42.9, photo: "coffee-studio.jpg" },
-      { values: ["beige", "m"], price: 34.9, photo: "beige-studio.jpg" },
-      { values: ["beige", "l"], price: 42.9, photo: "beige-studio.jpg" },
-      { values: ["pink", "m"], price: 34.9, photo: "pink-studio.jpg" },
-      { values: ["pink", "l"], price: 42.9, photo: "pink-studio.jpg" },
+      { values: ["coffee", "m"], price: 34.9, photo: "coffee.jpg" },
+      { values: ["coffee", "l"], price: 42.9, photo: "coffee.jpg" },
+      { values: ["beige", "m"], price: 34.9, photo: "beige.jpg" },
+      { values: ["beige", "l"], price: 42.9, photo: "beige.jpg" },
+      { values: ["pink", "m"], price: 34.9, photo: "pink.jpg" },
+      { values: ["pink", "l"], price: 42.9, photo: "pink.jpg" },
     ],
     photos: [
-      { file: "cat-lounging-hd.jpg", size: 1200, alt: { en: "A grey cat lounging on the sofa bed", es: "Un gato gris tumbado en el sofá cama" } },
+      { file: "cat-lounging.jpg", alt: { en: "A grey cat lounging on the sofa bed", es: "Un gato gris tumbado en el sofá cama" } },
       { file: "cat-playing.jpg", alt: { en: "A grey cat climbing onto the sofa bed", es: "Un gato gris subiendo al sofá cama" } },
-      { file: "coffee-studio.jpg", size: 1200, alt: { en: "Coffee sofa bed with its matching cushion", es: "Sofá cama color café con su cojín a juego" } },
-      { file: "beige-studio.jpg", size: 1200, alt: { en: "Beige sofa bed with its matching cushion", es: "Sofá cama beige con su cojín a juego" } },
-      { file: "pink-studio.jpg", size: 1200, alt: { en: "Pink sofa bed with its matching cushion", es: "Sofá cama rosa con su cojín a juego" } },
+      { file: "coffee.jpg", alt: { en: "Coffee sofa bed with its matching cushion", es: "Sofá cama color café con su cojín a juego" } },
+      { file: "beige.jpg", alt: { en: "Beige sofa bed with its matching cushion", es: "Sofá cama beige con su cojín a juego" } },
+      { file: "pink.jpg", alt: { en: "Pink sofa bed with its matching cushion", es: "Sofá cama rosa con su cojín a juego" } },
       {
         file: { en: "sizes-en.jpg", es: "sizes-es.jpg" },
-        size: 1200,
         alt: {
           en: "Size M: 55 × 38 × 18 cm, for cats up to about 4 kg. Size L: 65 × 46 × 30 cm, for cats up to about 9 kg",
           es: "Talla M: 55 × 38 × 18 cm, para gatos de hasta unos 4 kg. Talla L: 65 × 46 × 30 cm, para gatos de hasta unos 9 kg",
@@ -218,19 +217,19 @@ const PRODUCTS: ProductDef[] = [
       { name: SIZE, values: [{ key: "s", label: same("S") }, { key: "l", label: same("L") }] },
     ],
     variants: [
-      { values: ["green", "s"], price: 16.9, photo: "green-studio.jpg" },
-      { values: ["green", "l"], price: 19.9, photo: "green-studio.jpg" },
-      { values: ["grey", "s"], price: 16.9, photo: "grey-studio.jpg" },
-      { values: ["grey", "l"], price: 19.9, photo: "grey-studio.jpg" },
-      { values: ["pink", "s"], price: 16.9, photo: "pink-studio.jpg" },
-      { values: ["pink", "l"], price: 19.9, photo: "pink-studio.jpg" },
+      { values: ["green", "s"], price: 16.9, photo: "green.jpg" },
+      { values: ["green", "l"], price: 19.9, photo: "green.jpg" },
+      { values: ["grey", "s"], price: 16.9, photo: "grey.jpg" },
+      { values: ["grey", "l"], price: 19.9, photo: "grey.jpg" },
+      { values: ["pink", "s"], price: 16.9, photo: "pink.jpg" },
+      { values: ["pink", "l"], price: 19.9, photo: "pink.jpg" },
     ],
     photos: [
       { file: "corgi.jpg", alt: { en: "A corgi resting next to the paw washer cup", es: "Un corgi descansando junto al vaso limpiapatas" } },
-      { file: "in-use-ai.jpg", size: 1200, note: AI_SCENE, alt: { en: "A corgi with one paw in the paw washer cup", es: "Un corgi con una pata dentro del vaso limpiapatas" } },
-      { file: "green-studio.jpg", size: 1200, alt: { en: "Green paw washer cup", es: "Vaso limpiapatas verde" } },
-      { file: "grey-studio.jpg", size: 1200, alt: { en: "Grey paw washer cup", es: "Vaso limpiapatas gris" } },
-      { file: "pink-studio.jpg", size: 1200, alt: { en: "Pink paw washer cup", es: "Vaso limpiapatas rosa" } },
+      { file: "in-use-ai.jpg", note: AI_SCENE, alt: { en: "A corgi with one paw in the paw washer cup", es: "Un corgi con una pata dentro del vaso limpiapatas" } },
+      { file: "green.jpg", alt: { en: "Green paw washer cup", es: "Vaso limpiapatas verde" } },
+      { file: "grey.jpg", alt: { en: "Grey paw washer cup", es: "Vaso limpiapatas gris" } },
+      { file: "pink.jpg", alt: { en: "Pink paw washer cup", es: "Vaso limpiapatas rosa" } },
       { file: "colours.jpg", alt: { en: "The cup in three colours, cleaning a small dog's paw", es: "El vaso en tres colores, limpiando la pata de un perro pequeño" } },
       { file: "brushes.jpg", alt: { en: "The soft silicone bristles inside the cup", es: "Las cerdas de silicona suave del interior" } },
       { file: "sizes.jpg", alt: { en: "Size S: 9 × 13 cm. Size L: 10 × 15 cm", es: "Talla S: 9 × 13 cm. Talla L: 10 × 15 cm" } },
@@ -262,13 +261,11 @@ const PRODUCTS: ProductDef[] = [
       { values: ["m"], price: 44.9 },
     ],
     photos: [
-      { file: "cat-sleeping-hd.jpg", size: 1200, alt: { en: "A cat asleep in the sleeping bag bed", es: "Un gato dormido en la cama saco" } },
-      { file: "bed-studio.jpg", size: 1200, alt: { en: "The grey sleeping bag bed with its cream lining", es: "La cama saco gris con su forro crema" } },
-      { file: "ears.jpg", alt: { en: "Close-up of the plush bear ears", es: "Detalle de las orejitas de peluche" } },
+      { file: "cat-sleeping.jpg", alt: { en: "A cat asleep in the sleeping bag bed", es: "Un gato dormido en la cama saco" } },
+      { file: "bed.jpg", alt: { en: "The grey sleeping bag bed with its cream lining", es: "La cama saco gris con su forro crema" } },
       { file: "cats.jpg", alt: { en: "Cats curled up in the bed", es: "Gatos acurrucados en la cama" } },
       {
         file: { en: "sizes-en.jpg", es: "sizes-es.jpg" },
-        size: 1200,
         alt: { en: "Size S: 42 × 42 × 30 cm. Size M: 52 × 52 × 32 cm", es: "Talla S: 42 × 42 × 30 cm. Talla M: 52 × 52 × 32 cm" },
       },
     ],
@@ -282,8 +279,8 @@ export type DemoProduct = Product & { collections: string[] };
 
 function buildProduct(def: ProductDef, lang: Locale): DemoProduct {
   const fileOf = (p: ProductDef["photos"][number]) => (typeof p.file === "string" ? p.file : p.file[lang]);
-  const image = (file: string, alt: Text, width = 800, height = width): Image => ({
-    url: `/products/${def.handle}/${file}`,
+  const image = (file: string, alt: Text, width = 1200, height = width): Image => ({
+    url: `/photos/${def.handle}/${file}`,
     altText: alt[lang],
     width,
     height,
@@ -291,10 +288,10 @@ function buildProduct(def: ProductDef, lang: Locale): DemoProduct {
   const photo = (file: string): Image => {
     const found = def.photos.find((p) => fileOf(p) === file);
     if (!found) throw new Error(`Missing photo ${file} for ${def.handle}`);
-    return { ...image(file, found.alt, found.size), note: found.note?.[lang] ?? null };
+    return { ...image(file, found.alt), note: found.note?.[lang] ?? null };
   };
   const images = def.photos.map((p) => photo(fileOf(p)));
-  const card = def.card ? image(def.card, def.photos[0].alt, 800, 550) : null;
+  const card = def.card ? image(def.card, def.photos[0].alt, 1200, 825) : null;
 
   const label = (option: OptionDef, key: string) => {
     const value = option.values.find((v) => v.key === key);

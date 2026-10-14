@@ -1,5 +1,6 @@
 import type { Collection, Image, Product, ProductVariant } from "@/lib/commerce/types";
 import { locales, type Locale } from "@/i18n/config";
+import { photoUrl } from "@/lib/photos";
 
 /**
  * Local catalog used when Shopify is not configured (demo mode).
@@ -263,6 +264,7 @@ const PRODUCTS: ProductDef[] = [
     photos: [
       { file: "cat-sleeping.jpg", alt: { en: "A cat asleep in the sleeping bag bed", es: "Un gato dormido en la cama saco" } },
       { file: "bed.jpg", alt: { en: "The grey sleeping bag bed with its cream lining", es: "La cama saco gris con su forro crema" } },
+      { file: "ears.jpg", alt: { en: "Close-up of the plush bear ears", es: "Detalle de las orejitas de peluche" } },
       { file: "cats.jpg", alt: { en: "Cats curled up in the bed", es: "Gatos acurrucados en la cama" } },
       {
         file: { en: "sizes-en.jpg", es: "sizes-es.jpg" },
@@ -280,7 +282,7 @@ export type DemoProduct = Product & { collections: string[] };
 function buildProduct(def: ProductDef, lang: Locale): DemoProduct {
   const fileOf = (p: ProductDef["photos"][number]) => (typeof p.file === "string" ? p.file : p.file[lang]);
   const image = (file: string, alt: Text, width = 1200, height = width): Image => ({
-    url: `/photos/${def.handle}/${file}`,
+    url: photoUrl(`${def.handle}/${file}`),
     altText: alt[lang],
     width,
     height,

@@ -1,4 +1,5 @@
 import type { Dictionary } from "@/i18n/dictionaries/en";
+import { photoUrl } from "@/lib/photos";
 import type { Illustration } from "./types";
 
 /** Alt text for the prototype's photos lives in `dict.photos`. */
@@ -66,7 +67,7 @@ const COLLECTION_PRESENTATION: Record<string, CollectionPresentation> = {
     tile: "t3",
     illustration: "care",
     photo: {
-      src: "/photos/paw-washer-cup/corgi.jpg",
+      src: photoUrl("paw-washer-cup/corgi.jpg"),
       alt: "groomingCare",
     },
   },
@@ -74,7 +75,7 @@ const COLLECTION_PRESENTATION: Record<string, CollectionPresentation> = {
     tile: "t2",
     illustration: "beds",
     photo: {
-      src: "/photos/luxury-cat-sofa-bed/cat-lounging.jpg",
+      src: photoUrl("luxury-cat-sofa-bed/cat-lounging.jpg"),
       alt: "comfortBeds",
     },
   },

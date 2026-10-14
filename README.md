@@ -194,7 +194,8 @@ Supplier costs and supplier SKUs are **not** shown anywhere.
 - [ ] **Retail prices.** The four products have proposed prices (€16.90–€44.90). Check them
       against your costs and fees, then set them in Shopify with the store currency set to EUR;
       live prices and currency come from Shopify.
-- [ ] **Photos in Shopify.** The product photos are bundled in `public/photos/` for demo mode.
+- [ ] **Photos in Shopify.** The product photos are bundled in `public/photos/` for demo mode
+      (when you change one, bump `PHOTO_VERSION` in `src/lib/photos.ts` so visitors get it).
       Upload them (or your own) to each product and variant in Shopify. The Silicone Paw Washer
       size chart comes in two versions (`sizes-en.jpg`, `sizes-es.jpg`) because of the decimal
       comma; in Shopify, use the English one or a chart without decimals.

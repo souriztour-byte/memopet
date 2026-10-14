@@ -1,5 +1,6 @@
 import type { Collection, Image, Product, ProductVariant } from "@/lib/commerce/types";
 import { locales, type Locale } from "@/i18n/config";
+import { AI_IMAGE_NOTE } from "@/lib/commerce/presentation";
 import { photoUrl } from "@/lib/photos";
 
 /**
@@ -42,10 +43,7 @@ const SIZE: Text = { en: "Size", es: "Talla" };
 const COLOUR: Text = { en: "Colour", es: "Color" };
 const same = (label: string): Text => ({ en: label, es: label });
 /** Shown under images that were made with AI rather than photographed. */
-const AI_SCENE: Text = {
-  en: "AI-generated illustration of the product in use",
-  es: "Ilustración generada con IA del producto en uso",
-};
+const AI_SCENE: Text = AI_IMAGE_NOTE;
 
 type OptionDef = { name: Text; values: { key: string; label: Text }[] };
 

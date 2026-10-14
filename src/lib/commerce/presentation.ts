@@ -2,6 +2,18 @@ import type { Dictionary } from "@/i18n/dictionaries/en";
 import { photoUrl } from "@/lib/photos";
 import type { Illustration } from "./types";
 
+/**
+ * Images made with AI rather than photographed carry a note under the photo.
+ * In Shopify, start the image's alt text with this sentence (in each language).
+ */
+export const AI_IMAGE_NOTE = {
+  en: "AI-generated illustration of the product in use",
+  es: "Ilustración generada con IA del producto en uso",
+} as const;
+
+export const aiNoteFor = (altText: string | null) =>
+  (altText && Object.values(AI_IMAGE_NOTE).find((note) => altText.startsWith(note))) || null;
+
 /** Alt text for the prototype's photos lives in `dict.photos`. */
 type PhotoAlt = keyof Dictionary["photos"];
 

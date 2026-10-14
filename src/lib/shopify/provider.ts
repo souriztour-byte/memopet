@@ -1,7 +1,7 @@
 import "server-only";
 
 import { shopifyLanguage, type Locale } from "@/i18n/config";
-import { illustrationFor, readLocalizedTag, tileFor } from "@/lib/commerce/presentation";
+import { aiNoteFor, illustrationFor, readLocalizedTag, tileFor } from "@/lib/commerce/presentation";
 import type {
   Cart,
   Collection,
@@ -91,6 +91,10 @@ type UserErrors = { userErrors: { message: string }[] };
 
 /* ─── Reshaping ──────────────────────────────────────────────────────── */
 
+/** Adds the "AI-generated illustration" note for images whose alt text starts with it. */
+const withNote = (image: Image | null): Image | null =>
+  image && { ...image, note: aiNoteFor(image.altText) };
+
 function reshapeSummary(p: RawProductCard, lang: Locale): ProductSummary {
   const illustration = illustrationFor(p.tags, p.productType, p.title);
   const variants = p.variants.nodes;
@@ -122,8 +126,8 @@ function reshapeProduct(p: RawProduct, lang: Locale): Product {
     descriptionHtml: p.descriptionHtml,
     seo: p.seo,
     options,
-    images: p.images.nodes,
-    variants: p.allVariants.nodes,
+    images: p.images.nodes.map((image) => ({ ...image, note: aiNoteFor(image.altText) })),
+    variants: p.allVariants.nodes.map((v) => ({ ...v, image: withNote(v.image) })),
   };
 }
 

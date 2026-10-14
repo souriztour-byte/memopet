@@ -147,6 +147,9 @@ These conventions keep the storefront looking like the prototype:
     `pet-es:Gato y perro`. Without them, Spanish pages show the plain `badge:` / `pet:` text.
   - `art:care` / `art:beds` / `art:sofa` / `art:sleeping-bag` / `art:toys` / `art:collars` → illustration shown while a product
     has no photo. It is guessed from the title (English or Spanish) when there is no tag.
+- **AI-made images**: start the image’s alt text with “AI-generated illustration of the product
+  in use” (Spanish: “Ilustración generada con IA del producto en uso”). The product page then shows
+  that sentence as a note under the photo.
 - **Policies**: policies written in *Settings → Policies* replace the local drafts automatically,
   one by one, in each language.
 

@@ -6,6 +6,7 @@ import type {
   ProductSummary,
 } from "@/lib/commerce/types";
 import type { Locale } from "@/i18n/config";
+import { offers } from "@/lib/content/offers";
 import { DEMO_CURRENCY, getDemoCatalog } from "./catalog";
 
 const toSummary = ({
@@ -121,12 +122,19 @@ export function buildCart(lines: DemoLine[], lang: Locale): Cart {
     });
   }
 
-  const total = { amount: subtotal.toFixed(2), currencyCode };
+  // Mirrors the automatic "Buy 2, save 10%" discount set up in Shopify.
+  const { bundle } = offers;
+  const saved =
+    totalQuantity >= bundle.minItems ? Math.round(subtotal * bundle.percent) / 100 : 0;
+  const money = (amount: number) => ({ amount: amount.toFixed(2), currencyCode });
   return {
     id: null,
     checkoutUrl: null,
     totalQuantity,
-    cost: { subtotalAmount: total, totalAmount: total },
+    cost: { subtotalAmount: money(subtotal), totalAmount: money(subtotal - saved) },
+    discounts: saved
+      ? [{ kind: "automatic", title: bundle.shopifyTitle, amount: money(saved) }]
+      : [],
     lines: cartLines,
   };
 }

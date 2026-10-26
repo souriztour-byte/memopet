@@ -71,6 +71,8 @@ export function isShopifyUserError(error: unknown): error is ShopifyError {
 
 const CART_COOKIE = "mimi_cart";
 const DEMO_CART_COOKIE = "mimi_demo_cart";
+/** A discount code to put on the next cart, e.g. the welcome code. */
+const DISCOUNT_COOKIE = "mimi_discount";
 
 const cookieOptions = {
   httpOnly: true,
@@ -127,7 +129,8 @@ export async function addToCart(lang: Locale, merchandiseId: string, quantity: n
   if (existing?.id) return shopify.addCartLines(lang, existing.id, lines);
 
   // No cart yet, or the old one expired — start a new one.
-  const cart = await shopify.createCart(lang, lines);
+  const code = jar.get(DISCOUNT_COOKIE)?.value;
+  const cart = await shopify.createCart(lang, lines, code ? [code] : []);
   if (cart.id) jar.set(CART_COOKIE, cart.id, cookieOptions);
   return cart;
 }
@@ -147,4 +150,22 @@ export async function updateCartLine(lang: Locale, lineId: string, quantity: num
   return quantity > 0
     ? shopify.updateCartLines(lang, cartId, [{ id: lineId, quantity }])
     : shopify.removeCartLines(lang, cartId, [lineId]);
+}
+
+/**
+ * Puts a discount code on the shopper's cart, now if they have one and on the
+ * next cart otherwise. Shopify applies it at checkout once the cart qualifies.
+ */
+export async function saveDiscountCode(lang: Locale, code: string): Promise<Cart | null> {
+  if (isDemoMode()) return null;
+  const jar = await cookies();
+  jar.set(DISCOUNT_COOKIE, code, cookieOptions);
+  const cartId = jar.get(CART_COOKIE)?.value;
+  const existing = cartId ? await shopify.getCart(lang, cartId) : null;
+  return existing?.id ? shopify.updateCartDiscountCodes(lang, existing.id, [code]) : null;
+}
+
+/** Newsletter sign-up. Demo mode has nowhere to save the email. */
+export async function subscribeEmail(email: string): Promise<void> {
+  if (!isDemoMode()) await shopify.subscribeEmail(email);
 }

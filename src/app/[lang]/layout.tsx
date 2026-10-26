@@ -5,6 +5,7 @@ import { CartDrawer } from "@/components/cart/CartDrawer";
 import { CartProvider } from "@/components/cart/CartProvider";
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
+import { WelcomeSignup } from "@/components/marketing/WelcomeSignup";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { hasLocale, locales, ogLocale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/dictionaries";
@@ -85,6 +86,7 @@ export default async function RootLayout({ children, params }: LayoutProps<"/[la
           <CartProvider demoMode={isDemoMode()}>
             <Header />
             <main id="main">{children}</main>
+            <WelcomeSignup />
             <Footer />
             <CartDrawer />
             <ScrollReveal />

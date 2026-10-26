@@ -3,14 +3,16 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ProductDetail } from "@/components/product/ProductDetail";
 import { ProductGrid } from "@/components/product/ProductGrid";
-import { ClockIcon, ReturnIcon, TruckIcon } from "@/components/ui/icons";
+import { CheckIcon, ClockIcon, ReturnIcon, TruckIcon } from "@/components/ui/icons";
 import { alternatesFor, hasLocale, localizePath, ogLocale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/dictionaries";
 import { fmt } from "@/i18n/format";
 import { getProduct, getProductHandles, getProducts } from "@/lib/commerce";
 import { siteConfig } from "@/lib/config";
 import { policySettings } from "@/lib/content/policy-settings";
+import { offerMoney, offers } from "@/lib/content/offers";
 import { getShipping } from "@/lib/content/shipping";
+import { formatMoney } from "@/lib/format";
 import styles from "./product.module.css";
 
 export const revalidate = 3600;
@@ -53,6 +55,9 @@ export default async function ProductPage(props: PageProps<"/[lang]/products/[ha
   const { primaryEstimate } = shipping;
   const href = (path: string) => localizePath(lang, path);
   const days = policySettings.returnWindowDays;
+  const shipTo = offers.shipping.destination[lang];
+  const freeFrom = formatMoney(offerMoney(offers.shipping.freeFrom), lang);
+  const rate = formatMoney(offerMoney(offers.shipping.standardRate), lang);
 
   const related = (await getProducts(lang, { sort: "best-selling", limit: 8 }))
     .filter((p) => p.handle !== product.handle)
@@ -98,7 +103,22 @@ export default async function ProductPage(props: PageProps<"/[lang]/products/[ha
         </ol>
       </nav>
 
-      <ProductDetail product={product}>
+      <ProductDetail
+        product={product}
+        perks={
+          // Elements passed from a Server Component in a prop other than `children` need a key.
+          <ul key="perks" className={styles.perks} aria-label={t.perksLabel}>
+            <li>
+              <TruckIcon />
+              <span>{fmt(t.perkShipping, { destination: shipTo, amount: freeFrom })}</span>
+            </li>
+            <li>
+              <CheckIcon />
+              <span>{fmt(t.perkBundle, { percent: offers.bundle.percent })}</span>
+            </li>
+          </ul>
+        }
+      >
         <aside aria-labelledby="delivery-title" className={styles.facts}>
           <h2 id="delivery-title" className={styles.h2}>
             {t.delivery}
@@ -110,7 +130,7 @@ export default async function ProductPage(props: PageProps<"/[lang]/products/[ha
               </span>
               <span>
                 <b>{fmt(t.shipsFrom, { country: shipping.shipsFrom })}</b>
-                <small>{t.shippingAtCheckout}</small>
+                <small>{fmt(t.shippingRates, { rate, destination: shipTo, amount: freeFrom })}</small>
               </span>
             </li>
             <li>

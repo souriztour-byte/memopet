@@ -26,6 +26,8 @@ type CartContextValue = {
   pendingLineId: string | null;
   addItem: (merchandiseId: string, quantity?: number) => Promise<boolean>;
   updateItem: (lineId: string, quantity: number) => Promise<void>;
+  /** Shows a cart that changed outside the cart actions, e.g. a discount code added. */
+  replaceCart: (cart: Cart) => void;
   notify: (message: string) => void;
 };
 
@@ -108,6 +110,7 @@ export function CartProvider({ children, demoMode }: { children: ReactNode; demo
       pendingLineId,
       addItem,
       updateItem,
+      replaceCart: setCart,
       notify,
     }),
     [cart, ready, demoMode, isOpen, pendingLineId, addItem, updateItem, notify],

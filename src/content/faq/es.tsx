@@ -3,7 +3,9 @@ import { ContactLine } from "@/components/content/ContactLine";
 import { localizePath } from "@/i18n/config";
 import { es } from "@/i18n/dictionaries/es";
 import { policySettings } from "@/lib/content/policy-settings";
+import { offerMoney, offers } from "@/lib/content/offers";
 import { getShipping } from "@/lib/content/shipping";
+import { formatMoney } from "@/lib/format";
 import type { FaqGroup } from "./types";
 
 /** Spanish translation of `en.tsx` — same questions, same facts. */
@@ -12,6 +14,9 @@ const { returnWindowDays } = policySettings;
 const shipping = getShipping("es", es);
 const { primaryEstimate } = shipping;
 const href = (path: string) => localizePath("es", path);
+const rate = formatMoney(offerMoney(offers.shipping.standardRate), "es");
+const freeFrom = formatMoney(offerMoney(offers.shipping.freeFrom), "es");
+const shipTo = offers.shipping.destination.es;
 
 export const faqGroups: FaqGroup[] = [
   {
@@ -95,11 +100,12 @@ export const faqGroups: FaqGroup[] = [
       {
         id: "shipping-cost",
         question: "¿Cuánto cuesta el envío?",
-        text: "Los gastos de envío dependen de tu dirección de entrega y se muestran al finalizar la compra, antes de pagar.",
+        text: `El envío estándar a ${shipTo} cuesta ${rate} y es gratis en pedidos desde ${freeFrom}. Para otros destinos, el coste se muestra al finalizar la compra, antes de pagar.`,
         answer: (
           <p>
-            Los gastos de envío dependen de tu dirección de entrega y se muestran al finalizar la
-            compra, antes de pagar.
+            El envío estándar a {shipTo} cuesta <strong>{rate}</strong> y es{" "}
+            <strong>gratis en pedidos desde {freeFrom}</strong>. Para otros destinos, el coste se
+            muestra al finalizar la compra, antes de pagar.
           </p>
         ),
       },

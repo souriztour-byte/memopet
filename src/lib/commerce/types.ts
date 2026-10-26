@@ -95,12 +95,19 @@ export type CartLine = {
   };
 };
 
+/** A discount taken off the whole cart: an automatic one (by title) or a code. */
+export type CartDiscount =
+  | { kind: "automatic"; title: string; amount: Money }
+  | { kind: "code"; code: string; amount: Money };
+
 export type Cart = {
   id: string | null;
   /** Shopify-hosted checkout. `null` in demo mode. */
   checkoutUrl: string | null;
   totalQuantity: number;
+  /** `totalAmount` is after discounts, before shipping. */
   cost: { subtotalAmount: Money; totalAmount: Money };
+  discounts: CartDiscount[];
   lines: CartLine[];
 };
 

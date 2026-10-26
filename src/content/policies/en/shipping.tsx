@@ -2,10 +2,14 @@ import Link from "next/link";
 import { ContactLine } from "@/components/content/ContactLine";
 import { localizePath } from "@/i18n/config";
 import { en } from "@/i18n/dictionaries/en";
+import { offerMoney, offers } from "@/lib/content/offers";
 import { getShipping } from "@/lib/content/shipping";
+import { formatMoney } from "@/lib/format";
 
 export function ShippingPolicy() {
   const shipping = getShipping("en", en);
+  const rate = formatMoney(offerMoney(offers.shipping.standardRate), "en");
+  const freeFrom = formatMoney(offerMoney(offers.shipping.freeFrom), "en");
   return (
     <>
       <p>
@@ -53,8 +57,10 @@ export function ShippingPolicy() {
 
       <h2>Shipping costs</h2>
       <p>
-        Shipping costs are calculated from your delivery address and shown at checkout before you
-        pay.
+        Standard shipping to {offers.shipping.destination.en} costs <strong>{rate}</strong>. Orders
+        of <strong>{freeFrom}</strong> or more (after any discounts) ship for free. For other
+        destinations, shipping costs are calculated from your delivery address and shown at checkout
+        before you pay.
       </p>
 
       <h2>Order confirmation and tracking</h2>

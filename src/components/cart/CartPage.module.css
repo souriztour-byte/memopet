@@ -13,6 +13,7 @@
 .summary > :first-child {
   border: 1px solid var(--line);
   border-radius: 20px;
+  overflow: hidden;
   position: sticky;
   top: calc(var(--header-h) + 16px);
 }

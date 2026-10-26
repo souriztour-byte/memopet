@@ -3,13 +3,18 @@ import { ContactLine } from "@/components/content/ContactLine";
 import { localizePath } from "@/i18n/config";
 import { en } from "@/i18n/dictionaries/en";
 import { policySettings } from "@/lib/content/policy-settings";
+import { offerMoney, offers } from "@/lib/content/offers";
 import { getShipping } from "@/lib/content/shipping";
+import { formatMoney } from "@/lib/format";
 import type { FaqGroup } from "./types";
 
 const { returnWindowDays } = policySettings;
 const shipping = getShipping("en", en);
 const { primaryEstimate } = shipping;
 const href = (path: string) => localizePath("en", path);
+const rate = formatMoney(offerMoney(offers.shipping.standardRate), "en");
+const freeFrom = formatMoney(offerMoney(offers.shipping.freeFrom), "en");
+const shipTo = offers.shipping.destination.en;
 
 export const faqGroups: FaqGroup[] = [
   {
@@ -91,8 +96,14 @@ export const faqGroups: FaqGroup[] = [
       {
         id: "shipping-cost",
         question: "How much does shipping cost?",
-        text: "Shipping costs depend on your delivery address and are shown at checkout before you pay.",
-        answer: <p>Shipping costs depend on your delivery address and are shown at checkout before you pay.</p>,
+        text: `Standard shipping to ${shipTo} costs ${rate}, and it's free on orders from ${freeFrom}. For other destinations, the cost is shown at checkout before you pay.`,
+        answer: (
+          <p>
+            Standard shipping to {shipTo} costs <strong>{rate}</strong>, and it&rsquo;s{" "}
+            <strong>free on orders from {freeFrom}</strong>. For other destinations, the cost is shown
+            at checkout before you pay.
+          </p>
+        ),
       },
       {
         id: "tracking",

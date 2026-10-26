@@ -11,13 +11,39 @@
   position: relative;
   overflow: hidden;
 }
-.pic > svg,
+.pic svg,
 .pic img {
-  transition: transform 0.6s ease;
+  transition: transform 0.8s ease;
 }
-.prod:hover .pic > svg,
+.prod:hover .pic svg,
 .prod:hover .pic img {
-  transform: scale(1.04);
+  transform: scale(1.05);
+}
+.media {
+  position: absolute;
+  inset: 0;
+  display: block;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .media {
+    animation: photo-in 0.45s ease;
+  }
+}
+@keyframes photo-in {
+  from {
+    opacity: 0;
+  }
+}
+/* Second photo: shown on hover on devices with a mouse. */
+.hoverMedia {
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  animation: none;
+}
+@media (hover: hover) {
+  .prod:hover .hoverMedia {
+    opacity: 1;
+  }
 }
 .tag {
   position: absolute;

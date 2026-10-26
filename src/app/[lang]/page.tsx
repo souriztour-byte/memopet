@@ -49,7 +49,7 @@ function Feature({
   flip?: boolean;
 }) {
   return (
-    <section className={`${styles.feature} ${flip ? styles.flip : ""}`} aria-labelledby={id}>
+    <section className={`${styles.feature} ${flip ? styles.flip : ""}`} aria-labelledby={id} data-reveal>
       <div className={styles.featureTile}>
         <div className={styles.featureProduct}>
           <Image src={tile.src} alt={tile.alt} fill sizes="(max-width: 760px) 80vw, 420px" className={styles.contain} />
@@ -200,7 +200,7 @@ export default async function HomePage(props: PageProps<"/[lang]">) {
         flip
       />
 
-      <section className={styles.quizTeaser} aria-labelledby="quiz-title">
+      <section className={styles.quizTeaser} aria-labelledby="quiz-title" data-reveal>
         <p className="eyebrow">{dict.quiz.eyebrow}</p>
         <h2 id="quiz-title">{dict.quiz.teaserTitle}</h2>
         <p className={styles.featureText}>{dict.quiz.teaserText}</p>
@@ -209,7 +209,7 @@ export default async function HomePage(props: PageProps<"/[lang]">) {
         </Link>
       </section>
 
-      <ul className={styles.promises} aria-label={t.promisesLabel}>
+      <ul className={styles.promises} aria-label={t.promisesLabel} data-reveal>
         {promises.map((p) => (
           <li key={p.title}>
             <b>{p.title}</b>
@@ -222,7 +222,7 @@ export default async function HomePage(props: PageProps<"/[lang]">) {
         <h2 id="guide-title" className={styles.kicker}>
           {t.guideEyebrow}
         </h2>
-        <div className={styles.guideGrid}>
+        <div className={styles.guideGrid} data-reveal>
           <Link href={href("/shop")} className={styles.guideMain}>
             <span className={styles.guideMainPic}>
               <Image src={guideMain.src} alt={guideMain.alt} fill sizes="(max-width: 900px) 100vw, 760px" className={styles.cover} />

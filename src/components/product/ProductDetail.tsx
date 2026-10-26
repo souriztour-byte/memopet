@@ -1,13 +1,14 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useMemo, useRef, useState, useTransition } from "react";
+import { useEffect, useMemo, useRef, useState, useTransition, ViewTransition } from "react";
 import { Illustration } from "@/components/art/Illustration";
 import { useCart } from "@/components/cart/CartProvider";
 import { BagIcon } from "@/components/ui/icons";
 import { fmt } from "@/i18n/format";
 import { useI18n } from "@/i18n/I18nProvider";
 import type { Image as ImageType, Product, ProductVariant } from "@/lib/commerce/types";
+import { flyToCart } from "@/lib/fly-to-cart";
 import { MAX_QTY } from "@/lib/limits";
 import { Price } from "./Price";
 import styles from "./ProductDetail.module.css";
@@ -48,6 +49,7 @@ export function ProductDetail({
   const available = Boolean(variant?.availableForSale);
 
   const buyRef = useRef<HTMLDivElement>(null);
+  const stageRef = useRef<HTMLDivElement>(null);
   const [showBar, setShowBar] = useState(false);
   useEffect(() => {
     const el = buyRef.current;
@@ -62,7 +64,10 @@ export function ProductDetail({
   const add = () =>
     variant &&
     startTransition(async () => {
-      if (await addItem(variant.id, quantity)) setQuantity(1);
+      if (await addItem(variant.id, quantity)) {
+        flyToCart(stageRef.current);
+        setQuantity(1);
+      }
     });
   const addLabel = !variant ? t.chooseOption : !available ? t.soldOut : pending ? t.adding : t.addToCart;
   const price = variant ? (
@@ -110,20 +115,26 @@ export function ProductDetail({
   return (
     <div className={styles.layout}>
       <div className={styles.gallery}>
-        <div className={`${styles.stage} ${product.tile}`}>
-          {active ? (
-            <Image
-              src={active.url}
-              alt={active.altText || product.title}
-              fill
-              preload
-              quality={90}
-              sizes="(max-width: 900px) 100vw, 560px"
-              className={styles.stagePhoto}
-            />
-          ) : (
-            <Illustration name={product.illustration} className={styles.stageArt} />
-          )}
+        <div className={`${styles.stage} ${product.tile}`} ref={stageRef}>
+          {/* Same name as the product card's photo: opening a product glides the photo here. */}
+          <ViewTransition name={`product-${product.handle}`} share="morph" default="none">
+            {/* The key remounts the photo when the colour or thumbnail changes, so it fades in. */}
+            <span key={active?.url ?? "art"} className={styles.stageMedia}>
+              {active ? (
+                <Image
+                  src={active.url}
+                  alt={active.altText || product.title}
+                  fill
+                  preload
+                  quality={90}
+                  sizes="(max-width: 900px) 100vw, 560px"
+                  className={styles.stagePhoto}
+                />
+              ) : (
+                <Illustration name={product.illustration} className={styles.stageArt} />
+              )}
+            </span>
+          </ViewTransition>
           {product.badge ? <span className={styles.tag}>{product.badge}</span> : null}
         </div>
         {active?.note ? <p className={styles.photoNote}>{active.note}</p> : null}

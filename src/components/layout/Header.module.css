@@ -19,6 +19,7 @@
   }
 }
 .top {
+  view-transition-name: site-header;
   position: sticky;
   top: env(safe-area-inset-top, 0px);
   z-index: 20;

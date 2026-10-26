@@ -280,7 +280,8 @@ section[id] {
     background 0.2s ease,
     color 0.2s ease,
     box-shadow 0.2s ease,
-    opacity 0.2s ease;
+    opacity 0.2s ease,
+    transform 0.12s ease;
 }
 .btn:disabled,
 .btn[aria-disabled="true"] {
@@ -777,26 +778,27 @@ section[id] {
   }
 }
 
-/* Sections glide in as they scroll into view (see ScrollReveal.tsx). The
+/* Sections (.block, or anything marked data-reveal) glide in as they scroll
+   into view, children one after another (see ScrollReveal.tsx). The
    `motion` class is only added by script, so without it everything shows. */
 @media (prefers-reduced-motion: no-preference) {
-  html.motion main .block > :not(.is-in, .is-shown) > * {
+  html.motion main :is(.block, [data-reveal]) > :not(.is-in, .is-shown) > * {
     opacity: 0;
   }
-  html.motion main .block > .is-in > * {
+  html.motion main :is(.block, [data-reveal]) > .is-in > * {
     /* backwards, not both: once done, hover lifts and transitions work again. */
     animation: reveal 0.6s ease backwards;
   }
-  html.motion main .block > .is-in > :nth-child(2) {
+  html.motion main :is(.block, [data-reveal]) > .is-in > :nth-child(2) {
     animation-delay: 0.08s;
   }
-  html.motion main .block > .is-in > :nth-child(3) {
+  html.motion main :is(.block, [data-reveal]) > .is-in > :nth-child(3) {
     animation-delay: 0.16s;
   }
-  html.motion main .block > .is-in > :nth-child(4) {
+  html.motion main :is(.block, [data-reveal]) > .is-in > :nth-child(4) {
     animation-delay: 0.24s;
   }
-  html.motion main .block > .is-in > :nth-child(n + 5) {
+  html.motion main :is(.block, [data-reveal]) > .is-in > :nth-child(n + 5) {
     animation-delay: 0.32s;
   }
 }
@@ -804,5 +806,73 @@ section[id] {
   from {
     opacity: 0;
     transform: translateY(24px);
+  }
+}
+
+/* ── Page transitions ────────────────────────────────────────────────────
+   React's <ViewTransition> (template.tsx, product photos) drives the browser's
+   View Transitions API. Browsers without it simply swap pages. */
+::view-transition {
+  /* Clicks during the short animation still reach the page. */
+  pointer-events: none;
+}
+/* The sticky header and phone tab bar stay put while pages change. */
+::view-transition-group(site-header),
+::view-transition-group(tab-bar) {
+  animation: none;
+  z-index: 100;
+}
+::view-transition-old(site-header),
+::view-transition-old(tab-bar) {
+  display: none;
+}
+::view-transition-new(site-header),
+::view-transition-new(tab-bar) {
+  animation: none;
+}
+::view-transition-old(.page-out) {
+  animation: 160ms ease-in both page-fade reverse;
+}
+::view-transition-new(.page-in) {
+  animation:
+    260ms ease-out 120ms both page-fade,
+    420ms cubic-bezier(0.2, 0.8, 0.2, 1) both page-rise;
+}
+/* A product photo travelling between a card and the product page. */
+::view-transition-group(.morph) {
+  animation-duration: 450ms;
+  animation-timing-function: cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+::view-transition-image-pair(.morph) {
+  animation-name: via-blur;
+}
+@keyframes page-fade {
+  from {
+    opacity: 0;
+  }
+}
+@keyframes page-rise {
+  from {
+    transform: translateY(14px);
+  }
+}
+@keyframes via-blur {
+  30% {
+    filter: blur(3px);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(*),
+  ::view-transition-new(*),
+  ::view-transition-group(*) {
+    animation-duration: 0s !important;
+    animation-delay: 0s !important;
+  }
+}
+
+/* Buttons and choices press in slightly when tapped. */
+@media (prefers-reduced-motion: no-preference) {
+  :is(.btn, .pill, .qty button):active:not(:disabled) {
+    transform: scale(0.97);
   }
 }

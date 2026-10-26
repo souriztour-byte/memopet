@@ -36,13 +36,14 @@ export function TabBar() {
       <button
         type="button"
         className={styles.tab}
+        data-cart-target
         onClick={openCart}
         aria-label={count ? plural(lang, count, dict.cart.openWithCount) : dict.cart.open}
       >
         <span className={styles.bag}>
           <BagIcon />
           {count ? (
-            <span className={styles.count} aria-hidden="true">
+            <span key={count} className={styles.count} aria-hidden="true">
               {count}
             </span>
           ) : null}

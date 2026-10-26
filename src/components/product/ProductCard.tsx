@@ -1,10 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import { useState, useTransition } from "react";
+import { useRef, useState, useTransition, ViewTransition } from "react";
 import { useCart } from "@/components/cart/CartProvider";
 import { CheckIcon, PlusIcon } from "@/components/ui/icons";
 import { localizePath } from "@/i18n/config";
+import { flyToCart } from "@/lib/fly-to-cart";
 import { fmt } from "@/i18n/format";
 import { useI18n } from "@/i18n/I18nProvider";
 import { isColourOption, swatchFor } from "@/lib/commerce/presentation";
@@ -35,16 +36,22 @@ export function ProductCard({ product, preload }: { product: ProductSummary; pre
   const [sel, setSel] = useState<Selection>({});
   const [done, setDone] = useState(false);
   const [pending, startTransition] = useTransition();
+  const picRef = useRef<HTMLDivElement>(null);
 
   const available = (s: Selection) => product.variants.some((v) => v.availableForSale && matches(v, s));
   const colourImage = picked
     ? product.variants.find((v) => v.image && matches(v, { [colour!.name]: picked }))?.image
     : null;
   const image = colourImage ?? product.featuredImage;
+  // A second photo that fades in on hover (computers): another colour's photo.
+  const hoverImage = picked
+    ? null
+    : (product.variants.find((v) => v.image && v.image.url !== product.featuredImage?.url)?.image ?? null);
 
   const add = (variantId: string) =>
     startTransition(async () => {
       if (await addItem(variantId, 1)) {
+        flyToCart(picRef.current);
         setOpen(false);
         setDone(true);
         setTimeout(() => setDone(false), 1200);
@@ -75,14 +82,25 @@ export function ProductCard({ product, preload }: { product: ProductSummary; pre
 
   return (
     <article className={`${styles.prod} ${product.tile}`}>
-      <div className={styles.pic}>
-        <ProductMedia
-          image={image}
-          illustration={product.illustration}
-          alt={product.title}
-          sizes="(max-width: 720px) 70vw, (max-width: 1000px) 33vw, 320px"
-          preload={preload}
-        />
+      <div className={styles.pic} ref={picRef}>
+        {/* Same name as the product page's main photo, so opening the product glides it there. */}
+        <ViewTransition name={`product-${product.handle}`} share="morph" default="none">
+          {/* The key remounts the photo when a swatch changes it, so it fades in. */}
+          <span key={image?.url ?? "art"} className={styles.media}>
+            <ProductMedia
+              image={image}
+              illustration={product.illustration}
+              alt={product.title}
+              sizes="(max-width: 720px) 70vw, (max-width: 1000px) 33vw, 320px"
+              preload={preload}
+            />
+          </span>
+        </ViewTransition>
+        {hoverImage ? (
+          <span className={`${styles.media} ${styles.hoverMedia}`} aria-hidden="true">
+            <ProductMedia image={hoverImage} illustration={product.illustration} alt="" sizes="(max-width: 1000px) 33vw, 320px" />
+          </span>
+        ) : null}
         {product.badge ? <span className={styles.tag}>{product.badge}</span> : null}
         {!product.availableForSale ? <span className={styles.tag}>{t.soldOut}</span> : null}
 

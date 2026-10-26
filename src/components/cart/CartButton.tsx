@@ -25,6 +25,7 @@ export function CartButton() {
     <button
       type="button"
       className={styles.cartBtn}
+      data-cart-target
       onClick={openCart}
       aria-label={count ? plural(lang, count, dict.cart.openWithCount) : dict.cart.open}
     >

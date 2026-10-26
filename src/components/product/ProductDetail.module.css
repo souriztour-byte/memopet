@@ -29,6 +29,22 @@
 .stagePhoto {
   object-fit: cover;
 }
+.stageMedia {
+  position: absolute;
+  inset: 0;
+  display: block;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .stageMedia {
+    animation: stage-in 0.5s ease;
+  }
+}
+@keyframes stage-in {
+  from {
+    opacity: 0;
+    transform: scale(1.02);
+  }
+}
 .photoNote {
   margin: -4px 0 0;
   font-size: 0.8rem;

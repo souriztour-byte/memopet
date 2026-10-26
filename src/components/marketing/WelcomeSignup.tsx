@@ -94,7 +94,7 @@ export function WelcomeSignup() {
                   aria-describedby={error ? "welcome-error" : "welcome-consent"}
                 />
               </span>
-              <button type="submit" className="btn btn-pink" disabled={pending}>
+              <button type="submit" className="btn btn-gold" disabled={pending}>
                 {pending ? t.sending : t.submit}
               </button>
             </div>

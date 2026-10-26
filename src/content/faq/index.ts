@@ -9,6 +9,3 @@ const groups: Record<Locale, FaqGroup[]> = { en, es };
 
 /** FAQ in the given language. Question ids (and page anchors) are shared. */
 export const getFaqGroups = (lang: Locale): FaqGroup[] => groups[lang];
-
-/** A few questions for the home page, like the prototype's FAQ block. */
-export const featuredFaqIds = ["delivery-time", "return-item", "cats-or-dogs"];

@@ -1,7 +1,7 @@
 .products {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 18px;
+  gap: 48px 28px;
 }
 .few {
   grid-template-columns: repeat(3, 1fr);
@@ -17,11 +17,30 @@
 @media (max-width: 720px) {
   .products {
     grid-template-columns: repeat(2, 1fr);
+    gap: 36px 14px;
   }
   /* An odd last card sits centred instead of hanging on the left. */
-  .products > :last-child:nth-child(odd) {
+  .products:not(.rail) > :last-child:nth-child(odd) {
     grid-column: 1 / -1;
     justify-self: center;
-    width: calc(50% - 9px);
+    width: calc(50% - 7px);
+  }
+  /* Swipeable row that runs to the screen edges. */
+  .rail {
+    display: flex;
+    gap: 14px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    margin-inline: calc(-1 * var(--gutter));
+    padding-inline: var(--gutter);
+    scroll-padding-inline: var(--gutter);
+    scrollbar-width: none;
+  }
+  .rail::-webkit-scrollbar {
+    display: none;
+  }
+  .rail > * {
+    flex: 0 0 68%;
+    scroll-snap-align: start;
   }
 }

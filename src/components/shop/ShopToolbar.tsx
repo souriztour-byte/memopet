@@ -60,7 +60,7 @@ export function ShopToolbar({ query, sort, category, categories }: Props) {
           ))}
         </select>
         {category ? <input type="hidden" name="category" value={category} /> : null}
-        <button type="submit" className="btn btn-purple btn-sm">
+        <button type="submit" className="btn btn-gold btn-sm">
           {t.searchButton}
         </button>
       </Form>

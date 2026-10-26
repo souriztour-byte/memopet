@@ -1,9 +1,12 @@
 # MimiPets — headless Shopify storefront
 
 A Next.js storefront for **MimiPets** (“Little things. Happier pets.” / “Pequeños detalles.
-Mascotas más felices.”), built from the `mimopets_4.html` prototype. It uses the same palette,
-fonts (Poppins + Nunito Sans), logo, illustrations and copy. Products, prices, the cart and
-checkout come from Shopify through the **Storefront API**. The site is in **English and Spanish**.
+Mascotas más felices.”), first built from the `mimopets_4.html` prototype and now in a
+**black & gold** look: near-black background, champagne-gold accents, Cormorant Garamond for
+headings and the MIMIPETS wordmark, Jost for text (colours in `src/app/globals.css`). Products,
+prices, the cart and checkout come from Shopify through the **Storefront API**. The site is in
+**English and Spanish**. The share-preview images (`src/lib/og/frame.tsx`) still use the
+prototype's purple and pink.
 
 - **Next.js 16** (App Router, React 19, TypeScript), plain CSS with CSS Modules — no UI framework.
 - **Shopify Storefront API** (GraphQL) for catalog, collections, cart and store policies.
@@ -193,7 +196,8 @@ The site states nothing that isn’t in one of these sources:
 
 | Content | Source |
 | --- | --- |
-| Colours, fonts, logo, illustrations, hero copy, card labels | HTML prototype (the wordmark now reads “mimipets”, using the prototype’s own letter shapes) |
+| Colours, fonts, wordmark | The black & gold design picked by the shop owner (look “D”) |
+| Illustrations (shown only when a product has no photo), card labels | HTML prototype |
 | Product names, card badges | HTML prototype (Silicone Paw Washer, Luxury Cat Sofa Bed, Warming Sleeping Bag Bed); the Paw Washer Cup is named after its listing |
 | Product details: materials, measurements, colours, sizes, what’s in the box, photos | Supplier listings (CJ Dropshipping), one per product. The paw washer studio shots are the supplier photos cut out and set on the shop’s cream background; the size charts are redrawn with the listed measurements |
 | AI-retouched photos (sofa, sleeping bag bed and Paw Washer Cup studio shots, the sofa and bed lifestyle photos) | The supplier photos, cleaned up with an AI image tool by the shop owner, checked against the originals for shape and colour |
@@ -229,8 +233,6 @@ Supplier costs and supplier SKUs are **not** shown anywhere.
       no analytics or advertising cookies, which is true of this code. Update it if you add
       tracking.
 - [ ] **Contact details and legal entity** (environment variables above).
-- [ ] **Dark mode.** The prototype ships light-only (`<html data-theme="light">`). The dark palette
-      is kept in `globals.css`; remove the attribute in `src/app/[lang]/layout.tsx` to enable it.
 
 ## Project structure
 

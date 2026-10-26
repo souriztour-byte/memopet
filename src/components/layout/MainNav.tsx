@@ -6,6 +6,7 @@ import { useState } from "react";
 import { localizePath } from "@/i18n/config";
 import { useI18n } from "@/i18n/I18nProvider";
 import { navLinks } from "@/lib/config";
+import { MenuIcon } from "@/components/ui/icons";
 import { LanguageSwitcher } from "./LanguageSwitcher";
 import styles from "./Header.module.css";
 
@@ -20,12 +21,13 @@ export function MainNav() {
     <>
       <button
         type="button"
-        className={`btn btn-ghost ${styles.menuToggle}`}
+        className={styles.menuToggle}
         aria-expanded={open}
         aria-controls="main-menu"
         onClick={() => setOpen((v) => !v)}
       >
-        {dict.header.menu}
+        <MenuIcon />
+        <span>{dict.header.menu}</span>
       </button>
       <nav aria-label={dict.header.mainNav} className={styles.nav}>
         <ul

@@ -205,7 +205,7 @@ export function ProductDetail({
           </div>
           <button
             type="button"
-            className={`btn btn-pink ${styles.addBtn}`}
+            className={`btn btn-gold ${styles.addBtn}`}
             disabled={!available || pending}
             onClick={add}
           >
@@ -224,7 +224,7 @@ export function ProductDetail({
             {variant && product.options.length ? ` · ${variant.title}` : null}
           </span>
         </div>
-        <button type="button" className="btn btn-pink" disabled={!available || pending} onClick={add}>
+        <button type="button" className="btn btn-gold" disabled={!available || pending} onClick={add}>
           <BagIcon />
           {addLabel}
         </button>

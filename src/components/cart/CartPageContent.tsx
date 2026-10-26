@@ -21,7 +21,7 @@ export function CartPageContent() {
     return (
       <div className={styles.empty}>
         <p className="lead">{t.empty}</p>
-        <Link href={localizePath(lang, "/shop")} className="btn btn-pink">
+        <Link href={localizePath(lang, "/shop")} className="btn btn-gold">
           {dict.common.startShopping}
         </Link>
       </div>

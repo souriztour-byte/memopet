@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Logo } from "@/components/brand/Logo";
+import { Wordmark } from "@/components/brand/Wordmark";
 import { getLocalPolicies } from "@/content/policies";
 import { localizePath } from "@/i18n/config";
 import { fmt } from "@/i18n/format";
@@ -26,7 +26,7 @@ export async function Footer() {
     <footer className={styles.footer}>
       <div className={`wrap ${styles.grid}`}>
         <div className={styles.brand}>
-          <Logo className={styles.logo} />
+          <Wordmark className={styles.logo} />
           <p>{dict.brand.tagline}</p>
         </div>
         <nav aria-label={t.shop} className={styles.col}>

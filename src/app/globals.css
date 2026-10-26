@@ -1,72 +1,36 @@
 /* ──────────────────────────────────────────────────────────────────────────
-   MimiPets design tokens — carried over 1:1 from the HTML prototype
-   (mimopets_4.html). Change colours here and every page follows.
+   MimiPets design tokens — the "black & gold" look. Change colours here and
+   every page follows.
    ────────────────────────────────────────────────────────────────────────── */
 :root {
-  --bg: #ffffff;
-  --surface: #ffffff;
-  --lilac: #efe8fb;
-  --lilac-2: #e3d8f7;
-  --ink: #221a33;
-  --muted: #5e5570;
-  --line: #e4dcf1;
-  --purple: #6c4ab6;
-  --purple-ink: #5a3aa3;
-  --pink: #d4336a;
-  --pink-soft: #fce4ec;
-  --cream: #fff1dc;
-  --on-accent: #ffffff;
-  --logo-a: #6c4ab6;
-  --logo-b: #d4336a;
-  --shadow: 0 18px 40px -22px rgba(76, 48, 140, 0.45);
-  --display: var(--font-poppins), "Poppins", ui-rounded, "Segoe UI", system-ui, sans-serif;
-  --body: var(--font-nunito-sans), "Nunito Sans", "Segoe UI", system-ui, -apple-system, sans-serif;
-  --radius: 22px;
+  color-scheme: dark;
+  --bg: #0f0e0d;
+  --surface: #161412;
+  /* Panels behind photos, steps and notes; panel-2 for hover and borders. */
+  --panel: #1b1916;
+  --panel-2: #2e2a25;
+  --ink: #f4efe6;
+  /* Body copy on photos and in feature sections. */
+  --ink-soft: #cfc7ba;
+  --muted: #b8b0a3;
+  --line: #2e2a25;
+  --gold: #c9a96e;
+  /* Lighter gold for text links and hovers on the dark background. */
+  --gold-ink: #dcc596;
+  --on-gold: #0f0e0d;
+  --danger: #e8836f;
+  --shadow: 0 24px 48px -24px rgba(0, 0, 0, 0.8);
+  --display: var(--font-cormorant), "Cormorant Garamond", Georgia, "Times New Roman", serif;
+  --body: var(--font-jost), "Jost", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --radius: 2px;
   --gutter: clamp(16px, 4vw, 40px);
   --header-h: 72px;
 }
-
-/* The prototype ships light-only (<html data-theme="light">). The dark palette
-   is kept so dark mode can be enabled by removing data-theme from <html>. */
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    color-scheme: dark;
-    --bg: #15111d;
-    --surface: #1f1829;
-    --lilac: #2a2138;
-    --lilac-2: #352a47;
-    --ink: #f2edfa;
-    --muted: #b7adc8;
-    --line: #342a44;
-    --purple: #a88beb;
-    --purple-ink: #c3aef5;
-    --pink: #ff7aa2;
-    --pink-soft: #3a1f2c;
-    --cream: #33291f;
-    --on-accent: #15111d;
-    --logo-a: #b49af0;
-    --logo-b: #ff7aa2;
-    --shadow: 0 18px 40px -22px rgba(0, 0, 0, 0.7);
+/* Computers: the header has a second row for the menu. */
+@media (min-width: 1001px) {
+  :root {
+    --header-h: 124px;
   }
-}
-:root[data-theme="dark"] {
-  color-scheme: dark;
-  --bg: #15111d;
-  --surface: #1f1829;
-  --lilac: #2a2138;
-  --lilac-2: #352a47;
-  --ink: #f2edfa;
-  --muted: #b7adc8;
-  --line: #342a44;
-  --purple: #a88beb;
-  --purple-ink: #c3aef5;
-  --pink: #ff7aa2;
-  --pink-soft: #3a1f2c;
-  --cream: #33291f;
-  --on-accent: #15111d;
-  --logo-a: #b49af0;
-  --logo-b: #ff7aa2;
-  --shadow: 0 18px 40px -22px rgba(0, 0, 0, 0.7);
 }
 
 /* ─── Base ─────────────────────────────────────────────────────────────── */
@@ -98,32 +62,36 @@ body {
   background: var(--bg);
   color: var(--ink);
   font-family: var(--body);
-  font-size: 17px;
-  line-height: 1.6;
+  font-size: 16.5px;
+  line-height: 1.65;
   overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
 }
 h1,
 h2,
 h3,
 h4 {
   font-family: var(--display);
-  line-height: 1.12;
+  font-weight: 500;
+  line-height: 1.05;
   text-wrap: balance;
+  /* Cormorant's default numbers are old-style; prices read better level. */
+  font-variant-numeric: lining-nums;
   margin: 0;
 }
 h1 {
-  font-size: clamp(2.3rem, 5.4vw, 3.9rem);
-  font-weight: 700;
-  letter-spacing: -0.02em;
+  font-size: clamp(2.7rem, 6vw, 4.6rem);
+  letter-spacing: -0.01em;
 }
 h2 {
-  font-size: clamp(1.8rem, 3.4vw, 2.5rem);
-  font-weight: 700;
-  letter-spacing: -0.015em;
+  font-size: clamp(2.1rem, 3.8vw, 3.2rem);
+  letter-spacing: -0.005em;
 }
 h3 {
-  font-size: 1.15rem;
-  font-weight: 600;
+  font-size: 1.4rem;
+}
+em {
+  font-style: italic;
 }
 p {
   margin: 0;
@@ -143,15 +111,15 @@ textarea {
   color: inherit;
 }
 :focus-visible {
-  outline: 3px solid var(--pink);
+  outline: 2px solid var(--gold);
   outline-offset: 3px;
-  border-radius: 8px;
+  border-radius: var(--radius);
 }
 
 /* ─── Layout ───────────────────────────────────────────────────────────── */
 .wrap {
   width: 100%;
-  max-width: calc(1140px + 2 * var(--gutter));
+  max-width: calc(1280px + 2 * var(--gutter));
   margin-inline: auto;
   padding-inline: var(--gutter);
 }
@@ -160,7 +128,7 @@ main {
   min-height: 60vh;
 }
 section.block {
-  padding-block: 0 96px;
+  padding-block: 0 112px;
 }
 section[id] {
   scroll-margin-top: calc(var(--header-h) + 24px);
@@ -171,10 +139,10 @@ section[id] {
   align-items: end;
   gap: 24px;
   flex-wrap: wrap;
-  margin-bottom: 32px;
+  margin-bottom: 40px;
 }
 .head h2 {
-  margin-top: 8px;
+  margin-top: 12px;
 }
 .head .lead {
   margin-top: 10px;
@@ -182,12 +150,12 @@ section[id] {
 
 /* ─── Type helpers ─────────────────────────────────────────────────────── */
 .eyebrow {
-  font-family: var(--display);
-  font-weight: 600;
-  font-size: 0.8rem;
-  letter-spacing: 0.14em;
+  font-family: var(--body);
+  font-weight: 400;
+  font-size: 0.74rem;
+  letter-spacing: 0.26em;
   text-transform: uppercase;
-  color: var(--pink);
+  color: var(--gold);
 }
 .lead {
   color: var(--muted);
@@ -213,12 +181,12 @@ section[id] {
   border: 0;
 }
 .text-link {
-  color: var(--purple-ink);
-  font-weight: 700;
-  text-underline-offset: 3px;
+  color: var(--gold-ink);
+  font-weight: 500;
+  text-underline-offset: 4px;
 }
 .text-link:hover {
-  color: var(--pink);
+  color: var(--gold);
 }
 
 /* ─── Buttons ──────────────────────────────────────────────────────────── */
@@ -226,51 +194,55 @@ section[id] {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
-  font-family: var(--display);
-  font-weight: 600;
-  font-size: 0.98rem;
+  gap: 10px;
+  min-height: 50px;
+  font-family: var(--body);
+  font-weight: 500;
+  font-size: 0.76rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
   line-height: 1.2;
   text-decoration: none;
   border: 0;
   cursor: pointer;
-  border-radius: 999px;
-  padding: 13px 24px;
+  border-radius: var(--radius);
+  padding: 14px 32px;
   transition:
-    transform 0.15s ease,
-    background 0.15s ease,
-    opacity 0.15s ease;
-}
-.btn:hover {
-  transform: translateY(-2px);
+    background 0.2s ease,
+    color 0.2s ease,
+    box-shadow 0.2s ease,
+    opacity 0.2s ease;
 }
 .btn:disabled,
 .btn[aria-disabled="true"] {
-  opacity: 0.55;
+  opacity: 0.5;
   cursor: not-allowed;
-  transform: none;
 }
 .btn svg {
   width: 18px;
   height: 18px;
   flex: none;
 }
-.btn-pink {
-  background: var(--pink);
-  color: var(--on-accent);
+.btn-gold {
+  background: var(--gold);
+  color: var(--on-gold);
 }
-.btn-purple {
-  background: var(--purple);
-  color: var(--on-accent);
+.btn-gold:hover:not(:disabled) {
+  background: var(--gold-ink);
 }
 .btn-ghost {
   background: transparent;
-  color: var(--purple-ink);
-  box-shadow: inset 0 0 0 2px var(--lilac-2);
+  color: var(--ink);
+  box-shadow: inset 0 0 0 1px rgba(244, 239, 230, 0.45);
+}
+.btn-ghost:hover {
+  color: var(--gold-ink);
+  box-shadow: inset 0 0 0 1px var(--gold);
 }
 .btn-sm {
-  padding: 10px 18px;
-  font-size: 0.9rem;
+  min-height: 44px;
+  padding: 10px 20px;
+  font-size: 0.72rem;
 }
 .btn-block {
   width: 100%;
@@ -281,8 +253,8 @@ section[id] {
   width: 38px;
   height: 38px;
   border-radius: 50%;
-  border: 0;
-  background: var(--lilac);
+  border: 1px solid var(--line);
+  background: transparent;
   color: var(--ink);
   cursor: pointer;
   font-size: 1.2rem;
@@ -293,13 +265,16 @@ section[id] {
 
 /* Pill toggles (filters, variant options) */
 .pill {
-  font-family: var(--display);
-  font-weight: 500;
-  font-size: 0.9rem;
-  padding: 9px 16px;
-  border-radius: 999px;
-  border: 1.5px solid var(--line);
-  background: var(--surface);
+  font-family: var(--body);
+  font-weight: 400;
+  font-size: 0.76rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  min-height: 44px;
+  padding: 10px 18px;
+  border-radius: var(--radius);
+  border: 1px solid var(--panel-2);
+  background: transparent;
   color: var(--muted);
   cursor: pointer;
   text-decoration: none;
@@ -308,15 +283,14 @@ section[id] {
   gap: 6px;
 }
 .pill:hover {
-  border-color: var(--lilac-2);
-  color: var(--purple-ink);
+  border-color: var(--muted);
+  color: var(--ink);
 }
 .pill[aria-pressed="true"],
 .pill[aria-current="page"],
 .pill[aria-checked="true"] {
-  background: var(--purple);
-  border-color: var(--purple);
-  color: var(--on-accent);
+  border-color: var(--gold);
+  color: var(--gold-ink);
 }
 .pill:disabled {
   opacity: 0.45;
@@ -331,10 +305,10 @@ section[id] {
   gap: 6px;
 }
 .qty button {
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  border: 1.5px solid var(--line);
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius);
+  border: 1px solid var(--panel-2);
   background: var(--bg);
   color: var(--ink);
   cursor: pointer;
@@ -353,19 +327,19 @@ section[id] {
   min-width: 22px;
   text-align: center;
   font-variant-numeric: tabular-nums;
-  font-weight: 700;
+  font-weight: 500;
 }
 
 /* ─── Shared blocks ───────────────────────────────────────────────────── */
-/* Soft tiles behind product/category art (t1 lilac · t2 pink · t3 cream) */
+/* Panels behind product/category art, in three near-black shades. */
 .t1 {
-  --tile: var(--lilac);
+  --tile: var(--panel);
 }
 .t2 {
-  --tile: var(--pink-soft);
+  --tile: #1e1b18;
 }
 .t3 {
-  --tile: var(--cream);
+  --tile: #191714;
 }
 
 /* "How to order" steps */
@@ -379,9 +353,10 @@ section[id] {
   list-style: none;
 }
 .step {
-  background: var(--lilac);
-  border-radius: 20px;
-  padding: 26px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 30px;
   counter-increment: s;
   display: grid;
   gap: 8px;
@@ -389,16 +364,16 @@ section[id] {
 }
 .step::before {
   content: counter(s);
-  width: 40px;
-  height: 40px;
+  width: 44px;
+  height: 44px;
   border-radius: 50%;
-  background: var(--surface);
-  color: var(--pink);
+  border: 1px solid var(--gold);
+  color: var(--gold);
   font-family: var(--display);
-  font-weight: 700;
+  font-weight: 500;
   display: grid;
   place-items: center;
-  font-size: 1.05rem;
+  font-size: 1.3rem;
 }
 .step p {
   color: var(--muted);
@@ -414,11 +389,11 @@ section[id] {
 .cbox {
   background: var(--surface);
   border: 1px solid var(--line);
-  border-radius: 18px;
-  padding: 24px;
+  border-radius: var(--radius);
+  padding: 28px;
 }
 .cbox .eyebrow {
-  color: var(--purple);
+  color: var(--gold);
 }
 .cbox p {
   margin-top: 8px;
@@ -436,16 +411,18 @@ section[id] {
 .faq details {
   border: 1px solid var(--line);
   background: var(--surface);
-  padding: 18px 22px;
-  border-radius: 16px;
+  padding: 20px 24px;
+  border-radius: var(--radius);
 }
 .faq summary {
   cursor: pointer;
-  font-weight: 700;
+  font-family: var(--display);
+  font-size: 1.2rem;
+  font-weight: 500;
   list-style-position: outside;
 }
 .faq details[open] summary {
-  color: var(--purple-ink);
+  color: var(--gold-ink);
 }
 .faq .answer {
   margin-top: 12px;
@@ -461,7 +438,7 @@ section[id] {
   max-width: 46em;
 }
 .prose h2 {
-  font-size: 1.45rem;
+  font-size: 1.8rem;
   margin: 40px 0 12px;
 }
 .prose h3 {
@@ -481,12 +458,13 @@ section[id] {
   margin-top: 6px;
 }
 .prose a {
-  color: var(--purple-ink);
-  font-weight: 700;
+  color: var(--gold-ink);
+  font-weight: 500;
   text-underline-offset: 3px;
 }
 .prose strong {
-  font-weight: 700;
+  font-weight: 500;
+  color: var(--ink);
 }
 .prose table {
   width: 100%;
@@ -502,9 +480,9 @@ section[id] {
   vertical-align: top;
 }
 .prose th {
-  font-family: var(--display);
-  font-weight: 600;
-  background: var(--lilac);
+  font-family: var(--body);
+  font-weight: 500;
+  background: var(--panel);
 }
 .prose > :first-child {
   margin-top: 0;
@@ -512,15 +490,15 @@ section[id] {
 
 /* Callout used for "please note" boxes */
 .note {
-  background: var(--lilac);
-  border-radius: 16px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
   padding: 16px 20px;
   color: var(--ink);
   font-size: 0.95rem;
 }
 .note strong {
-  font-family: var(--display);
-  font-weight: 600;
+  font-weight: 500;
 }
 
 /* Toast */
@@ -529,13 +507,15 @@ section[id] {
   left: 50%;
   bottom: calc(24px + env(safe-area-inset-bottom, 0px));
   transform: translateX(-50%);
-  background: var(--ink);
-  color: var(--bg);
-  padding: 10px 18px;
-  border-radius: 999px;
-  font-family: var(--display);
+  background: var(--gold);
+  color: var(--on-gold);
+  padding: 12px 22px;
+  border-radius: var(--radius);
+  font-family: var(--body);
   font-weight: 500;
-  font-size: 0.9rem;
+  font-size: 0.78rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
   z-index: 60;
   max-width: calc(100% - 32px);
   text-align: center;
@@ -550,7 +530,7 @@ section[id] {
   background: var(--surface);
   color: var(--ink);
   padding: 12px 16px;
-  border-radius: 12px;
+  border-radius: var(--radius);
   box-shadow: var(--shadow);
 }
 .skip:focus {

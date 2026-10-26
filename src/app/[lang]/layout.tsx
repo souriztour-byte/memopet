@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Nunito_Sans, Poppins } from "next/font/google";
+import { Cormorant_Garamond, Jost } from "next/font/google";
 import { notFound } from "next/navigation";
 import { CartDrawer } from "@/components/cart/CartDrawer";
 import { CartProvider } from "@/components/cart/CartProvider";
@@ -15,19 +15,18 @@ import { isDemoMode } from "@/lib/commerce";
 import { siteConfig } from "@/lib/config";
 import "../globals.css";
 
-// Same families and weights as the prototype.
-const poppins = Poppins({
+// Serif display and sans body of the black & gold look. Both are variable
+// fonts: loading them without a `weight` list fetches each file once (listing
+// weights makes Google repeat the files, which breaks the Turbopack build).
+const cormorant = Cormorant_Garamond({
   subsets: ["latin"],
-  weight: ["500", "600", "700"],
-  variable: "--font-poppins",
+  style: ["normal", "italic"],
+  variable: "--font-cormorant",
   display: "swap",
 });
-// Nunito Sans is a variable font: loading it without a `weight` list fetches the
-// same files and covers the prototype's 400/600/700. Listing the weights makes
-// Google repeat each file per weight, which breaks the Turbopack production build.
-const nunitoSans = Nunito_Sans({
+const jost = Jost({
   subsets: ["latin"],
-  variable: "--font-nunito-sans",
+  variable: "--font-jost",
   display: "swap",
 });
 
@@ -63,7 +62,7 @@ export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   viewportFit: "cover",
-  themeColor: "#6C4AB6",
+  themeColor: "#0F0E0D",
 };
 
 export default async function RootLayout({ children, params }: LayoutProps<"/[lang]">) {
@@ -74,9 +73,8 @@ export default async function RootLayout({ children, params }: LayoutProps<"/[la
   return (
     <html
       lang={lang}
-      data-theme="light"
       data-scroll-behavior="smooth"
-      className={`${poppins.variable} ${nunitoSans.variable}`}
+      className={`${cormorant.variable} ${jost.variable}`}
     >
       <body>
         <a className="skip" href="#main">

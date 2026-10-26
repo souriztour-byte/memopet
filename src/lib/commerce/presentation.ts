@@ -100,7 +100,14 @@ export function collectionPresentation(handle: string, title = ""): CollectionPr
   return { tile: tileFor(illustration), illustration };
 }
 
+/** Full-width photo at the top of the home page. */
 export const HERO_PHOTO = {
-  src: "https://images.unsplash.com/photo-1509205477838-a534e43a849f?auto=format&fit=crop&w=1000&q=85",
-  alt: "hero",
+  src: photoUrl("luxury-cat-sofa-bed/cat-lounging.jpg"),
+  alt: "comfortBeds",
 } as const satisfies { src: string; alt: PhotoAlt };
+
+/** The home page's spotlight on the Paw Washer Cup. */
+export const SPOTLIGHT = {
+  handle: "paw-washer-cup",
+  photo: photoUrl("paw-washer-cup/colours.jpg"),
+} as const;

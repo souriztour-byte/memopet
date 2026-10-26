@@ -1,28 +1,19 @@
+/* Editorial card: tall photo, serif name, gold price — no box around it. */
 .prod {
   position: relative;
-  background: var(--surface);
-  border: 1px solid var(--line);
-  border-radius: 20px;
-  overflow: hidden;
   display: flex;
   flex-direction: column;
-  transition:
-    transform 0.2s ease,
-    box-shadow 0.2s ease;
-}
-.prod:hover {
-  transform: translateY(-4px);
-  box-shadow: var(--shadow);
+  gap: 16px;
 }
 .pic {
-  background: var(--tile, var(--lilac));
-  aspect-ratio: 16 / 11;
+  background: var(--tile, var(--panel));
+  aspect-ratio: 3 / 4;
   position: relative;
   overflow: hidden;
 }
 .pic > svg,
 .pic img {
-  transition: transform 0.35s ease;
+  transition: transform 0.6s ease;
 }
 .prod:hover .pic > svg,
 .prod:hover .pic img {
@@ -30,37 +21,35 @@
 }
 .tag {
   position: absolute;
-  top: 10px;
-  left: 10px;
-  background: var(--surface);
-  color: var(--ink);
-  font-family: var(--display);
-  font-weight: 600;
-  font-size: 0.72rem;
-  padding: 4px 10px;
-  border-radius: 999px;
+  top: 14px;
+  left: 14px;
+  background: rgba(15, 14, 13, 0.82);
+  color: var(--gold);
+  font-size: 0.66rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  padding: 7px 12px;
   z-index: 1;
 }
 .tag + .tag {
   left: auto;
-  right: 10px;
+  right: 14px;
 }
 .body {
-  padding: 14px 16px 16px;
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 6px;
   flex: 1;
 }
 .for {
-  font-size: 0.78rem;
+  font-size: 0.68rem;
   color: var(--muted);
   text-transform: uppercase;
-  letter-spacing: 0.08em;
-  font-weight: 700;
+  letter-spacing: 0.2em;
 }
 .body h3 {
-  font-size: 1rem;
+  font-size: 1.45rem;
+  line-height: 1.15;
 }
 /* Stretched link: the whole card opens the product page. */
 .link {
@@ -74,15 +63,14 @@
   z-index: 1;
 }
 .link:hover {
-  text-decoration: underline;
+  color: var(--gold-ink);
 }
 .link:focus-visible {
   outline: none;
 }
 .link:focus-visible::after {
-  outline: 3px solid var(--pink);
-  outline-offset: -3px;
-  border-radius: 20px;
+  outline: 2px solid var(--gold);
+  outline-offset: 4px;
 }
 .row {
   display: flex;
@@ -90,51 +78,58 @@
   align-items: center;
   gap: 8px;
   margin-top: auto;
-  padding-top: 10px;
+  padding-top: 4px;
 }
 .price {
-  font-family: var(--display);
-  font-weight: 700;
-  color: var(--pink);
-  font-size: 1.1rem;
+  color: var(--gold);
+  font-size: 0.92rem;
+  letter-spacing: 0.06em;
   font-variant-numeric: tabular-nums;
 }
 .add {
   position: relative;
   z-index: 2;
   border: 0;
-  background: var(--purple);
-  color: var(--on-accent);
+  border-bottom: 1px solid var(--panel-2);
+  background: none;
+  color: var(--ink);
   display: inline-flex;
   align-items: center;
   gap: 6px;
+  min-height: 36px;
   cursor: pointer;
-  border-radius: 12px;
-  padding: 9px 12px;
-  font: 600 0.82rem var(--body);
+  padding: 4px 0;
+  font-family: var(--body);
+  font-size: 0.68rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
   text-decoration: none;
   white-space: nowrap;
-  transition: transform 0.15s;
+  transition:
+    color 0.2s,
+    border-color 0.2s;
 }
 .add:hover {
-  transform: scale(1.06);
+  color: var(--gold-ink);
+  border-bottom-color: var(--gold);
 }
 .add:disabled {
   opacity: 0.7;
   cursor: progress;
 }
 .add svg {
-  width: 18px;
-  height: 18px;
+  width: 16px;
+  height: 16px;
 }
 .ok {
-  background: var(--pink);
+  color: var(--gold);
 }
 @media (max-width: 420px) {
-  .body {
-    padding: 12px;
-  }
   .body h3 {
-    font-size: 0.92rem;
+    font-size: 1.2rem;
+  }
+  .add {
+    font-size: 0.62rem;
+    letter-spacing: 0.14em;
   }
 }

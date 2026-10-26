@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Logo } from "@/components/brand/Logo";
+import { Wordmark } from "@/components/brand/Wordmark";
 import { CartButton } from "@/components/cart/CartButton";
 import { localizePath } from "@/i18n/config";
 import { fmt } from "@/i18n/format";
@@ -34,14 +34,16 @@ export async function Header() {
       </div>
       <header className={styles.top}>
         <div className={`wrap ${styles.bar}`}>
+          {/* Grid: logo centred with the cart on the right; the menu runs
+              underneath on computers and drops down from the Menu button on phones. */}
+          <MainNav />
           <Link
             href={localizePath(lang, "/")}
             aria-label={fmt(dict.header.homeLink, { name: siteConfig.name })}
             className={styles.logoLink}
           >
-            <Logo className={styles.logo} />
+            <Wordmark className={styles.logo} />
           </Link>
-          <MainNav />
           <div className={styles.actions}>
             <LanguageSwitcher className={styles.langBar} />
             <CartButton />

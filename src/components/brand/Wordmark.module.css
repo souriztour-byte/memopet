@@ -1,0 +1,13 @@
+.wordmark {
+  display: inline-block;
+  font-family: var(--display);
+  font-weight: 600;
+  font-size: 1.75rem;
+  line-height: 1;
+  letter-spacing: 0.32em;
+  /* Balances the tracking after the last letter so the word sits centred. */
+  margin-right: -0.32em;
+  text-transform: uppercase;
+  color: var(--ink);
+  white-space: nowrap;
+}

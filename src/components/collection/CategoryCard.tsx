@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { Illustration } from "@/components/art/Illustration";
-import { ArrowIcon } from "@/components/ui/icons";
 import { Photo } from "@/components/ui/Photo";
 import { localizePath } from "@/i18n/config";
 import { getI18n } from "@/i18n/server";
@@ -29,19 +28,15 @@ export async function CategoryCard({ collection }: { collection: Collection }) {
             alt={photo.alt}
             fill
             quality={90}
-            sizes="(max-width: 540px) 100vw, 560px"
+            sizes="(max-width: 720px) 100vw, 640px"
             className={styles.photo}
           />
         ) : null}
       </span>
       <span className={styles.txt}>
-        <span>
-          <h3>{collection.title}</h3>
-          {collection.description ? <p>{collection.description}</p> : null}
-        </span>
-        <span className={styles.arrow}>
-          <ArrowIcon />
-        </span>
+        <h3>{collection.title}</h3>
+        {collection.description ? <p>{collection.description}</p> : null}
+        <span className={styles.explore}>{dict.collections.explore}</span>
       </span>
     </Link>
   );

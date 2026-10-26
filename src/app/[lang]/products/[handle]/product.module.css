@@ -1,6 +1,8 @@
 .crumbs {
-  padding-top: 24px;
-  font-size: 0.88rem;
+  padding-top: 28px;
+  font-size: 0.7rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
   color: var(--muted);
 }
 .crumbs ol {
@@ -14,49 +16,54 @@
 .crumbs li + li::before {
   content: "/";
   margin-right: 6px;
-  color: var(--line);
+  color: var(--panel-2);
 }
 .crumbs a {
   color: inherit;
-  text-underline-offset: 3px;
+  text-decoration: none;
+}
+.crumbs a:hover {
+  color: var(--gold-ink);
 }
 .details {
   max-width: 72ch;
   padding-bottom: 72px;
 }
 .h2 {
-  font-size: 1.4rem;
-  margin-bottom: 14px;
+  font-size: 1.9rem;
+  margin-bottom: 16px;
 }
 .perks {
   list-style: none;
   margin: -4px 0 0;
   padding: 0;
   display: grid;
-  gap: 6px;
+  gap: 10px;
+  padding-block: 18px;
+  border-block: 1px solid var(--line);
   font-size: 0.92rem;
-  font-weight: 600;
+  color: var(--ink-soft);
 }
 .perks li {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 12px;
 }
 .perks svg {
   width: 18px;
   height: 18px;
   flex: none;
-  color: var(--purple);
+  color: var(--gold);
 }
 .facts {
-  background: var(--lilac);
-  border-radius: 20px;
-  padding: 22px 24px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  padding: 26px 28px;
   margin-top: 6px;
 }
 .facts .h2 {
-  font-size: 1.1rem;
-  margin-bottom: 12px;
+  font-size: 1.5rem;
+  margin-bottom: 16px;
 }
 .facts ul {
   list-style: none;
@@ -72,8 +79,10 @@
 }
 .facts b {
   display: block;
-  font-family: var(--display);
-  font-weight: 600;
+  font-weight: 400;
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
 }
 .facts small {
   color: var(--muted);
@@ -83,8 +92,8 @@
   width: 36px;
   height: 36px;
   border-radius: 50%;
-  background: var(--surface);
-  color: var(--purple);
+  border: 1px solid rgba(201, 169, 110, 0.45);
+  color: var(--gold);
   display: grid;
   place-items: center;
   flex: none;

@@ -51,7 +51,7 @@ export const en = {
     copyright: "© {year} {name} · Online pet shop",
   },
   photos: {
-    groomingCare: "A corgi resting next to the paw washer cup",
+    groomingCare: "Silicone paw washers in blue, pink and green",
     comfortBeds: "A grey cat lounging on the cat sofa bed",
   },
   home: {

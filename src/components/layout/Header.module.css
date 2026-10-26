@@ -22,9 +22,7 @@
   position: sticky;
   top: env(safe-area-inset-top, 0px);
   z-index: 20;
-  background: color-mix(in srgb, var(--bg) 90%, transparent);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  background: var(--bg);
   border-bottom: 1px solid var(--line);
 }
 /* Logo centred, actions on the right; the nav is a second row underneath. */
@@ -111,7 +109,7 @@
     height: 22px;
   }
   .logoLink {
-    padding-block: 20px;
+    padding-block: 18px;
   }
   .nav ul {
     display: none;
@@ -138,9 +136,7 @@
     display: none;
   }
   .logo {
-    font-size: 1.35rem;
-    letter-spacing: 0.26em;
-    margin-right: -0.26em;
+    font-size: 1.45rem;
   }
   .actions .langBar {
     display: none;

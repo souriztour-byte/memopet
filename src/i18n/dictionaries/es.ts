@@ -48,7 +48,7 @@ export const es: Dictionary = {
     copyright: "© {year} {name} · Tienda online para mascotas",
   },
   photos: {
-    groomingCare: "Un corgi descansando junto al vaso limpiapatas",
+    groomingCare: "Limpiapatas de silicona en azul, rosa y verde",
     comfortBeds: "Un gato gris tumbado en el sofá cama",
   },
   home: {

@@ -79,7 +79,7 @@ const COLLECTION_PRESENTATION: Record<string, CollectionPresentation> = {
     tile: "t3",
     illustration: "care",
     photo: {
-      src: photoUrl("paw-washer-cup/corgi.jpg"),
+      src: photoUrl("silicone-paw-washer/colours.jpg"),
       alt: "groomingCare",
     },
   },

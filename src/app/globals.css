@@ -29,7 +29,7 @@
 /* Computers: the header has a second row for the menu. */
 @media (min-width: 1001px) {
   :root {
-    --header-h: 124px;
+    --header-h: 140px;
   }
 }
 

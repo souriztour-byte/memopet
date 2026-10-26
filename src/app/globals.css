@@ -19,8 +19,10 @@
   --muted: #b8b0a3;
   --line: #2e2a25;
   --gold: #c9a96e;
+  --gold-text: #c9a96e;
   /* Gold for text links and hovers. */
   --gold-ink: #dcc596;
+  --gold-hover: #dcc596;
   --on-gold: #0f0e0d;
   /* Thin gold frames and the outline of ghost buttons. */
   --gold-line: rgba(201, 169, 110, 0.45);
@@ -31,32 +33,37 @@
   --on-photo: #f4efe6;
   --on-photo-soft: #e2dacd;
   --gold-photo: #c9a96e;
-  --display: var(--font-cormorant), "Cormorant Garamond", Georgia, "Times New Roman", serif;
-  --body: var(--font-jost), "Jost", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --display: var(--font-playfair), "Playfair Display", Georgia, "Times New Roman", serif;
+  --body: var(--font-inter), "Inter", "Segoe UI", system-ui, -apple-system, sans-serif;
   --radius: 2px;
   --gutter: clamp(16px, 4vw, 40px);
   --header-h: 72px;
+  /* Height of the phone tab bar (TabBar.tsx), without the home-indicator area. */
+  --tabbar-h: 60px;
 }
 /* White & gold. Gold is a deeper bronze here so text stays readable on white. */
 :root[data-theme="light"] {
   color-scheme: light;
-  --bg: #ffffff;
-  --surface: #faf8f4;
-  --panel: #f4f0e9;
-  --panel-2: #e3dcd0;
-  --tile-2: #f7f2ea;
-  --tile-3: #f1ece4;
-  --ink: #1a1714;
-  --ink-soft: #4a443d;
-  --muted: #6b6258;
-  --line: #e8e2d8;
-  --gold: #8a6a36;
+  --bg: #faf8f4; /* warm ivory */
+  --surface: #ffffff;
+  --panel: #eae2d6; /* soft beige */
+  --panel-2: #dcd1c1;
+  --tile-2: #efe8dd;
+  --tile-3: #f3eee6;
+  --ink: #302820; /* espresso */
+  --ink-soft: #4a4037;
+  --muted: #6e6357;
+  --line: #e6ded2;
+  --gold: #c6a66b; /* champagne gold: fills, icons, frames */
+  /* Champagne gold is too light for small text on ivory; text uses this. */
+  --gold-text: #8a6a36;
   --gold-ink: #6e5226;
-  --on-gold: #ffffff;
-  --gold-line: rgba(138, 106, 54, 0.4);
-  --ghost-line: rgba(26, 23, 20, 0.35);
+  --gold-hover: #b8955a;
+  --on-gold: #302820;
+  --gold-line: rgba(198, 166, 107, 0.55);
+  --ghost-line: rgba(48, 40, 32, 0.35);
   --danger: #b3412c;
-  --shadow: 0 24px 48px -28px rgba(60, 45, 25, 0.35);
+  --shadow: 0 24px 48px -28px rgba(48, 40, 32, 0.35);
 }
 /* Sand: warm greige page, pale stone tiles behind products, deep taupe accents. */
 :root[data-theme="sand"] {
@@ -73,7 +80,9 @@
   --muted: #6a6258;
   --line: #dcd6cc;
   --gold: #6f5c46;
+  --gold-text: #6f5c46;
   --gold-ink: #4f4031;
+  --gold-hover: #4f4031;
   --on-gold: #ffffff;
   --gold-line: rgba(111, 92, 70, 0.35);
   --ghost-line: rgba(38, 34, 30, 0.35);
@@ -120,7 +129,7 @@ body {
   line-height: 1.65;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
-  /* Cormorant's default numbers are old-style; prices read better level. */
+  /* Serif display fonts default to old-style numbers; prices read better level. */
   font-variant-numeric: lining-nums;
 }
 h1,
@@ -181,6 +190,12 @@ main {
   display: block;
   min-height: 60vh;
 }
+/* Phones: keep the end of the page clear of the tab bar. */
+@media (max-width: 760px) {
+  body {
+    padding-bottom: calc(var(--tabbar-h) + env(safe-area-inset-bottom, 0px));
+  }
+}
 section.block {
   padding-block: 0 112px;
 }
@@ -209,7 +224,7 @@ section[id] {
   font-size: 0.74rem;
   letter-spacing: 0.26em;
   text-transform: uppercase;
-  color: var(--gold);
+  color: var(--gold-text);
 }
 .lead {
   color: var(--muted);
@@ -240,7 +255,7 @@ section[id] {
   text-underline-offset: 4px;
 }
 .text-link:hover {
-  color: var(--gold);
+  color: var(--gold-text);
 }
 
 /* ─── Buttons ──────────────────────────────────────────────────────────── */
@@ -282,7 +297,7 @@ section[id] {
   color: var(--on-gold);
 }
 .btn-gold:hover:not(:disabled) {
-  background: var(--gold-ink);
+  background: var(--gold-hover);
 }
 .btn-ghost {
   background: transparent;
@@ -343,7 +358,7 @@ section[id] {
 .pill[aria-pressed="true"],
 .pill[aria-current="page"],
 .pill[aria-checked="true"] {
-  border-color: var(--gold);
+  border-color: var(--gold-text);
   color: var(--gold-ink);
 }
 .pill:disabled {
@@ -422,7 +437,7 @@ section[id] {
   height: 44px;
   border-radius: 50%;
   border: 1px solid var(--gold);
-  color: var(--gold);
+  color: var(--gold-text);
   font-family: var(--display);
   font-weight: 500;
   display: grid;
@@ -447,7 +462,7 @@ section[id] {
   padding: 28px;
 }
 .cbox .eyebrow {
-  color: var(--gold);
+  color: var(--gold-text);
 }
 .cbox p {
   margin-top: 8px;
@@ -573,6 +588,11 @@ section[id] {
   z-index: 60;
   max-width: calc(100% - 32px);
   text-align: center;
+}
+@media (max-width: 760px) {
+  .toast {
+    bottom: calc(var(--tabbar-h) + 16px + env(safe-area-inset-bottom, 0px));
+  }
 }
 
 /* Skip link */

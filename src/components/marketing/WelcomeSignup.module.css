@@ -20,6 +20,27 @@
 .title {
   font-size: clamp(2rem, 4vw, 3rem);
 }
+.perks {
+  list-style: none;
+  margin: 4px 0 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px 24px;
+  font-size: 0.9rem;
+  color: var(--ink-soft);
+}
+.perks li {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.perks svg {
+  width: 16px;
+  height: 16px;
+  color: var(--gold-text);
+}
 .form {
   width: 100%;
   max-width: 520px;
@@ -63,7 +84,7 @@
 }
 .inputWrap input:focus {
   outline: none;
-  border-bottom-color: var(--gold);
+  border-bottom-color: var(--gold-text);
 }
 .inputWrap input[aria-invalid="true"] {
   border-bottom-color: var(--danger);

@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useState, useTransition } from "react";
 import { subscribeAction } from "@/app/actions/welcome";
 import { useCart } from "@/components/cart/CartProvider";
-import { MailIcon } from "@/components/ui/icons";
+import { CheckIcon, MailIcon } from "@/components/ui/icons";
 import { localizePath } from "@/i18n/config";
 import { fmt } from "@/i18n/format";
 import { useI18n } from "@/i18n/I18nProvider";
@@ -13,7 +13,10 @@ import { siteConfig } from "@/lib/config";
 import { offers } from "@/lib/content/offers";
 import styles from "./WelcomeSignup.module.css";
 
-/** Email sign-up that hands out the welcome code (see `offers.welcome`). */
+/**
+ * The MimiPets Club: the email list. Its perks are only what's real — the
+ * welcome code (see `offers.welcome`), new-arrival news and pet-care tips.
+ */
 export function WelcomeSignup() {
   const { lang, dict } = useI18n();
   const { replaceCart } = useCart();
@@ -55,13 +58,23 @@ export function WelcomeSignup() {
     <section className={styles.band} aria-labelledby="welcome-title">
       <div className={`wrap ${styles.inner}`}>
         <div className={styles.copy}>
-          <p className="eyebrow">{t.eyebrow}</p>
+          <p className="eyebrow">{fmt(t.eyebrow, { name })}</p>
           <h2 id="welcome-title" className={styles.title}>
-            {code ? fmt(t.successTitle, { name }) : fmt(t.title, { percent })}
+            {code ? fmt(t.successTitle, { name }) : fmt(t.title, { name })}
           </h2>
           <p className="muted" aria-live="polite">
-            {code ? fmt(t.successText, { code, percent }) : fmt(t.lead, { name, percent })}
+            {code ? fmt(t.successText, { code, percent }) : t.lead}
           </p>
+          {code ? null : (
+            <ul className={styles.perks}>
+              {t.perks.map((perk) => (
+                <li key={perk}>
+                  <CheckIcon />
+                  {fmt(perk, { percent })}
+                </li>
+              ))}
+            </ul>
+          )}
         </div>
 
         {code ? (

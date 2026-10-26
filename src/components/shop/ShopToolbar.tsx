@@ -2,7 +2,7 @@
 
 import Form from "next/form";
 import Link from "next/link";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { localizePath, type Locale } from "@/i18n/config";
 import { useI18n } from "@/i18n/I18nProvider";
 import { SORT_OPTIONS } from "@/lib/commerce/sort";
@@ -29,6 +29,17 @@ function shopHref(lang: Locale, params: { q?: string; sort?: string; category?: 
 /** Search, sort and category filters, kept in the URL so results are shareable. */
 export function ShopToolbar({ query, sort, category, categories }: Props) {
   const formRef = useRef<HTMLFormElement>(null);
+  const searchRef = useRef<HTMLInputElement>(null);
+
+  // The phone tab bar's Search links to /shop#shop-search: put the cursor in the box.
+  useEffect(() => {
+    const focusSearch = () => {
+      if (window.location.hash === "#shop-search") searchRef.current?.focus();
+    };
+    focusSearch();
+    window.addEventListener("hashchange", focusSearch);
+    return () => window.removeEventListener("hashchange", focusSearch);
+  }, []);
   const { lang, dict } = useI18n();
   const t = dict.shop;
   return (
@@ -38,6 +49,7 @@ export function ShopToolbar({ query, sort, category, categories }: Props) {
           {t.searchLabel}
         </label>
         <input
+          ref={searchRef}
           id="shop-search"
           name="q"
           type="search"

@@ -4,6 +4,7 @@ import { useEffect, useRef } from "react";
 import { useI18n } from "@/i18n/I18nProvider";
 import { CartLines } from "./CartLines";
 import { CartPerks } from "./CartPerks";
+import { CartSuggestions } from "./CartSuggestions";
 import { useCart } from "./CartProvider";
 import { CartSummary } from "./CartSummary";
 import styles from "./Cart.module.css";
@@ -46,7 +47,10 @@ export function CartDrawer() {
           {!ready ? (
             <p className={styles.empty}>{t.loading}</p>
           ) : lines.length ? (
-            <CartLines lines={lines} onNavigate={closeCart} />
+            <>
+              <CartLines lines={lines} onNavigate={closeCart} />
+              {cart ? <CartSuggestions cart={cart} onNavigate={closeCart} /> : null}
+            </>
           ) : (
             <p className={styles.empty}>
               {t.empty}

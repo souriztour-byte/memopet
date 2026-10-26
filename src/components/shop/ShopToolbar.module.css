@@ -20,7 +20,7 @@
 .toolbar input:focus,
 .toolbar select:focus {
   outline: none;
-  border-color: var(--gold);
+  border-color: var(--gold-text);
 }
 .filters {
   display: flex;

@@ -22,6 +22,8 @@ const toSummary = ({
   tile,
   singleVariantId,
   updatedAt,
+  options,
+  variants,
 }: Product): ProductSummary => ({
   id,
   handle,
@@ -35,6 +37,8 @@ const toSummary = ({
   tile,
   singleVariantId,
   updatedAt,
+  options,
+  variants,
 });
 
 const price = (p: ProductSummary) => Number(p.priceRange.minVariantPrice.amount);

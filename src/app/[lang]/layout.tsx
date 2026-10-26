@@ -1,32 +1,33 @@
 import type { Metadata, Viewport } from "next";
-import { Cormorant_Garamond, Jost } from "next/font/google";
+import { Inter, Playfair_Display } from "next/font/google";
 import { notFound } from "next/navigation";
 import { CartDrawer } from "@/components/cart/CartDrawer";
 import { CartProvider } from "@/components/cart/CartProvider";
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
+import { TabBar } from "@/components/layout/TabBar";
 import { WelcomeSignup } from "@/components/marketing/WelcomeSignup";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { hasLocale, locales, ogLocale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/dictionaries";
 import { fmt } from "@/i18n/format";
 import { I18nProvider } from "@/i18n/I18nProvider";
-import { isDemoMode } from "@/lib/commerce";
+import { getProducts, isDemoMode } from "@/lib/commerce";
 import { look, lookColor, siteConfig } from "@/lib/config";
 import "../globals.css";
 
-// Serif display and sans body of the black & gold look. Both are variable
-// fonts: loading them without a `weight` list fetches each file once (listing
-// weights makes Google repeat the files, which breaks the Turbopack build).
-const cormorant = Cormorant_Garamond({
+// Playfair Display for headings and the wordmark, Inter for text. Both are
+// variable fonts: loading them without a `weight` list fetches each file once
+// (listing weights makes Google repeat the files, which breaks the Turbopack build).
+const playfair = Playfair_Display({
   subsets: ["latin"],
   style: ["normal", "italic"],
-  variable: "--font-cormorant",
+  variable: "--font-playfair",
   display: "swap",
 });
-const jost = Jost({
+const inter = Inter({
   subsets: ["latin"],
-  variable: "--font-jost",
+  variable: "--font-inter",
   display: "swap",
 });
 
@@ -69,24 +70,26 @@ export default async function RootLayout({ children, params }: LayoutProps<"/[la
   const { lang } = await params;
   if (!hasLocale(lang)) notFound();
   const dict = getDictionary(lang);
+  const catalogue = await getProducts(lang, { sort: "best-selling", limit: 8 });
 
   return (
     <html
       lang={lang}
       data-theme={look}
       data-scroll-behavior="smooth"
-      className={`${cormorant.variable} ${jost.variable}`}
+      className={`${playfair.variable} ${inter.variable}`}
     >
       <body>
         <a className="skip" href="#main">
           {dict.common.skipToContent}
         </a>
         <I18nProvider lang={lang} dict={dict}>
-          <CartProvider demoMode={isDemoMode()}>
+          <CartProvider demoMode={isDemoMode()} suggestions={catalogue}>
             <Header />
             <main id="main">{children}</main>
             <WelcomeSignup />
             <Footer />
+            <TabBar />
             <CartDrawer />
             <ScrollReveal />
           </CartProvider>

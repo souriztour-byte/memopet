@@ -72,46 +72,43 @@
   outline: 2px solid var(--gold);
   outline-offset: 4px;
 }
-.row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 8px;
-  margin-top: auto;
-  padding-top: 4px;
-}
 .price {
-  color: var(--gold);
+  color: var(--gold-text);
   font-size: 0.92rem;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.04em;
   font-variant-numeric: tabular-nums;
 }
+
+/* Quick add: a pill on the photo, always visible (phones have no hover). */
 .add {
-  position: relative;
-  z-index: 2;
-  border: 0;
-  border-bottom: 1px solid var(--panel-2);
-  background: none;
-  color: var(--ink);
+  position: absolute;
+  right: 12px;
+  bottom: 12px;
+  z-index: 3;
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  min-height: 36px;
-  cursor: pointer;
-  padding: 4px 0;
+  min-height: 40px;
+  padding: 8px 14px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--ink);
+  box-shadow: 0 6px 18px -8px rgba(48, 40, 32, 0.45);
   font-family: var(--body);
-  font-size: 0.68rem;
-  letter-spacing: 0.2em;
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
-  text-decoration: none;
   white-space: nowrap;
+  cursor: pointer;
   transition:
-    color 0.2s,
-    border-color 0.2s;
+    background 0.2s,
+    color 0.2s;
 }
 .add:hover {
-  color: var(--gold-ink);
-  border-bottom-color: var(--gold);
+  background: var(--gold);
+  color: var(--on-gold);
 }
 .add:disabled {
   opacity: 0.7;
@@ -121,15 +118,122 @@
   width: 16px;
   height: 16px;
 }
-.ok {
-  color: var(--gold);
+
+/* Size (and colour) picker that slides up over the photo */
+.picker {
+  position: absolute;
+  left: 10px;
+  right: 10px;
+  bottom: 62px;
+  z-index: 3;
+  display: grid;
+  gap: 10px;
+  padding: 14px;
+  background: var(--surface);
+  box-shadow: var(--shadow);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .picker {
+    animation: picker-in 0.2s ease;
+  }
+}
+@keyframes picker-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}
+.pickRow {
+  display: grid;
+  gap: 6px;
+}
+.pickName {
+  font-size: 0.66rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.pickValues {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.pickValue {
+  min-width: 44px;
+  min-height: 40px;
+  padding: 6px 12px;
+  border: 1px solid var(--panel-2);
+  background: transparent;
+  color: var(--ink);
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+.pickValue:hover:not(:disabled),
+.pickValue[aria-pressed="true"] {
+  border-color: var(--gold);
+  background: var(--panel);
+}
+.pickValue:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  text-decoration: line-through;
+}
+
+/* Colour swatches under the price */
+.swatches {
+  list-style: none;
+  margin: 2px 0 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  position: relative;
+  z-index: 2;
+}
+.swatch,
+.swatchText {
+  display: grid;
+  place-items: center;
+  min-width: 32px;
+  height: 32px;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+}
+/* The dot is drawn inside a 32px target so it stays easy to tap. */
+.swatch {
+  width: 32px;
+  border-radius: 50%;
+  background-clip: content-box;
+  padding: 7px;
+  box-shadow: inset 0 0 0 1px rgba(48, 40, 32, 0.15);
+}
+.swatch[aria-pressed="true"] {
+  box-shadow:
+    inset 0 0 0 1px var(--surface),
+    0 0 0 1.5px var(--ink);
+}
+.swatchText {
+  padding: 0 8px;
+  font-size: 0.72rem;
+  color: var(--muted);
+  border-bottom: 1px solid transparent;
+}
+.swatchText[aria-pressed="true"] {
+  color: var(--ink);
+  border-bottom-color: var(--ink);
 }
 @media (max-width: 420px) {
   .body h3 {
-    font-size: 1.2rem;
+    font-size: 1.1rem;
+  }
+  .add span {
+    display: none;
   }
   .add {
-    font-size: 0.62rem;
-    letter-spacing: 0.14em;
+    width: 40px;
+    padding: 0;
+    justify-content: center;
   }
 }

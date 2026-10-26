@@ -17,6 +17,6 @@
   color: var(--ink);
 }
 .option[aria-current="true"] {
-  color: var(--gold);
-  border-bottom-color: var(--gold);
+  color: var(--gold-text);
+  border-bottom-color: var(--gold-text);
 }

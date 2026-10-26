@@ -1,14 +1,16 @@
 "use client";
 
-import { TruckIcon } from "@/components/ui/icons";
+import { DeliveryEstimate } from "@/components/product/DeliveryEstimate";
+import { ClockIcon, TruckIcon } from "@/components/ui/icons";
 import { fmt } from "@/i18n/format";
 import { useI18n } from "@/i18n/I18nProvider";
 import type { Cart } from "@/lib/commerce/types";
 import { offerMoney, offers } from "@/lib/content/offers";
+import { shippingFacts } from "@/lib/content/shipping";
 import { formatMoney } from "@/lib/format";
 import styles from "./Cart.module.css";
 
-/** How far the cart is from free shipping, and a nudge towards the bundle discount. */
+/** How far the cart is from free shipping, the buy-two nudge and the delivery dates. */
 export function CartPerks({ cart }: { cart: Cart }) {
   const { lang, dict } = useI18n();
   const t = dict.cart;
@@ -41,6 +43,14 @@ export function CartPerks({ cart }: { cart: Cart }) {
       {cart.totalQuantity === bundle.minItems - 1 ? (
         <p className={styles.perkHint}>{fmt(t.bundleHint, { percent: bundle.percent })}</p>
       ) : null}
+      <p className={styles.perkDate}>
+        <ClockIcon />
+        <DeliveryEstimate
+          processing={shippingFacts.processing}
+          delivery={shippingFacts.deliveryEstimates[0]}
+          destination={shippingFacts.deliveryEstimates[0].destination[lang]}
+        />
+      </p>
     </div>
   );
 }

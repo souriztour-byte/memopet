@@ -85,3 +85,25 @@ export const LockIcon = ({ className }: IconProps) => (
     <path d="M8 11V8a4 4 0 018 0v3" />
   </svg>
 );
+
+export const HomeIcon = ({ className }: IconProps) => (
+  <svg {...base} strokeWidth={1.4} className={className}>
+    <path d="M4 11l8-6.5 8 6.5V20h-5.5v-5.5h-5V20H4z" />
+  </svg>
+);
+
+export const GridIcon = ({ className }: IconProps) => (
+  <svg {...base} strokeWidth={1.4} className={className}>
+    <rect x="4" y="4" width="6.5" height="6.5" />
+    <rect x="13.5" y="4" width="6.5" height="6.5" />
+    <rect x="4" y="13.5" width="6.5" height="6.5" />
+    <rect x="13.5" y="13.5" width="6.5" height="6.5" />
+  </svg>
+);
+
+export const SearchIcon = ({ className }: IconProps) => (
+  <svg {...base} strokeWidth={1.4} className={className}>
+    <circle cx="11" cy="11" r="6.5" />
+    <path d="M20 20l-4.2-4.2" />
+  </svg>
+);

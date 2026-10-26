@@ -49,6 +49,15 @@ export function getShipping(lang: Locale, dict: Dictionary) {
     },
     deliveryEstimates,
     primaryEstimate: deliveryEstimates[0],
+    /** Day counts for DeliveryEstimate's dates. */
+    dates: {
+      processing: { minDays: processing.minDays, maxDays: processing.maxDays },
+      delivery: {
+        minDays: shippingFacts.deliveryEstimates[0].minDays,
+        maxDays: shippingFacts.deliveryEstimates[0].maxDays,
+      },
+      destination: shippingFacts.deliveryEstimates[0].destination[lang],
+    },
   };
 }
 

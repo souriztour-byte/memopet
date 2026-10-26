@@ -3,11 +3,15 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ProductDetail } from "@/components/product/ProductDetail";
 import { ProductGrid } from "@/components/product/ProductGrid";
-import { CheckIcon, ClockIcon, ReturnIcon, TruckIcon } from "@/components/ui/icons";
+import { DeliveryEstimate } from "@/components/product/DeliveryEstimate";
+import { ClockIcon, GiftIcon, ReturnIcon, TruckIcon } from "@/components/ui/icons";
 import { alternatesFor, hasLocale, localizePath, ogLocale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/dictionaries";
 import { fmt } from "@/i18n/format";
 import { getProduct, getProductHandles, getProducts } from "@/lib/commerce";
+import { BeforeAfter } from "@/components/media/BeforeAfter";
+import { ProductVideos } from "@/components/media/ProductVideos";
+import { beforeAfterImages, pairsWith } from "@/lib/commerce/presentation";
 import { siteConfig } from "@/lib/config";
 import { policySettings } from "@/lib/content/policy-settings";
 import { offerMoney, offers } from "@/lib/content/offers";
@@ -59,9 +63,8 @@ export default async function ProductPage(props: PageProps<"/[lang]/products/[ha
   const freeFrom = formatMoney(offerMoney(offers.shipping.freeFrom), lang);
   const rate = formatMoney(offerMoney(offers.shipping.standardRate), lang);
 
-  const related = (await getProducts(lang, { sort: "best-selling", limit: 8 }))
-    .filter((p) => p.handle !== product.handle)
-    .slice(0, 4);
+  const compare = beforeAfterImages(product.images);
+  const related = pairsWith(await getProducts(lang, { sort: "best-selling", limit: 8 }), [product], 3);
 
   const { minVariantPrice, maxVariantPrice } = product.priceRange;
   const jsonLd = {
@@ -109,11 +112,15 @@ export default async function ProductPage(props: PageProps<"/[lang]/products/[ha
           // Elements passed from a Server Component in a prop other than `children` need a key.
           <ul key="perks" className={styles.perks} aria-label={t.perksLabel}>
             <li>
+              <ClockIcon />
+              <DeliveryEstimate {...shipping.dates} />
+            </li>
+            <li>
               <TruckIcon />
               <span>{fmt(t.perkShipping, { destination: shipTo, amount: freeFrom })}</span>
             </li>
             <li>
-              <CheckIcon />
+              <GiftIcon />
               <span>{fmt(t.perkBundle, { percent: offers.bundle.percent })}</span>
             </li>
           </ul>
@@ -182,12 +189,30 @@ export default async function ProductPage(props: PageProps<"/[lang]/products/[ha
         </section>
       </div>
 
+      {product.videos.length ? (
+        <section className={styles.media} aria-labelledby="video-title">
+          <h2 id="video-title" className={styles.h2}>
+            {t.videoTitle}
+          </h2>
+          <ProductVideos videos={product.videos} title={product.title} />
+        </section>
+      ) : null}
+
+      {compare ? (
+        <section className={styles.media} aria-labelledby="compare-title">
+          <h2 id="compare-title" className={styles.h2}>
+            {t.beforeAfterTitle}
+          </h2>
+          <BeforeAfter before={compare.before} after={compare.after} />
+        </section>
+      ) : null}
+
       {related.length ? (
         <section className="block" aria-labelledby="related-title">
           <div className="head">
             <div>
               <p className="eyebrow">{t.relatedEyebrow}</p>
-              <h2 id="related-title">{fmt(t.relatedTitle, { name: siteConfig.name })}</h2>
+              <h2 id="related-title">{fmt(t.relatedTitle, { percent: offers.bundle.percent })}</h2>
             </div>
           </div>
           <ProductGrid products={related} />

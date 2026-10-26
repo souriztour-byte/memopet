@@ -164,7 +164,7 @@
   cursor: pointer;
 }
 .remove:hover {
-  color: var(--gold);
+  color: var(--gold-text);
 }
 .right {
   display: flex;
@@ -199,7 +199,7 @@
   display: flex;
   justify-content: space-between;
   gap: 12px;
-  color: var(--gold);
+  color: var(--gold-text);
   font-weight: 500;
   font-variant-numeric: tabular-nums;
 }
@@ -231,11 +231,57 @@
   width: 18px;
   height: 18px;
   flex: none;
-  color: var(--gold);
+  color: var(--gold-text);
+}
+.perkDate {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+}
+.perkDate svg {
+  width: 18px;
+  height: 18px;
+  flex: none;
+  color: var(--gold-text);
+}
+/* "Pairs well with" under the cart lines */
+.suggest {
+  margin-top: 8px;
+  padding: 16px 0 8px;
+  border-top: 1px solid var(--line);
+}
+.suggestTitle {
+  font-family: var(--body);
+  font-size: 0.68rem;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 10px;
+}
+.suggest ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 10px;
+}
+.suggestItem {
+  display: grid;
+  grid-template-columns: 64px 1fr;
+  gap: 12px;
+  align-items: center;
+  text-decoration: none;
+  color: var(--ink);
+}
+.suggestItem:hover .name {
+  color: var(--gold-ink);
 }
 .perkHint {
   font-size: 0.85rem;
-  color: var(--gold);
+  color: var(--gold-text);
   font-weight: 500;
 }
 .meter {

@@ -45,7 +45,7 @@
   height: 36px;
   border-radius: 50%;
   background: var(--panel);
-  color: var(--gold);
+  color: var(--gold-text);
   display: grid;
   place-items: center;
   flex: none;

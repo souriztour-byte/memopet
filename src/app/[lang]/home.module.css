@@ -52,7 +52,8 @@
   font-size: 0.98rem;
   color: var(--on-photo-soft);
 }
-.heroMore {
+/* Two classes so it outranks the shared .more colours below. */
+.heroText .heroMore {
   margin-top: 6px;
   color: var(--on-photo);
   border-bottom-color: rgba(244, 239, 230, 0.6);
@@ -101,7 +102,7 @@
 a.more:hover,
 a:hover .more {
   color: var(--gold-ink);
-  border-bottom-color: var(--gold);
+  border-bottom-color: var(--gold-text);
 }
 
 .collection {
@@ -152,6 +153,37 @@ a:hover .more {
 .featureScene {
   position: relative;
   min-height: 620px;
+}
+
+/* The paw washer's before/after and video, once they're in Shopify */
+.proof {
+  padding-block: 56px 40px;
+}
+.proof .kicker {
+  margin-bottom: 28px;
+}
+.proofTwo {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 16px;
+  align-items: center;
+}
+
+/* Quiz invitation between the features and the promises */
+.quizTeaser {
+  margin-top: 64px;
+  padding: 56px 24px;
+  background: var(--panel);
+  display: grid;
+  justify-items: center;
+  gap: 14px;
+  text-align: center;
+}
+.quizTeaser h2 {
+  font-size: clamp(1.9rem, 3.4vw, 2.6rem);
+}
+.quizTeaser :global(.btn) {
+  margin-top: 6px;
 }
 
 /* Promises in a quiet row, like a line of press mentions */

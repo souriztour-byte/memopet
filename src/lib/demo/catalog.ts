@@ -343,6 +343,7 @@ function buildProduct(def: ProductDef, lang: Locale): DemoProduct {
       values: option.values.map((v) => v.label[lang]),
     })),
     variants,
+    videos: [],
   };
 }
 

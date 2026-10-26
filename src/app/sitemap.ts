@@ -15,7 +15,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   ]);
 
   const pages: { path: string; lastModified?: string }[] = [
-    ...["/", "/shop", "/collections", "/how-to-order", "/faq", "/contact", "/policies"].map(
+    ...["/", "/shop", "/collections", "/how-to-order", "/quiz", "/faq", "/contact", "/policies"].map(
       (path) => ({ path }),
     ),
     ...collections.map((c) => ({ path: `/collections/${c.handle}` })),

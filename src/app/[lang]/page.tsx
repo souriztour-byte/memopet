@@ -2,12 +2,14 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { BeforeAfter } from "@/components/media/BeforeAfter";
+import { ProductVideos } from "@/components/media/ProductVideos";
 import { ProductGrid } from "@/components/product/ProductGrid";
 import { alternatesFor, hasLocale, localizePath } from "@/i18n/config";
 import { getDictionary } from "@/i18n/dictionaries";
 import { fmt } from "@/i18n/format";
-import { getProducts } from "@/lib/commerce";
-import { HERO_PHOTO, HOME_PHOTOS } from "@/lib/commerce/presentation";
+import { getProduct, getProducts } from "@/lib/commerce";
+import { beforeAfterImages, HERO_PHOTO, HOME_PHOTOS } from "@/lib/commerce/presentation";
 import { siteConfig } from "@/lib/config";
 import { offerMoney, offers } from "@/lib/content/offers";
 import { policySettings } from "@/lib/content/policy-settings";
@@ -82,7 +84,13 @@ export default async function HomePage(props: PageProps<"/[lang]">) {
     alt: dict.photos[p.alt],
   });
 
-  const products = await getProducts(lang, { sort: "best-selling", limit: 8 });
+  const [products, pawWasher] = await Promise.all([
+    getProducts(lang, { sort: "best-selling", limit: 8 }),
+    getProduct(lang, siteConfig.featuredProductHandle),
+  ]);
+  // Shown once the paw washer has a video, or Before/After photos, in Shopify.
+  const compare = pawWasher ? beforeAfterImages(pawWasher.images) : null;
+  const video = pawWasher?.videos[0] ?? null;
 
   const promises = [
     {
@@ -169,6 +177,17 @@ export default async function HomePage(props: PageProps<"/[lang]">) {
         tile={photo(HOME_PHOTOS.groomingTile)}
         scene={photo(HOME_PHOTOS.groomingScene)}
       />
+      {pawWasher && (compare || video) ? (
+        <section className={styles.proof} aria-labelledby="proof-title">
+          <h2 id="proof-title" className={styles.kicker}>
+            {compare ? dict.product.beforeAfterTitle : dict.product.videoTitle} · {pawWasher.title}
+          </h2>
+          <div className={compare && video ? styles.proofTwo : undefined}>
+            {compare ? <BeforeAfter before={compare.before} after={compare.after} /> : null}
+            {video ? <ProductVideos videos={[video]} title={pawWasher.title} /> : null}
+          </div>
+        </section>
+      ) : null}
       <Feature
         id="beds-title"
         eyebrow={t.bedsEyebrow}
@@ -180,6 +199,15 @@ export default async function HomePage(props: PageProps<"/[lang]">) {
         scene={photo(HOME_PHOTOS.bedsScene)}
         flip
       />
+
+      <section className={styles.quizTeaser} aria-labelledby="quiz-title">
+        <p className="eyebrow">{dict.quiz.eyebrow}</p>
+        <h2 id="quiz-title">{dict.quiz.teaserTitle}</h2>
+        <p className={styles.featureText}>{dict.quiz.teaserText}</p>
+        <Link href={href("/quiz")} className="btn btn-gold">
+          {dict.quiz.teaserCta}
+        </Link>
+      </section>
 
       <ul className={styles.promises} aria-label={t.promisesLabel}>
         {promises.map((p) => (

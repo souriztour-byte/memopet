@@ -1,6 +1,7 @@
 /* ──────────────────────────────────────────────────────────────────────────
-   MimiPets design tokens — the "black & gold" look. Change colours here and
-   every page follows.
+   MimiPets design tokens. Two looks share every rule: black & gold (the
+   default) and white & gold (<html data-theme="light">, chosen in
+   src/app/[lang]/layout.tsx). Change colours here and every page follows.
    ────────────────────────────────────────────────────────────────────────── */
 :root {
   color-scheme: dark;
@@ -9,22 +10,52 @@
   /* Panels behind photos, steps and notes; panel-2 for hover and borders. */
   --panel: #1b1916;
   --panel-2: #2e2a25;
+  --tile-2: #1e1b18;
+  --tile-3: #191714;
   --ink: #f4efe6;
-  /* Body copy on photos and in feature sections. */
+  /* Secondary copy in feature sections. */
   --ink-soft: #cfc7ba;
   --muted: #b8b0a3;
   --line: #2e2a25;
   --gold: #c9a96e;
-  /* Lighter gold for text links and hovers on the dark background. */
+  /* Gold for text links and hovers. */
   --gold-ink: #dcc596;
   --on-gold: #0f0e0d;
+  /* Thin gold frames and the outline of ghost buttons. */
+  --gold-line: rgba(201, 169, 110, 0.45);
+  --ghost-line: rgba(244, 239, 230, 0.45);
   --danger: #e8836f;
   --shadow: 0 24px 48px -24px rgba(0, 0, 0, 0.8);
+  /* Text and labels laid over darkened photos — the same in both looks. */
+  --on-photo: #f4efe6;
+  --on-photo-soft: #e2dacd;
+  --gold-photo: #c9a96e;
   --display: var(--font-cormorant), "Cormorant Garamond", Georgia, "Times New Roman", serif;
   --body: var(--font-jost), "Jost", "Segoe UI", system-ui, -apple-system, sans-serif;
   --radius: 2px;
   --gutter: clamp(16px, 4vw, 40px);
   --header-h: 72px;
+}
+/* White & gold. Gold is a deeper bronze here so text stays readable on white. */
+:root[data-theme="light"] {
+  color-scheme: light;
+  --bg: #ffffff;
+  --surface: #faf8f4;
+  --panel: #f4f0e9;
+  --panel-2: #e3dcd0;
+  --tile-2: #f7f2ea;
+  --tile-3: #f1ece4;
+  --ink: #1a1714;
+  --ink-soft: #4a443d;
+  --muted: #6b6258;
+  --line: #e8e2d8;
+  --gold: #8a6a36;
+  --gold-ink: #6e5226;
+  --on-gold: #ffffff;
+  --gold-line: rgba(138, 106, 54, 0.4);
+  --ghost-line: rgba(26, 23, 20, 0.35);
+  --danger: #b3412c;
+  --shadow: 0 24px 48px -28px rgba(60, 45, 25, 0.35);
 }
 /* Computers: the header has a second row for the menu. */
 @media (min-width: 1001px) {
@@ -233,7 +264,7 @@ section[id] {
 .btn-ghost {
   background: transparent;
   color: var(--ink);
-  box-shadow: inset 0 0 0 1px rgba(244, 239, 230, 0.45);
+  box-shadow: inset 0 0 0 1px var(--ghost-line);
 }
 .btn-ghost:hover {
   color: var(--gold-ink);
@@ -336,10 +367,10 @@ section[id] {
   --tile: var(--panel);
 }
 .t2 {
-  --tile: #1e1b18;
+  --tile: var(--tile-2);
 }
 .t3 {
-  --tile: #191714;
+  --tile: var(--tile-3);
 }
 
 /* "How to order" steps */

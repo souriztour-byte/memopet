@@ -1,4 +1,5 @@
-/* Hero: the photo fills the width, the text sits on the darkened left/bottom. */
+/* Hero: the photo fills the width, the text sits on the darkened left/bottom.
+   It stays a dark photo block in both looks, so its text uses the on-photo colours. */
 .hero {
   position: relative;
   min-height: min(820px, calc(100svh - var(--header-h) - 34px));
@@ -19,13 +20,21 @@
   z-index: -1;
   background:
     linear-gradient(90deg, rgba(15, 14, 13, 0.88) 0%, rgba(15, 14, 13, 0.5) 38%, rgba(15, 14, 13, 0) 70%),
-    linear-gradient(180deg, rgba(15, 14, 13, 0) 55%, var(--bg) 100%);
+    linear-gradient(180deg, rgba(15, 14, 13, 0) 55%, rgba(15, 14, 13, 0.92) 100%);
 }
 .heroText {
   padding-block: 120px 96px;
   display: grid;
   justify-items: start;
   gap: 22px;
+  color: var(--on-photo);
+}
+.heroText :global(.eyebrow) {
+  color: var(--gold-photo);
+}
+.heroText :global(.btn-ghost) {
+  color: var(--on-photo);
+  box-shadow: inset 0 0 0 1px rgba(244, 239, 230, 0.6);
 }
 .heroTitle {
   max-width: 11ch;
@@ -35,7 +44,7 @@
 .heroLead {
   max-width: 26em;
   font-size: 1.1rem;
-  color: var(--ink-soft);
+  color: var(--on-photo-soft);
 }
 .cta {
   display: flex;
@@ -53,7 +62,7 @@
       rgba(15, 14, 13, 0.35) 0%,
       rgba(15, 14, 13, 0) 25%,
       rgba(15, 14, 13, 0.6) 55%,
-      var(--bg) 96%
+      rgba(15, 14, 13, 0.92) 96%
     );
   }
   .heroText {
@@ -188,7 +197,7 @@
   top: 24px;
   padding: 10px 16px;
   background: rgba(15, 14, 13, 0.82);
-  color: var(--gold);
+  color: var(--gold-photo);
   font-size: 0.7rem;
   letter-spacing: 0.22em;
   text-transform: uppercase;

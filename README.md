@@ -2,8 +2,9 @@
 
 A Next.js storefront for **MimiPets** (“Little things. Happier pets.” / “Pequeños detalles.
 Mascotas más felices.”), first built from the `mimopets_4.html` prototype and now in a
-**black & gold** look: near-black background, champagne-gold accents, Cormorant Garamond for
-headings and the MIMIPETS wordmark, Jost for text (colours in `src/app/globals.css`). Products,
+luxury look in two versions: **white & gold** (current) and **black & gold**, switched with
+`look` in `src/lib/config.ts` (palettes in `src/app/globals.css`). Both use Cormorant Garamond
+for headings and the MIMIPETS wordmark, and Jost for text. Products,
 prices, the cart and checkout come from Shopify through the **Storefront API**. The site is in
 **English and Spanish**. The share-preview images (`src/lib/og/frame.tsx`) still use the
 prototype's purple and pink.
@@ -196,7 +197,7 @@ The site states nothing that isn’t in one of these sources:
 
 | Content | Source |
 | --- | --- |
-| Colours, fonts, wordmark | The black & gold design picked by the shop owner (look “D”) |
+| Colours, fonts, wordmark | The luxury design picked by the shop owner (look “D”), in white & gold or black & gold |
 | Illustrations (shown only when a product has no photo), card labels | HTML prototype |
 | Product names, card badges | HTML prototype (Silicone Paw Washer, Luxury Cat Sofa Bed, Warming Sleeping Bag Bed); the Paw Washer Cup is named after its listing |
 | Product details: materials, measurements, colours, sizes, what’s in the box, photos | Supplier listings (CJ Dropshipping), one per product. The paw washer studio shots are the supplier photos cut out and set on the shop’s cream background; the size charts are redrawn with the listed measurements |

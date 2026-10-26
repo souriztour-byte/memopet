@@ -16,7 +16,7 @@
   min-height: 520px;
   overflow: hidden;
   text-decoration: none;
-  color: var(--ink);
+  color: var(--on-photo);
   isolation: isolate;
 }
 .pic {
@@ -60,7 +60,7 @@
 }
 .txt p {
   max-width: 30em;
-  color: var(--ink-soft);
+  color: var(--on-photo-soft);
   font-size: 0.95rem;
   line-height: 1.5;
 }
@@ -68,14 +68,14 @@
   justify-self: start;
   padding-bottom: 4px;
   border-bottom: 1px solid transparent;
-  color: var(--gold);
+  color: var(--gold-photo);
   font-size: 0.72rem;
   letter-spacing: 0.24em;
   text-transform: uppercase;
   transition: border-color 0.2s;
 }
 .cat:hover .explore {
-  border-bottom-color: var(--gold);
+  border-bottom-color: var(--gold-photo);
 }
 @media (max-width: 720px) {
   .cat {

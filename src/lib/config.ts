@@ -49,3 +49,11 @@ export const navLinks = [
   { href: "/faq", key: "faq" },
   { href: "/contact", key: "contact" },
 ] as const;
+
+/**
+ * The site's look: "dark" is black & gold, "light" is white & gold. Both
+ * palettes live in src/app/globals.css; switch here.
+ */
+export const look: "dark" | "light" = "light";
+/** Browser-bar and home-screen colour for each look. */
+export const lookColor = { dark: "#0F0E0D", light: "#FFFFFF" } as const;

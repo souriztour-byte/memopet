@@ -12,7 +12,7 @@ import { getDictionary } from "@/i18n/dictionaries";
 import { fmt } from "@/i18n/format";
 import { I18nProvider } from "@/i18n/I18nProvider";
 import { isDemoMode } from "@/lib/commerce";
-import { siteConfig } from "@/lib/config";
+import { look, lookColor, siteConfig } from "@/lib/config";
 import "../globals.css";
 
 // Serif display and sans body of the black & gold look. Both are variable
@@ -62,7 +62,7 @@ export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   viewportFit: "cover",
-  themeColor: "#0F0E0D",
+  themeColor: lookColor[look],
 };
 
 export default async function RootLayout({ children, params }: LayoutProps<"/[lang]">) {
@@ -73,6 +73,7 @@ export default async function RootLayout({ children, params }: LayoutProps<"/[la
   return (
     <html
       lang={lang}
+      data-theme={look}
       data-scroll-behavior="smooth"
       className={`${cormorant.variable} ${jost.variable}`}
     >

@@ -63,7 +63,7 @@ function Feature({
           {cta} →
         </Link>
       </div>
-      <div className={styles.featureScene}>
+      <div className={`${styles.featureScene} unveil`}>
         <Image src={scene.src} alt={scene.alt} fill quality={90} sizes="(max-width: 760px) 100vw, 640px" className={styles.cover} />
       </div>
     </section>
@@ -129,15 +129,18 @@ export default async function HomePage(props: PageProps<"/[lang]">) {
   return (
     <div className="wrap">
       <section className={styles.hero} aria-labelledby="hero-title">
-        <Image
-          src={HERO_PHOTO.src}
-          alt={dict.photos[HERO_PHOTO.alt]}
-          fill
-          preload
-          quality={90}
-          sizes="(max-width: 1360px) 100vw, 1280px"
-          className={styles.heroPhoto}
-        />
+        {/* Taller than the hero so it can drift slower than the page (parallax). */}
+        <div className={styles.heroParallax}>
+          <Image
+            src={HERO_PHOTO.src}
+            alt={dict.photos[HERO_PHOTO.alt]}
+            fill
+            preload
+            quality={90}
+            sizes="(max-width: 1360px) 100vw, 1280px"
+            className={styles.heroPhoto}
+          />
+        </div>
         <div className={styles.heroText}>
           <h1 id="hero-title" className={styles.heroName}>
             {siteConfig.name}
@@ -224,7 +227,7 @@ export default async function HomePage(props: PageProps<"/[lang]">) {
         </h2>
         <div className={styles.guideGrid} data-reveal>
           <Link href={href("/shop")} className={styles.guideMain}>
-            <span className={styles.guideMainPic}>
+            <span className={`${styles.guideMainPic} unveil`}>
               <Image src={guideMain.src} alt={guideMain.alt} fill sizes="(max-width: 900px) 100vw, 760px" className={styles.cover} />
             </span>
             <span className={styles.guideMainText}>

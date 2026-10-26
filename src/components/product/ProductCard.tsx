@@ -82,7 +82,7 @@ export function ProductCard({ product, preload }: { product: ProductSummary; pre
 
   return (
     <article className={`${styles.prod} ${product.tile}`}>
-      <div className={styles.pic} ref={picRef}>
+      <div className={`${styles.pic} unveil`} ref={picRef}>
         {/* Same name as the product page's main photo, so opening the product glides it there. */}
         <ViewTransition name={`product-${product.handle}`} share="morph" default="none">
           {/* The key remounts the photo when a swatch changes it, so it fades in. */}

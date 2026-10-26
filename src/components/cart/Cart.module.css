@@ -289,7 +289,8 @@
   background: var(--panel-2);
   overflow: hidden;
 }
-.meter span {
+/* The fill (the paw prints span sits beside it). */
+.meter > span[data-done] {
   display: block;
   height: 100%;
   border-radius: inherit;
@@ -298,6 +299,73 @@
 }
 .meter span[data-done="true"] {
   background: var(--gold);
+}
+/* Free shipping reached: a shimmer runs along the bar and paw prints pop up. */
+.celebrate {
+  position: relative;
+  overflow: visible;
+}
+.paws {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.paws svg {
+  position: absolute;
+  bottom: 0;
+  width: 14px;
+  height: 14px;
+  color: var(--gold);
+  opacity: 0;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .celebrate > span[data-done="true"] {
+    background: linear-gradient(90deg, var(--gold) 0%, #f3e3bf 45%, var(--gold) 90%) 0 0 / 220% 100%;
+    animation: shimmer 1.4s ease 2;
+  }
+  .paws svg {
+    animation: paw-pop 1.3s ease-out forwards;
+  }
+  .paws svg:nth-child(1) {
+    left: 8%;
+  }
+  .paws svg:nth-child(2) {
+    left: 28%;
+    animation-delay: 0.12s;
+  }
+  .paws svg:nth-child(3) {
+    left: 50%;
+    animation-delay: 0.24s;
+  }
+  .paws svg:nth-child(4) {
+    left: 70%;
+    animation-delay: 0.36s;
+  }
+  .paws svg:nth-child(5) {
+    left: 90%;
+    animation-delay: 0.48s;
+  }
+}
+@keyframes shimmer {
+  from {
+    background-position: 100% 0;
+  }
+  to {
+    background-position: -120% 0;
+  }
+}
+@keyframes paw-pop {
+  0% {
+    opacity: 0;
+    transform: translateY(0) scale(0.4) rotate(-15deg);
+  }
+  30% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-34px) scale(1) rotate(10deg);
+  }
 }
 
 @media (max-width: 420px) {

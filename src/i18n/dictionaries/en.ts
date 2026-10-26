@@ -174,6 +174,7 @@ export const en = {
     soldOut: "Sold out",
     adding: "Adding…",
     addToCart: "Add to cart",
+    added: "Added",
     quickAdd: "Add",
     quickAddLabel: "Add {title} to cart",
     quickAddOpen: "Quick add",

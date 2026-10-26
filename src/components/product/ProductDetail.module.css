@@ -38,11 +38,75 @@
   .stageMedia {
     animation: stage-in 0.5s ease;
   }
+  /* Swiping on phones: the new photo slides in from the side it came from. */
+  .stageMedia[data-slide="next"] {
+    animation: slide-from-right 0.35s ease;
+  }
+  .stageMedia[data-slide="prev"] {
+    animation: slide-from-left 0.35s ease;
+  }
+  /* Computers: the photo zooms in under the mouse (ProductDetail sets --zoom-x/y). */
+  @media (hover: hover) {
+    .stage {
+      cursor: zoom-in;
+    }
+    .stagePhoto {
+      transition: transform 0.35s ease;
+      transform-origin: var(--zoom-x, 50%) var(--zoom-y, 50%);
+    }
+    .stage[data-zoom="on"] .stagePhoto {
+      transform: scale(1.9);
+    }
+  }
 }
 @keyframes stage-in {
   from {
     opacity: 0;
     transform: scale(1.02);
+  }
+}
+@keyframes slide-from-right {
+  from {
+    opacity: 0;
+    transform: translateX(28%);
+  }
+}
+@keyframes slide-from-left {
+  from {
+    opacity: 0;
+    transform: translateX(-28%);
+  }
+}
+
+/* Phones: dots under the photo show which one is on screen (thumbnails on computers). */
+.dots {
+  display: none;
+}
+@media (max-width: 720px) {
+  .dots {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+  }
+  .dots span {
+    width: 6px;
+    height: 6px;
+    border-radius: 3px;
+    background: var(--panel-2);
+    transition:
+      width 0.3s ease,
+      background 0.3s ease;
+  }
+  .dots span[data-active="true"] {
+    width: 22px;
+    background: var(--gold);
+  }
+  /* Two classes so it outranks the .thumbs rule further down. */
+  .gallery .thumbs {
+    display: none;
+  }
+  .stage {
+    touch-action: pan-y;
   }
 }
 .photoNote {

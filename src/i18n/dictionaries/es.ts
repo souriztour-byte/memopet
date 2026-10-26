@@ -172,6 +172,7 @@ export const es: Dictionary = {
     soldOut: "Agotado",
     adding: "Añadiendo…",
     addToCart: "Añadir al carrito",
+    added: "Añadido",
     quickAdd: "Añadir",
     quickAddLabel: "Añadir {title} al carrito",
     quickAddOpen: "Añadir",

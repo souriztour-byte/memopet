@@ -12,10 +12,31 @@
   overflow: hidden;
   isolation: isolate;
 }
+.heroParallax {
+  position: absolute;
+  inset: -12% 0;
+  z-index: -2;
+}
 .heroPhoto {
   object-fit: cover;
   object-position: center 45%;
-  z-index: -2;
+}
+/* Parallax: as the hero scrolls away, the photo moves down a little, so it
+   seems to drift slower than the page. Browsers without scroll-driven
+   animations show a still photo. */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .heroParallax {
+      animation: hero-drift linear both;
+      animation-timeline: view();
+      animation-range: exit 0% exit 100%;
+    }
+  }
+}
+@keyframes hero-drift {
+  to {
+    translate: 0 14%;
+  }
 }
 .hero::after {
   content: "";

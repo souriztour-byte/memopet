@@ -18,7 +18,7 @@ export async function CategoryCard({ collection }: { collection: Collection }) {
   return (
     <Link
       href={localizePath(lang, `/collections/${collection.handle}`)}
-      className={`${styles.cat} ${look.tile}`}
+      className={`${styles.cat} ${look.tile} unveil`}
     >
       <span className={styles.pic}>
         <Illustration name={look.illustration} className={styles.art} />

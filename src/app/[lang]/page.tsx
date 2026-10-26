@@ -2,15 +2,12 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { CategoryGrid } from "@/components/collection/CategoryGrid";
-import { Price } from "@/components/product/Price";
 import { ProductGrid } from "@/components/product/ProductGrid";
-import { GiftIcon, LockIcon, ReturnIcon, TruckIcon } from "@/components/ui/icons";
 import { alternatesFor, hasLocale, localizePath } from "@/i18n/config";
 import { getDictionary } from "@/i18n/dictionaries";
-import { fmt, plural } from "@/i18n/format";
-import { getCollections, getProduct, getProducts } from "@/lib/commerce";
-import { HERO_PHOTO, SPOTLIGHT } from "@/lib/commerce/presentation";
+import { fmt } from "@/i18n/format";
+import { getProducts } from "@/lib/commerce";
+import { HERO_PHOTO, HOME_PHOTOS } from "@/lib/commerce/presentation";
 import { siteConfig } from "@/lib/config";
 import { offerMoney, offers } from "@/lib/content/offers";
 import { policySettings } from "@/lib/content/policy-settings";
@@ -25,6 +22,52 @@ export async function generateMetadata(props: PageProps<"/[lang]">): Promise<Met
   return hasLocale(lang) ? { alternates: alternatesFor(lang, "/") } : {};
 }
 
+type Photo = { src: string; alt: string };
+
+/** Product on a stone tile with its story, beside a lifestyle photo. */
+function Feature({
+  id,
+  eyebrow,
+  title,
+  text,
+  href,
+  cta,
+  tile,
+  scene,
+  flip,
+}: {
+  id: string;
+  eyebrow: string;
+  title: string;
+  text: string;
+  href: string;
+  cta: string;
+  tile: Photo;
+  scene: Photo;
+  flip?: boolean;
+}) {
+  return (
+    <section className={`${styles.feature} ${flip ? styles.flip : ""}`} aria-labelledby={id}>
+      <div className={styles.featureTile}>
+        <div className={styles.featureProduct}>
+          <Image src={tile.src} alt={tile.alt} fill sizes="(max-width: 760px) 80vw, 420px" className={styles.contain} />
+        </div>
+        <p className="eyebrow">{eyebrow}</p>
+        <h2 id={id} className={styles.featureTitle}>
+          {title}
+        </h2>
+        <p className={styles.featureText}>{text}</p>
+        <Link href={href} className={styles.more}>
+          {cta} →
+        </Link>
+      </div>
+      <div className={styles.featureScene}>
+        <Image src={scene.src} alt={scene.alt} fill quality={90} sizes="(max-width: 760px) 100vw, 640px" className={styles.cover} />
+      </div>
+    </section>
+  );
+}
+
 export default async function HomePage(props: PageProps<"/[lang]">) {
   const { lang } = await props.params;
   if (!hasLocale(lang)) notFound();
@@ -34,17 +77,15 @@ export default async function HomePage(props: PageProps<"/[lang]">) {
   const shipping = getShipping(lang, dict);
   const returnDays = policySettings.returnWindowDays;
   const money = (amount: number) => formatMoney(offerMoney(amount), lang);
+  const photo = (p: (typeof HOME_PHOTOS)[keyof typeof HOME_PHOTOS]): Photo => ({
+    src: p.src,
+    alt: dict.photos[p.alt],
+  });
 
-  const [collections, products, spotlight] = await Promise.all([
-    getCollections(lang),
-    getProducts(lang, { sort: "best-selling", limit: 8 }),
-    getProduct(lang, SPOTLIGHT.handle),
-  ]);
-  const spotlightOption = spotlight?.options[0];
+  const products = await getProducts(lang, { sort: "best-selling", limit: 8 });
 
   const promises = [
     {
-      icon: <TruckIcon />,
       title: fmt(t.promiseShipping, { amount: money(offers.shipping.freeFrom) }),
       text: fmt(t.promiseShippingText, {
         rate: money(offers.shipping.standardRate),
@@ -52,21 +93,33 @@ export default async function HomePage(props: PageProps<"/[lang]">) {
         days: shipping.primaryEstimate.days,
       }),
     },
+    { title: fmt(t.promiseBundle, { percent: offers.bundle.percent }), text: t.promiseBundleText },
     {
-      icon: <GiftIcon />,
-      title: fmt(t.promiseBundle, { percent: offers.bundle.percent }),
-      text: t.promiseBundleText,
-    },
-    {
-      icon: <ReturnIcon />,
       title: fmt(t.promiseReturns, { days: returnDays }),
       text: fmt(t.promiseReturnsText, { days: returnDays }),
     },
-    { icon: <LockIcon />, title: t.promiseSecure, text: t.promiseSecureText },
+    { title: t.promiseSecure, text: t.promiseSecureText },
   ];
 
+  const guides = [
+    { href: "/how-to-order", title: t.guideOrderTitle, text: t.guideOrderText, photo: photo(HOME_PHOTOS.guideOrder) },
+    {
+      href: "/policies/shipping-policy",
+      title: t.guideDeliveryTitle,
+      text: fmt(t.guideDeliveryText, {
+        prepared: shipping.processing.days,
+        days: shipping.primaryEstimate.days,
+        destination: shipping.primaryEstimate.destination,
+        returns: returnDays,
+      }),
+      photo: photo(HOME_PHOTOS.guideDelivery),
+    },
+    { href: "/faq", title: t.guideFaqTitle, text: t.guideFaqText, photo: photo(HOME_PHOTOS.guideFaq) },
+  ];
+  const guideMain = photo(HOME_PHOTOS.guideMain);
+
   return (
-    <>
+    <div className="wrap">
       <section className={styles.hero} aria-labelledby="hero-title">
         <Image
           src={HERO_PHOTO.src}
@@ -74,115 +127,102 @@ export default async function HomePage(props: PageProps<"/[lang]">) {
           fill
           preload
           quality={90}
-          sizes="100vw"
+          sizes="(max-width: 1360px) 100vw, 1280px"
           className={styles.heroPhoto}
         />
-        <div className={`wrap ${styles.heroText}`}>
-          <p className="eyebrow">{t.heroEyebrow}</p>
-          <h1 id="hero-title" className={styles.heroTitle}>
-            {t.heroTitleLine1}
-            <br />
-            <em>{t.heroTitleLine2}</em>
+        <div className={styles.heroText}>
+          <h1 id="hero-title" className={styles.heroName}>
+            {siteConfig.name}
           </h1>
+          <p className={styles.heroTagline}>{dict.brand.tagline}</p>
           <p className={styles.heroLead}>{t.heroLead}</p>
-          <div className={styles.cta}>
-            <Link className="btn btn-gold" href={href("/shop")}>
-              {t.ctaDiscover}
-            </Link>
-            <Link className="btn btn-ghost" href={href("/collections/comfort-beds")}>
-              {t.ctaBeds}
-            </Link>
-          </div>
+          <Link href={href("/shop")} className={`${styles.more} ${styles.heroMore}`}>
+            {t.ctaDiscover} →
+          </Link>
         </div>
       </section>
 
-      <div className="wrap">
-        <ul className={styles.promises} aria-label={t.promisesLabel}>
-          {promises.map((p) => (
-            <li key={p.title}>
-              {p.icon}
-              <span>
-                <b>{p.title}</b>
-                <small>{p.text}</small>
-              </span>
-            </li>
-          ))}
-        </ul>
+      <section className={styles.collection} aria-labelledby="products-title">
+        <div className={styles.kickerRow}>
+          <h2 id="products-title" className={styles.kicker}>
+            {t.collectionTitle}
+          </h2>
+          <span className={styles.swipe} aria-hidden="true">
+            {t.swipe} →
+          </span>
+        </div>
+        <ProductGrid products={products} rail />
+        <p className={styles.center}>
+          <Link href={href("/shop")} className={styles.more}>
+            {t.viewAll} →
+          </Link>
+        </p>
+      </section>
 
-        <section className="block" id="products" aria-labelledby="products-title">
-          <div className="head">
-            <div>
-              <p className="eyebrow">{plural(lang, products.length, t.collectionCount)}</p>
-              <h2 id="products-title">{t.collectionTitle}</h2>
-            </div>
-            <span className={styles.headLinks}>
-              <span className={styles.swipe} aria-hidden="true">
-                {t.swipe} →
-              </span>
-              <Link href={href("/shop")} className={styles.viewAll}>
-                {t.viewAll}
-              </Link>
+      <Feature
+        id="grooming-title"
+        eyebrow={t.groomingEyebrow}
+        title={t.groomingTitle}
+        text={t.groomingText}
+        href={href("/collections/grooming-care")}
+        cta={t.discover}
+        tile={photo(HOME_PHOTOS.groomingTile)}
+        scene={photo(HOME_PHOTOS.groomingScene)}
+      />
+      <Feature
+        id="beds-title"
+        eyebrow={t.bedsEyebrow}
+        title={t.bedsTitle}
+        text={t.bedsText}
+        href={href("/collections/comfort-beds")}
+        cta={t.discover}
+        tile={photo(HOME_PHOTOS.bedsTile)}
+        scene={photo(HOME_PHOTOS.bedsScene)}
+        flip
+      />
+
+      <ul className={styles.promises} aria-label={t.promisesLabel}>
+        {promises.map((p) => (
+          <li key={p.title}>
+            <b>{p.title}</b>
+            <span>{p.text}</span>
+          </li>
+        ))}
+      </ul>
+
+      <section className={styles.guide} aria-labelledby="guide-title">
+        <h2 id="guide-title" className={styles.kicker}>
+          {t.guideEyebrow}
+        </h2>
+        <div className={styles.guideGrid}>
+          <Link href={href("/shop")} className={styles.guideMain}>
+            <span className={styles.guideMainPic}>
+              <Image src={guideMain.src} alt={guideMain.alt} fill sizes="(max-width: 900px) 100vw, 760px" className={styles.cover} />
             </span>
-          </div>
-          <ProductGrid products={products} rail />
-        </section>
-      </div>
-
-      {spotlight ? (
-        <section className={styles.spotlight} aria-labelledby="spotlight-title">
-          <div className={`wrap ${styles.spotlightInner}`}>
-            <div className={styles.spotlightPic}>
-              <Image
-                src={SPOTLIGHT.photo}
-                alt={t.spotlightPhoto}
-                fill
-                quality={90}
-                sizes="(max-width: 900px) 100vw, 640px"
-                className={styles.cover}
-              />
-              <span className={styles.badge}>{t.spotlightBadge}</span>
-            </div>
-            <div className={styles.spotlightText}>
-              <p className="eyebrow">{t.spotlightEyebrow}</p>
-              <h2 id="spotlight-title">
-                {t.titleLine1}
-                <br />
-                <em>{t.titleLine2}</em>
-              </h2>
-              <p className={styles.spotlightLead}>{fmt(t.spotlightLead, { name: siteConfig.name })}</p>
-              {spotlightOption ? (
-                <ul className={styles.values} aria-label={spotlightOption.name}>
-                  {spotlightOption.values.map((v) => (
-                    <li key={v}>{v}</li>
-                  ))}
-                </ul>
-              ) : null}
-              <div className={styles.buy}>
-                <Price
-                  className={styles.spotlightPrice}
-                  min={spotlight.priceRange.minVariantPrice}
-                  max={spotlight.priceRange.maxVariantPrice}
-                />
-                <Link className="btn btn-gold" href={href(`/products/${spotlight.handle}`)}>
-                  {t.spotlightCta}
+            <span className={styles.guideMainText}>
+              <b>{t.guideMainTitle}</b>
+              <span>{t.guideMainText}</span>
+              <span className={styles.more}>{t.readMore} →</span>
+            </span>
+          </Link>
+          <ul className={styles.guideList}>
+            {guides.map((g) => (
+              <li key={g.href}>
+                <Link href={href(g.href)} className={styles.guideItem}>
+                  <span className={styles.guideThumb}>
+                    <Image src={g.photo.src} alt={g.photo.alt} fill sizes="120px" className={styles.cover} />
+                  </span>
+                  <span className={styles.guideItemText}>
+                    <b>{g.title}</b>
+                    <span>{g.text}</span>
+                    <span className={styles.more}>{t.readMore} →</span>
+                  </span>
                 </Link>
-              </div>
-            </div>
-          </div>
-        </section>
-      ) : null}
-
-      <div className="wrap">
-        <section className={`block ${styles.categories}`} id="categories" aria-labelledby="categories-title">
-          <div className="head">
-            <div>
-              <p className="eyebrow">{t.categoriesEyebrow}</p>
-              <h2 id="categories-title">{t.categoriesTitle}</h2>
-            </div>
-          </div>
-          <CategoryGrid collections={collections} />
-        </section>
-      </div>
-    </>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+    </div>
   );
 }

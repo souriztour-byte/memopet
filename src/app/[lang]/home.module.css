@@ -1,16 +1,20 @@
-/* Hero: the photo fills the width, the text sits on the darkened left/bottom.
-   It stays a dark photo block in both looks, so its text uses the on-photo colours. */
+/* Editorial home page: a framed hero with the shop name, catalogue rows on
+   stone tiles, product + lifestyle pairs, and a guide block. */
+
+/* Hero: the photo sits inside the page margins with the name over it. Its
+   text uses the on-photo colours, so it reads the same in every look. */
 .hero {
   position: relative;
-  min-height: min(820px, calc(100svh - var(--header-h) - 34px));
-  display: flex;
-  align-items: flex-end;
+  margin-top: 24px;
+  min-height: min(640px, calc(100svh - var(--header-h) - 80px));
+  display: grid;
+  place-items: end center;
   overflow: hidden;
   isolation: isolate;
 }
 .heroPhoto {
   object-fit: cover;
-  object-position: center 40%;
+  object-position: center 45%;
   z-index: -2;
 }
 .hero::after {
@@ -18,273 +22,325 @@
   position: absolute;
   inset: 0;
   z-index: -1;
-  background:
-    linear-gradient(90deg, rgba(15, 14, 13, 0.88) 0%, rgba(15, 14, 13, 0.5) 38%, rgba(15, 14, 13, 0) 70%),
-    linear-gradient(180deg, rgba(15, 14, 13, 0) 55%, rgba(15, 14, 13, 0.92) 100%);
+  background: linear-gradient(180deg, rgba(20, 16, 12, 0.08) 25%, rgba(20, 16, 12, 0.72) 100%);
 }
 .heroText {
-  padding-block: 120px 96px;
+  padding: 120px 24px 56px;
   display: grid;
-  justify-items: start;
-  gap: 22px;
+  justify-items: center;
+  gap: 14px;
+  text-align: center;
   color: var(--on-photo);
 }
-.heroText :global(.eyebrow) {
-  color: var(--gold-photo);
+.heroName {
+  font-size: clamp(3.4rem, 10vw, 8.5rem);
+  font-weight: 500;
+  line-height: 0.9;
+  letter-spacing: 0.08em;
+  /* Balances the tracking after the last letter. */
+  margin-right: -0.08em;
+  text-transform: uppercase;
+  text-shadow: 0 2px 30px rgba(0, 0, 0, 0.25);
 }
-.heroText :global(.btn-ghost) {
-  color: var(--on-photo);
-  box-shadow: inset 0 0 0 1px rgba(244, 239, 230, 0.6);
-}
-.heroTitle {
-  max-width: 11ch;
-  font-size: clamp(3.2rem, 7vw, 6.5rem);
-  line-height: 0.95;
+.heroTagline {
+  font-size: 0.74rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
 }
 .heroLead {
-  max-width: 26em;
-  font-size: 1.1rem;
+  max-width: 30em;
+  font-size: 0.98rem;
   color: var(--on-photo-soft);
 }
-.cta {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 14px;
-  margin-top: 8px;
-}
-@media (max-width: 720px) {
-  .hero {
-    min-height: 640px;
-  }
-  .hero::after {
-    background: linear-gradient(
-      180deg,
-      rgba(15, 14, 13, 0.35) 0%,
-      rgba(15, 14, 13, 0) 25%,
-      rgba(15, 14, 13, 0.6) 55%,
-      rgba(15, 14, 13, 0.92) 96%
-    );
-  }
-  .heroText {
-    padding-block: 200px 48px;
-    justify-items: center;
-    text-align: center;
-  }
-  .heroTitle {
-    max-width: none;
-    font-size: clamp(2.5rem, 11vw, 3.4rem);
-  }
-  .cta {
-    justify-content: center;
-  }
+.heroMore {
+  margin-top: 6px;
+  color: var(--on-photo);
+  border-bottom-color: rgba(244, 239, 230, 0.6);
 }
 
-/* Promises row under the hero */
-.promises {
-  list-style: none;
-  margin: 0 0 104px;
-  padding: 0;
+/* Small centred section titles in spaced capitals */
+.kicker {
+  font-family: var(--body);
+  font-size: 0.74rem;
+  font-weight: 500;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  text-align: center;
+}
+.kickerRow {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  border-top: 1px solid var(--line);
-  border-bottom: 1px solid var(--line);
-}
-.promises li {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  padding: 30px 20px;
-}
-.promises li + li {
-  border-left: 1px solid var(--line);
-}
-.promises svg {
-  width: 32px;
-  height: 32px;
-  flex: none;
-  color: var(--gold);
-}
-.promises b {
-  display: block;
-  font-weight: 400;
-  font-size: 0.72rem;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--ink);
-}
-.promises small {
-  display: block;
-  margin-top: 4px;
-  font-size: 0.88rem;
-  line-height: 1.45;
-  color: var(--muted);
-}
-@media (max-width: 1000px) {
-  .promises {
-    grid-template-columns: repeat(2, 1fr);
-  }
-  .promises li:nth-child(3) {
-    border-left: 0;
-  }
-  .promises li:nth-child(n + 3) {
-    border-top: 1px solid var(--line);
-  }
-}
-@media (max-width: 560px) {
-  .promises {
-    grid-template-columns: 1fr;
-    margin-bottom: 72px;
-  }
-  .promises li + li {
-    border-left: 0;
-    border-top: 1px solid var(--line);
-  }
-  .promises li {
-    padding: 22px 4px;
-  }
-}
-
-/* Section heading links */
-.headLinks {
-  display: flex;
-  align-items: center;
-  gap: 24px;
-}
-.viewAll,
-.swipe {
-  font-size: 0.72rem;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-}
-.viewAll {
-  color: var(--ink);
-  text-underline-offset: 8px;
-}
-.viewAll:hover {
-  color: var(--gold-ink);
+  justify-items: center;
+  gap: 10px;
+  margin-bottom: 36px;
 }
 .swipe {
   display: none;
+  font-size: 0.68rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
   color: var(--muted);
 }
-@media (max-width: 720px) {
-  .swipe {
-    display: inline;
-  }
+.center {
+  margin-top: 40px;
+  text-align: center;
+}
+/* "Discover →" links: small capitals with a thin underline */
+.more {
+  display: inline-block;
+  padding-bottom: 3px;
+  border-bottom: 1px solid var(--ghost-line);
+  color: var(--ink);
+  font-size: 0.7rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition:
+    color 0.2s,
+    border-color 0.2s;
+}
+a.more:hover,
+a:hover .more {
+  color: var(--gold-ink);
+  border-bottom-color: var(--gold);
 }
 
-/* Spotlight: photo on one side, the story and price on the other */
-.spotlight {
-  background: var(--surface);
-  border-block: 1px solid var(--line);
-  margin-bottom: 112px;
+.collection {
+  padding-block: 88px 96px;
 }
-.spotlightInner {
+
+/* Feature pair: product tile + lifestyle photo, flipped every other time */
+.feature {
   display: grid;
-  grid-template-columns: 1.1fr 1fr;
-  align-items: stretch;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 16px;
 }
-.spotlightPic {
+.flip .featureTile {
+  order: 2;
+}
+.featureTile {
+  background: var(--panel);
+  padding: 48px 40px 52px;
+  display: grid;
+  justify-items: center;
+  align-content: center;
+  gap: 14px;
+  text-align: center;
+}
+.featureProduct {
   position: relative;
-  min-height: 640px;
+  width: min(360px, 80%);
+  aspect-ratio: 1;
+  margin-bottom: 12px;
+  /* Lets the studio photo's white background take the tile's colour. */
+  mix-blend-mode: multiply;
+}
+.contain {
+  object-fit: contain;
 }
 .cover {
   object-fit: cover;
 }
-.badge {
-  position: absolute;
-  left: 24px;
-  top: 24px;
-  padding: 10px 16px;
-  background: rgba(15, 14, 13, 0.82);
-  color: var(--gold-photo);
-  font-size: 0.7rem;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
+.featureTitle {
+  font-size: clamp(1.9rem, 3vw, 2.6rem);
 }
-.spotlightText {
-  padding: 80px 0 80px 72px;
-  display: grid;
-  align-content: center;
-  justify-items: start;
-  gap: 22px;
-}
-.spotlightText h2 {
-  font-size: clamp(2.4rem, 4.4vw, 3.9rem);
-  line-height: 0.98;
-}
-.spotlightLead {
-  max-width: 28em;
+.featureText {
+  max-width: 26em;
   color: var(--ink-soft);
-  font-size: 1.05rem;
-  line-height: 1.75;
+  font-size: 0.95rem;
 }
-.values {
+.featureScene {
+  position: relative;
+  min-height: 620px;
+}
+
+/* Promises in a quiet row, like a line of press mentions */
+.promises {
+  list-style: none;
+  margin: 80px 0;
+  padding: 36px 0;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+  border-block: 1px solid var(--line);
+  text-align: center;
+}
+.promises li {
+  display: grid;
+  gap: 8px;
+  justify-items: center;
+}
+.promises b {
+  font-family: var(--display);
+  font-size: 1.3rem;
+  font-weight: 600;
+  line-height: 1.15;
+}
+.promises span {
+  max-width: 22em;
+  font-size: 0.86rem;
+  line-height: 1.5;
+  color: var(--muted);
+}
+
+/* Guide: one large story beside three small ones */
+.guide {
+  background: var(--surface);
+  padding: 40px;
+  margin-bottom: 104px;
+}
+.guide .kicker {
+  text-align: left;
+  margin-bottom: 28px;
+}
+.guideGrid {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr;
+  gap: 28px;
+}
+.guideMain,
+.guideItem {
+  text-decoration: none;
+  color: var(--ink);
+}
+.guideMain {
+  display: grid;
+  gap: 18px;
+}
+.guideMainPic {
+  position: relative;
+  display: block;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+}
+.guideMainText,
+.guideItemText {
+  display: grid;
+  gap: 8px;
+  justify-items: start;
+}
+.guideMainText b {
+  font-family: var(--display);
+  font-size: 1.8rem;
+  font-weight: 500;
+  line-height: 1.1;
+}
+.guideMainText > span:not(.more),
+.guideItemText > span:not(.more) {
+  color: var(--ink-soft);
+  font-size: 0.92rem;
+  line-height: 1.55;
+}
+.guideList {
   list-style: none;
   margin: 0;
   padding: 0;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
+  display: grid;
+  gap: 20px;
+  align-content: start;
 }
-.values li {
-  padding: 9px 16px;
-  border: 1px solid var(--panel-2);
-  font-size: 0.72rem;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--ink-soft);
+.guideItem {
+  display: grid;
+  grid-template-columns: 120px 1fr;
+  gap: 18px;
+  align-items: start;
 }
-.buy {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 20px 28px;
-  margin-top: 8px;
+.guideThumb {
+  position: relative;
+  display: block;
+  aspect-ratio: 1;
+  overflow: hidden;
+  background: var(--panel);
 }
-.spotlightPrice {
+.guideItemText b {
   font-family: var(--display);
-  font-size: 2.2rem;
-  line-height: 1;
-  font-variant-numeric: lining-nums;
+  font-size: 1.3rem;
+  font-weight: 500;
+  line-height: 1.15;
 }
-@media (max-width: 900px) {
-  .spotlightInner {
-    grid-template-columns: 1fr;
-    padding-inline: 0;
-  }
-  .spotlightPic {
-    min-height: 420px;
-  }
-  .spotlightText {
-    padding: 48px var(--gutter) 56px;
-  }
-  .spotlight {
-    margin-bottom: 80px;
-  }
+.guideMainPic img,
+.guideThumb img {
+  transition: transform 0.8s ease;
+}
+.guideMain:hover .guideMainPic img,
+.guideItem:hover .guideThumb img {
+  transform: scale(1.04);
 }
 
-/* Categories: two large photo tiles */
-.categories {
-  padding-bottom: 104px;
+@media (max-width: 1000px) {
+  .promises {
+    grid-template-columns: repeat(2, 1fr);
+    row-gap: 36px;
+  }
+  .guideGrid {
+    grid-template-columns: 1fr;
+  }
+}
+@media (max-width: 760px) {
+  .hero {
+    margin-top: 12px;
+    min-height: 560px;
+    margin-inline: calc(-1 * var(--gutter));
+  }
+  .heroText {
+    padding-bottom: 44px;
+  }
+  .heroName {
+    letter-spacing: 0.04em;
+    margin-right: -0.04em;
+  }
+  .collection {
+    padding-block: 64px 72px;
+  }
+  .swipe {
+    display: inline;
+  }
+  .feature {
+    grid-template-columns: 1fr;
+    gap: 0;
+    margin-bottom: 40px;
+    margin-inline: calc(-1 * var(--gutter));
+  }
+  .flip .featureTile {
+    order: 0;
+  }
+  .featureTile {
+    padding: 40px var(--gutter) 44px;
+  }
+  .featureScene {
+    min-height: 420px;
+  }
+  .promises {
+    grid-template-columns: 1fr;
+    margin: 56px 0;
+  }
+  .guide {
+    padding: 28px 20px;
+    margin-inline: calc(-1 * var(--gutter));
+    margin-bottom: 72px;
+  }
+  .guideItem {
+    grid-template-columns: 96px 1fr;
+    gap: 14px;
+  }
 }
 
 /* Gentle entrance for the hero, skipped for people who prefer less motion. */
 @media (prefers-reduced-motion: no-preference) {
   .heroText > * {
-    animation: rise 0.8s ease both;
+    animation: rise 0.9s ease both;
   }
   .heroText > :nth-child(2) {
-    animation-delay: 0.08s;
+    animation-delay: 0.1s;
   }
   .heroText > :nth-child(3) {
-    animation-delay: 0.16s;
+    animation-delay: 0.18s;
   }
   .heroText > :nth-child(4) {
-    animation-delay: 0.24s;
+    animation-delay: 0.26s;
   }
   .heroPhoto {
-    animation: settle 1.6s ease both;
+    animation: settle 1.8s ease both;
   }
 }
 @keyframes rise {
@@ -295,6 +351,6 @@
 }
 @keyframes settle {
   from {
-    transform: scale(1.06);
+    transform: scale(1.05);
   }
 }

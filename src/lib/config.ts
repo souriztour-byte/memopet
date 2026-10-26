@@ -51,9 +51,9 @@ export const navLinks = [
 ] as const;
 
 /**
- * The site's look: "dark" is black & gold, "light" is white & gold. Both
- * palettes live in src/app/globals.css; switch here.
+ * The site's look: "dark" is black & gold, "light" is white & gold, "sand" is
+ * warm beige. The palettes live in src/app/globals.css; switch here.
  */
-export const look: "dark" | "light" = "light";
+export const look: "dark" | "light" | "sand" = "sand";
 /** Browser-bar and home-screen colour for each look. */
-export const lookColor = { dark: "#0F0E0D", light: "#FFFFFF" } as const;
+export const lookColor = { dark: "#0F0E0D", light: "#FFFFFF", sand: "#F1EEE9" } as const;

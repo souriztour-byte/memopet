@@ -2,9 +2,11 @@
 
 A Next.js storefront for **MimiPets** (“Little things. Happier pets.” / “Pequeños detalles.
 Mascotas más felices.”), first built from the `mimopets_4.html` prototype and now in a
-luxury look in two versions: **white & gold** (current) and **black & gold**, switched with
-`look` in `src/lib/config.ts` (palettes in `src/app/globals.css`). Both use Cormorant Garamond
-for headings and the MIMIPETS wordmark, and Jost for text. Products,
+luxury look with three palettes: **sand** (warm beige, current), **white & gold** and
+**black & gold**, switched with `look` in `src/lib/config.ts` (palettes in
+`src/app/globals.css`). All use Cormorant Garamond for headings and the MIMIPETS wordmark, and
+Jost for text. The home page is laid out like a catalogue: the name over a framed photo, a row
+of products on stone tiles, product + lifestyle pairs, the promises and a guide block. Products,
 prices, the cart and checkout come from Shopify through the **Storefront API**. The site is in
 **English and Spanish**. The share-preview images (`src/lib/og/frame.tsx`) still use the
 prototype's purple and pink.

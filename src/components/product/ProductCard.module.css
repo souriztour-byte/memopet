@@ -3,11 +3,11 @@
   position: relative;
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 14px;
 }
 .pic {
   background: var(--tile, var(--panel));
-  aspect-ratio: 3 / 4;
+  aspect-ratio: 1 / 1;
   position: relative;
   overflow: hidden;
 }
@@ -48,7 +48,7 @@
   letter-spacing: 0.2em;
 }
 .body h3 {
-  font-size: 1.45rem;
+  font-size: 1.25rem;
   line-height: 1.15;
 }
 /* Stretched link: the whole card opens the product page. */

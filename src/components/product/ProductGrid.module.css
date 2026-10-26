@@ -1,7 +1,7 @@
 .products {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 48px 28px;
+  gap: 40px 16px;
 }
 .few {
   grid-template-columns: repeat(3, 1fr);

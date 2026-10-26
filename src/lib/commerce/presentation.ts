@@ -106,8 +106,14 @@ export const HERO_PHOTO = {
   alt: "comfortBeds",
 } as const satisfies { src: string; alt: PhotoAlt };
 
-/** The home page's spotlight on the Paw Washer Cup. */
-export const SPOTLIGHT = {
-  handle: "paw-washer-cup",
-  photo: photoUrl("paw-washer-cup/colours.jpg"),
-} as const;
+/** Photos for the home page's feature blocks and guide (public/photos). */
+export const HOME_PHOTOS = {
+  groomingTile: { src: photoUrl("paw-washer-cup/grey.jpg"), alt: "cupGrey" },
+  groomingScene: { src: photoUrl("paw-washer-cup/corgi.jpg"), alt: "corgiCup" },
+  bedsScene: { src: photoUrl("luxury-cat-sofa-bed/cat-playing.jpg"), alt: "sofaPlay" },
+  bedsTile: { src: photoUrl("warming-sleeping-bag-bed/bed.jpg"), alt: "bagBed" },
+  guideMain: { src: photoUrl("warming-sleeping-bag-bed/cat-sleeping.jpg"), alt: "catAsleep" },
+  guideOrder: { src: photoUrl("paw-washer-cup/brushes.jpg"), alt: "cupBrushes" },
+  guideDelivery: { src: photoUrl("luxury-cat-sofa-bed/coffee.jpg"), alt: "sofaCoffee" },
+  guideFaq: { src: photoUrl("warming-sleeping-bag-bed/ears.jpg"), alt: "bedEars" },
+} as const satisfies Record<string, { src: string; alt: PhotoAlt }>;

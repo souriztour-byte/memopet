@@ -1,7 +1,8 @@
 /* ──────────────────────────────────────────────────────────────────────────
-   MimiPets design tokens. Two looks share every rule: black & gold (the
-   default) and white & gold (<html data-theme="light">, chosen in
-   src/app/[lang]/layout.tsx). Change colours here and every page follows.
+   MimiPets design tokens. Three looks share every rule: black & gold (the
+   default), white & gold (<html data-theme="light">) and sand
+   (<html data-theme="sand">), picked with `look` in src/lib/config.ts.
+   Change colours here and every page follows.
    ────────────────────────────────────────────────────────────────────────── */
 :root {
   color-scheme: dark;
@@ -57,6 +58,28 @@
   --danger: #b3412c;
   --shadow: 0 24px 48px -28px rgba(60, 45, 25, 0.35);
 }
+/* Sand: warm greige page, pale stone tiles behind products, deep taupe accents. */
+:root[data-theme="sand"] {
+  color-scheme: light;
+  --bg: #f1eee9;
+  --surface: #f7f5f1;
+  --panel: #e8e4dd;
+  --panel-2: #d9d2c7;
+  /* One even stone colour behind every product, as in a catalogue. */
+  --tile-2: #e8e4dd;
+  --tile-3: #e8e4dd;
+  --ink: #26221e;
+  --ink-soft: #4d463e;
+  --muted: #6a6258;
+  --line: #dcd6cc;
+  --gold: #6f5c46;
+  --gold-ink: #4f4031;
+  --on-gold: #ffffff;
+  --gold-line: rgba(111, 92, 70, 0.35);
+  --ghost-line: rgba(38, 34, 30, 0.35);
+  --danger: #a63d2a;
+  --shadow: 0 24px 48px -28px rgba(60, 48, 35, 0.3);
+}
 /* Computers: the header has a second row for the menu. */
 @media (min-width: 1001px) {
   :root {
@@ -97,6 +120,8 @@ body {
   line-height: 1.65;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
+  /* Cormorant's default numbers are old-style; prices read better level. */
+  font-variant-numeric: lining-nums;
 }
 h1,
 h2,
@@ -106,8 +131,6 @@ h4 {
   font-weight: 500;
   line-height: 1.05;
   text-wrap: balance;
-  /* Cormorant's default numbers are old-style; prices read better level. */
-  font-variant-numeric: lining-nums;
   margin: 0;
 }
 h1 {

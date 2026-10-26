@@ -5,6 +5,8 @@ import { localizePath } from "@/i18n/config";
 import { fmt } from "@/i18n/format";
 import { getI18n } from "@/i18n/server";
 import { siteConfig } from "@/lib/config";
+import { offerMoney, offers } from "@/lib/content/offers";
+import { formatMoney } from "@/lib/format";
 import { LanguageSwitcher } from "./LanguageSwitcher";
 import { MainNav } from "./MainNav";
 import styles from "./Header.module.css";
@@ -14,13 +16,21 @@ export async function Header() {
   return (
     <>
       <div className={styles.announcement}>
-        {dict.header.announcement} ·{" "}
-        <Link
-          href={localizePath(lang, `/products/${siteConfig.featuredProductHandle}`)}
-          className={styles.announcementLink}
-        >
-          {dict.header.shopNow}
-        </Link>
+        {fmt(dict.header.announcement, {
+          destination: offers.shipping.destination[lang],
+          amount: formatMoney(offerMoney(offers.shipping.freeFrom), lang),
+          percent: offers.bundle.percent,
+        })}
+        <span className={styles.announcementMore}>
+          {" "}
+          ·{" "}
+          <Link
+            href={localizePath(lang, `/products/${siteConfig.featuredProductHandle}`)}
+            className={styles.announcementLink}
+          >
+            {dict.header.shopNow}
+          </Link>
+        </span>
       </div>
       <header className={styles.top}>
         <div className={`wrap ${styles.bar}`}>

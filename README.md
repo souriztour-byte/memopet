@@ -153,6 +153,21 @@ These conventions keep the storefront looking like the prototype:
 - **Policies**: policies written in *Settings → Policies* replace the local drafts automatically,
   one by one, in each language.
 
+### Offers: shipping, bundle and welcome code
+
+The announcement bar, product pages, cart, FAQ and shipping policy describe three offers set up in
+Shopify. Their numbers live in `src/lib/content/offers.ts`; change Shopify and that file together.
+
+- *Settings → Shipping and delivery → General profile*, zone **Spain**: “Standard shipping” €3.90
+  up to €39.99, “Free shipping” from €40 (after discounts).
+- *Discounts* → **Buy 2, save 10%**: automatic, 2 or more items. The cart shows it under its own
+  translated label as long as the title in Shopify stays exactly “Buy 2, save 10%”.
+- *Discounts* → code **WELCOME10**: 10% off, once per customer. The sign-up band above the footer
+  saves the email in *Customers* as subscribed to marketing, then puts the code on the visitor’s
+  cart (and on their next cart, through a cookie).
+
+The two discounts don’t stack with each other; Shopify applies the better one.
+
 ### Keeping pages fresh
 
 Catalog pages are cached for an hour. For instant updates, add Shopify webhooks for product and

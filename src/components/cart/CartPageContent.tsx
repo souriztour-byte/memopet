@@ -5,6 +5,7 @@ import { localizePath } from "@/i18n/config";
 import { useI18n } from "@/i18n/I18nProvider";
 import { rich } from "@/i18n/rich";
 import { CartLines } from "./CartLines";
+import { CartPerks } from "./CartPerks";
 import { useCart } from "./CartProvider";
 import { CartSummary } from "./CartSummary";
 import styles from "./CartPage.module.css";
@@ -33,7 +34,10 @@ export function CartPageContent() {
         <CartLines lines={cart.lines} />
       </div>
       <div className={styles.summary}>
-        <CartSummary cart={cart} demoMode={demoMode} />
+        <div>
+          <CartPerks cart={cart} />
+          <CartSummary cart={cart} demoMode={demoMode} />
+        </div>
         <p className="small" style={{ padding: "12px 4px 0" }}>
           {rich(t.policiesNote, {
             shipping: (

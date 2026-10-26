@@ -3,6 +3,7 @@
 import { useEffect, useRef } from "react";
 import { useI18n } from "@/i18n/I18nProvider";
 import { CartLines } from "./CartLines";
+import { CartPerks } from "./CartPerks";
 import { useCart } from "./CartProvider";
 import { CartSummary } from "./CartSummary";
 import styles from "./Cart.module.css";
@@ -54,7 +55,12 @@ export function CartDrawer() {
             </p>
           )}
         </div>
-        {cart && lines.length ? <CartSummary cart={cart} demoMode={demoMode} showViewCart onNavigate={closeCart} /> : null}
+        {cart && lines.length ? (
+          <>
+            <CartPerks cart={cart} />
+            <CartSummary cart={cart} demoMode={demoMode} showViewCart onNavigate={closeCart} />
+          </>
+        ) : null}
       </div>
     </dialog>
   );

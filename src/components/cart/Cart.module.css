@@ -171,6 +171,66 @@
   font-variant-numeric: tabular-nums;
 }
 
+.discount {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  color: var(--pink);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+.subtotal {
+  display: flex;
+  justify-content: space-between;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Free-shipping progress (CartPerks) */
+.perks {
+  display: grid;
+  gap: 8px;
+  padding: 14px 20px;
+  border-top: 1px solid var(--line);
+  background: var(--surface);
+}
+.perks:first-child {
+  border-top: 0;
+}
+.perkText {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  font-size: 0.92rem;
+}
+.perkText svg {
+  width: 18px;
+  height: 18px;
+  flex: none;
+  color: var(--purple);
+}
+.perkHint {
+  font-size: 0.85rem;
+  color: var(--pink);
+  font-weight: 600;
+}
+.meter {
+  height: 8px;
+  border-radius: 999px;
+  background: var(--lilac-2);
+  overflow: hidden;
+}
+.meter span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--purple);
+  transition: width 0.4s ease;
+}
+.meter span[data-done="true"] {
+  background: var(--pink);
+}
+
 @media (max-width: 420px) {
   .line {
     grid-template-columns: 52px 1fr auto;

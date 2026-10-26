@@ -10,6 +10,12 @@
   font-weight: 700;
   text-underline-offset: 3px;
 }
+/* Phones: the offers alone fit on one or two lines. */
+@media (max-width: 600px) {
+  .announcementMore {
+    display: none;
+  }
+}
 .top {
   position: sticky;
   top: env(safe-area-inset-top, 0px);

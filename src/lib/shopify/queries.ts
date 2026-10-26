@@ -128,6 +128,21 @@ const CART = /* GraphQL */ `
         currencyCode
       }
     }
+    discountAllocations {
+      discountedAmount {
+        amount
+        currencyCode
+      }
+      ... on CartAutomaticDiscountAllocation {
+        title
+      }
+      ... on CartCustomDiscountAllocation {
+        title
+      }
+      ... on CartCodeDiscountAllocation {
+        code
+      }
+    }
     lines(first: 100) {
       nodes {
         id
@@ -281,9 +296,12 @@ export const CART_QUERY = /* GraphQL */ `
 `;
 
 export const CART_CREATE_MUTATION = /* GraphQL */ `
-  mutation CartCreate($lines: [CartLineInput!], $language: LanguageCode)
-  @inContext(language: $language) {
-    cartCreate(input: { lines: $lines }) {
+  mutation CartCreate(
+    $lines: [CartLineInput!]
+    $discountCodes: [String!]
+    $language: LanguageCode
+  ) @inContext(language: $language) {
+    cartCreate(input: { lines: $lines, discountCodes: $discountCodes }) {
       cart {
         ...CartFields
       }
@@ -293,6 +311,36 @@ export const CART_CREATE_MUTATION = /* GraphQL */ `
     }
   }
   ${CART}
+`;
+
+export const CART_DISCOUNT_CODES_UPDATE_MUTATION = /* GraphQL */ `
+  mutation CartDiscountCodesUpdate($cartId: ID!, $discountCodes: [String!]!, $language: LanguageCode)
+  @inContext(language: $language) {
+    cartDiscountCodesUpdate(cartId: $cartId, discountCodes: $discountCodes) {
+      cart {
+        ...CartFields
+      }
+      userErrors {
+        message
+      }
+    }
+  }
+  ${CART}
+`;
+
+/** Signs a shopper up for marketing emails (Shopify admin → Customers). */
+export const CUSTOMER_CREATE_MUTATION = /* GraphQL */ `
+  mutation CustomerCreate($input: CustomerCreateInput!) {
+    customerCreate(input: $input) {
+      customer {
+        id
+      }
+      customerUserErrors {
+        code
+        message
+      }
+    }
+  }
 `;
 
 export const CART_LINES_ADD_MUTATION = /* GraphQL */ `

@@ -16,6 +16,7 @@ import type {
 import { ShopifyError, storefrontFetch } from "./client";
 import {
   CART_CREATE_MUTATION,
+  CART_DISCOUNT_CODES_UPDATE_MUTATION,
   CART_LINES_ADD_MUTATION,
   CART_LINES_REMOVE_MUTATION,
   CART_LINES_UPDATE_MUTATION,
@@ -23,6 +24,7 @@ import {
   COLLECTION_PRODUCTS_QUERY,
   COLLECTION_QUERY,
   COLLECTIONS_QUERY,
+  CUSTOMER_CREATE_MUTATION,
   POLICIES_QUERY,
   PRODUCT_HANDLES_QUERY,
   PRODUCT_QUERY,
@@ -67,6 +69,7 @@ type RawCart = {
   checkoutUrl: string;
   totalQuantity: number;
   cost: Cart["cost"];
+  discountAllocations: { discountedAmount: Money; title?: string; code?: string }[];
   lines: Nodes<{
     id: string;
     quantity: number;
@@ -137,6 +140,9 @@ function reshapeCart(c: RawCart): Cart {
     checkoutUrl: c.checkoutUrl,
     totalQuantity: c.totalQuantity,
     cost: c.cost,
+    discounts: c.discountAllocations.map(({ discountedAmount: amount, code, title }) =>
+      code ? { kind: "code", code, amount } : { kind: "automatic", title: title ?? "", amount },
+    ),
     lines: c.lines.nodes.map((line) => {
       const { product } = line.merchandise;
       const illustration = illustrationFor(product.tags, product.productType, product.title);
@@ -297,10 +303,11 @@ export async function getCart(lang: Locale, cartId: string): Promise<Cart | null
 export async function createCart(
   lang: Locale,
   lines: { merchandiseId: string; quantity: number }[],
+  discountCodes: string[] = [],
 ): Promise<Cart> {
   const data = await storefrontFetch<{ cartCreate: UserErrors & { cart: RawCart } }>(
     CART_CREATE_MUTATION,
-    { variables: { lines, language: shopifyLanguage[lang] }, revalidate: false },
+    { variables: { lines, discountCodes, language: shopifyLanguage[lang] }, revalidate: false },
   );
   assertNoUserErrors(data.cartCreate);
   return reshapeCart(data.cartCreate.cart);
@@ -343,4 +350,40 @@ export async function removeCartLines(
   );
   assertNoUserErrors(data.cartLinesRemove);
   return reshapeCart(data.cartLinesRemove.cart);
+}
+
+export async function updateCartDiscountCodes(
+  lang: Locale,
+  cartId: string,
+  discountCodes: string[],
+): Promise<Cart> {
+  const data = await storefrontFetch<{ cartDiscountCodesUpdate: UserErrors & { cart: RawCart } }>(
+    CART_DISCOUNT_CODES_UPDATE_MUTATION,
+    { variables: { cartId, discountCodes, language: shopifyLanguage[lang] }, revalidate: false },
+  );
+  assertNoUserErrors(data.cartDiscountCodesUpdate);
+  return reshapeCart(data.cartDiscountCodesUpdate.cart);
+}
+
+/* ─── Newsletter ─────────────────────────────────────────────────────── */
+
+/**
+ * Saves the email as a customer who accepts marketing (Shopify admin →
+ * Customers → "Email subscribed"). Shopify requires a password for this call;
+ * a random one is set and never shown — the shopper can reset it if they ever
+ * want an account. An email that is already a customer (TAKEN, or
+ * CUSTOMER_DISABLED for guest-checkout customers) counts as signed up.
+ */
+export async function subscribeEmail(email: string): Promise<void> {
+  const password = crypto.randomUUID(); // Shopify allows 5–40 characters.
+  const data = await storefrontFetch<{
+    customerCreate: { customerUserErrors: { code: string | null; message: string }[] };
+  }>(CUSTOMER_CREATE_MUTATION, {
+    variables: { input: { email, password, acceptsMarketing: true } },
+    revalidate: false,
+  });
+  const errors = data.customerCreate.customerUserErrors.filter(
+    (e) => e.code !== "TAKEN" && e.code !== "CUSTOMER_DISABLED",
+  );
+  if (errors.length) throw new ShopifyError(errors.map((e) => e.message).join("; "));
 }

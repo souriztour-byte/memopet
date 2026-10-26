@@ -2,11 +2,15 @@ import Link from "next/link";
 import { ContactLine } from "@/components/content/ContactLine";
 import { localizePath } from "@/i18n/config";
 import { es } from "@/i18n/dictionaries/es";
+import { offerMoney, offers } from "@/lib/content/offers";
 import { getShipping } from "@/lib/content/shipping";
+import { formatMoney } from "@/lib/format";
 
 /** Spanish translation of `../en/shipping.tsx`. */
 export function ShippingPolicy() {
   const shipping = getShipping("es", es);
+  const rate = formatMoney(offerMoney(offers.shipping.standardRate), "es");
+  const freeFrom = formatMoney(offerMoney(offers.shipping.freeFrom), "es");
   return (
     <>
       <p>
@@ -55,8 +59,10 @@ export function ShippingPolicy() {
 
       <h2>Gastos de envío</h2>
       <p>
-        Los gastos de envío se calculan según tu dirección de entrega y se muestran al finalizar la
-        compra, antes de pagar.
+        El envío estándar a {offers.shipping.destination.es} cuesta <strong>{rate}</strong>. Los
+        pedidos de <strong>{freeFrom}</strong> o más (después de descuentos) se envían gratis. Para
+        otros destinos, los gastos de envío se calculan según tu dirección de entrega y se muestran
+        al finalizar la compra, antes de pagar.
       </p>
 
       <h2>Confirmación del pedido y seguimiento</h2>

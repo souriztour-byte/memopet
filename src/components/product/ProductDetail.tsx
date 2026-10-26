@@ -23,11 +23,20 @@ function initialSelection(product: Product): Selection {
 }
 
 /**
- * Gallery, options and the buy box. `children` (the delivery facts) render under
- * the Add to cart button. On phones, a bar with the button follows the reader
- * once the main button has scrolled out of view.
+ * Gallery, options and the buy box. `perks` (shop offers) render under the
+ * price and `children` (the delivery facts) under the Add to cart button. On
+ * phones, a bar with the button follows the reader once the main button has
+ * scrolled out of view.
  */
-export function ProductDetail({ product, children }: { product: Product; children?: React.ReactNode }) {
+export function ProductDetail({
+  product,
+  perks,
+  children,
+}: {
+  product: Product;
+  perks?: React.ReactNode;
+  children?: React.ReactNode;
+}) {
   const { addItem } = useCart();
   const { dict } = useI18n();
   const t = dict.product;
@@ -141,6 +150,7 @@ export function ProductDetail({ product, children }: { product: Product; childre
         {product.petType ? <p className="eyebrow">{product.petType}</p> : null}
         <h1 className={styles.title}>{product.title}</h1>
         <p className={styles.price}>{price}</p>
+        {perks}
 
         {product.options.map((option) => (
           <fieldset key={option.name} className={styles.option}>

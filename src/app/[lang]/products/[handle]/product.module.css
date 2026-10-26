@@ -28,6 +28,26 @@
   font-size: 1.4rem;
   margin-bottom: 14px;
 }
+.perks {
+  list-style: none;
+  margin: -4px 0 0;
+  padding: 0;
+  display: grid;
+  gap: 6px;
+  font-size: 0.92rem;
+  font-weight: 600;
+}
+.perks li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.perks svg {
+  width: 18px;
+  height: 18px;
+  flex: none;
+  color: var(--purple);
+}
 .facts {
   background: var(--lilac);
   border-radius: 20px;

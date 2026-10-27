@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { AfterWalk } from "@/components/home/AfterWalk";
@@ -11,6 +10,7 @@ import { HomeMotion } from "@/components/home/HomeMotion";
 import { PetRail } from "@/components/home/PetRail";
 import { BeforeAfter } from "@/components/media/BeforeAfter";
 import { ProductVideos } from "@/components/media/ProductVideos";
+import { SoftImage } from "@/components/ui/SoftImage";
 import { alternatesFor, hasLocale, localizePath } from "@/i18n/config";
 import { getDictionary } from "@/i18n/dictionaries";
 import { fmt } from "@/i18n/format";
@@ -257,8 +257,11 @@ export default async function HomePage(props: PageProps<"/[lang]">) {
           </h2>
           <div className={styles.guideGrid} data-reveal>
             <Link href={href("/shop")} className={styles.guideMain}>
-              <span className={`${styles.guideMainPic} unveil`} data-drift>
-                <Image
+              <span
+                className={`${styles.guideMainPic} soft-frame unveil`}
+                data-drift
+              >
+                <SoftImage
                   src={guideMain.src}
                   alt={guideMain.alt}
                   fill
@@ -276,8 +279,8 @@ export default async function HomePage(props: PageProps<"/[lang]">) {
               {guides.map((g) => (
                 <li key={g.href}>
                   <Link href={href(g.href)} className={styles.guideItem}>
-                    <span className={styles.guideThumb}>
-                      <Image
+                    <span className={`${styles.guideThumb} soft-frame`}>
+                      <SoftImage
                         src={g.photo.src}
                         alt={g.photo.alt}
                         fill

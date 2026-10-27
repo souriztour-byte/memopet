@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+import { SoftImage } from "@/components/ui/SoftImage";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import styles from "./ComfortStory.module.css";
@@ -49,9 +49,9 @@ export function ComfortStory({
       <div className={styles.media}>
         <div className={styles.frame}>
           {/* next/image needs a positioned parent; the frame itself is sticky. */}
-          <div className={styles.photos}>
+          <div className={`${styles.photos} soft-frame`}>
             {steps.map((s, i) => (
-              <Image
+              <SoftImage
                 key={s.photo.src}
                 src={s.photo.src}
                 alt={s.photo.alt}
@@ -85,8 +85,8 @@ export function ComfortStory({
               className={styles.step}
             >
               {/* Phones show each photo with its paragraph instead of the pinned one. */}
-              <div className={`${styles.stepPic} unveil`} data-drift>
-                <Image
+              <div className={`${styles.stepPic} soft-frame unveil`} data-drift>
+                <SoftImage
                   src={s.photo.src}
                   alt=""
                   fill

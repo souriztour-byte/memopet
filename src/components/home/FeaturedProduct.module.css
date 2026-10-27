@@ -9,8 +9,6 @@
   position: relative;
   aspect-ratio: 1;
   background: var(--panel);
-  border-radius: 4px;
-  overflow: hidden;
 }
 .layer {
   position: absolute;
@@ -30,6 +28,7 @@
 }
 .colourName {
   position: absolute;
+  z-index: 2;
   left: 20px;
   bottom: 18px;
   padding: 6px 14px;
@@ -170,10 +169,6 @@
   .featured {
     grid-template-columns: 1fr;
     padding-block: 72px;
-  }
-  .pic {
-    margin-inline: calc(-1 * var(--gutter));
-    border-radius: 0;
   }
 }
 

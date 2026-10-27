@@ -53,8 +53,6 @@
 .pic {
   position: relative;
   height: min(50svh, 540px);
-  overflow: hidden;
-  border-radius: 4px;
   background: var(--panel-2);
   margin-bottom: 10px;
 }
@@ -67,6 +65,7 @@
 }
 .aiNote {
   position: absolute;
+  z-index: 2;
   left: 10px;
   bottom: 10px;
   padding: 3px 9px;

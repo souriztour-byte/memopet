@@ -8,7 +8,6 @@ import { Header } from "@/components/layout/Header";
 import { TabBar } from "@/components/layout/TabBar";
 import { WelcomeSignup } from "@/components/marketing/WelcomeSignup";
 import { SearchOverlay } from "@/components/search/SearchOverlay";
-import { CursorRing } from "@/components/ui/CursorRing";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { ScrollState } from "@/components/ui/ScrollState";
 import { hasLocale, locales, ogLocale } from "@/i18n/config";
@@ -97,7 +96,6 @@ export default async function RootLayout({ children, params }: LayoutProps<"/[la
             <ScrollReveal />
             <ScrollState />
             <SearchOverlay />
-            <CursorRing />
           </CartProvider>
         </I18nProvider>
       </body>

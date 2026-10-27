@@ -26,7 +26,6 @@ export function AfterWalk({
   lead,
   scenes,
   cta,
-  dragLabel,
   aiNote,
 }: {
   eyebrow: string;
@@ -34,7 +33,6 @@ export function AfterWalk({
   lead: string;
   scenes: Scene[];
   cta: { href: string; label: string };
-  dragLabel: string;
   aiNote: string;
 }) {
   const root = useRef<HTMLElement>(null);
@@ -81,7 +79,7 @@ export function AfterWalk({
         </div>
         <p className={styles.lead}>{lead}</p>
       </div>
-      <ol ref={track} className={styles.track} data-cursor={dragLabel}>
+      <ol ref={track} className={styles.track}>
         {scenes.map((s, i) => (
           <li key={s.title} className={styles.scene}>
             <div className={styles.pic}>

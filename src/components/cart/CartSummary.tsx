@@ -57,11 +57,11 @@ export function CartSummary({
       )}
       <p className="small">{t.taxesNote}</p>
       {cart.checkoutUrl ? (
-        <a className="btn btn-purple btn-block" href={cart.checkoutUrl}>
+        <a className="btn btn-gold btn-block" href={cart.checkoutUrl}>
           {t.checkout}
         </a>
       ) : (
-        <button type="button" className="btn btn-purple btn-block" disabled>
+        <button type="button" className="btn btn-gold btn-block" disabled>
           {t.checkout}
         </button>
       )}

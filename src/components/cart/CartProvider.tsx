@@ -12,13 +12,15 @@ import {
 } from "react";
 import { addItemAction, updateItemAction } from "@/app/actions/cart";
 import { useI18n } from "@/i18n/I18nProvider";
-import type { Cart } from "@/lib/commerce/types";
+import type { Cart, ProductSummary } from "@/lib/commerce/types";
 
 type CartContextValue = {
   cart: Cart | null;
   /** False until the visitor's cart has been loaded. */
   ready: boolean;
   demoMode: boolean;
+  /** The catalogue, for "Pairs well with" suggestions in the cart. */
+  suggestions: ProductSummary[];
   isOpen: boolean;
   openCart: () => void;
   closeCart: () => void;
@@ -39,7 +41,15 @@ export function useCart() {
   return ctx;
 }
 
-export function CartProvider({ children, demoMode }: { children: ReactNode; demoMode: boolean }) {
+export function CartProvider({
+  children,
+  demoMode,
+  suggestions,
+}: {
+  children: ReactNode;
+  demoMode: boolean;
+  suggestions: ProductSummary[];
+}) {
   const { lang, dict } = useI18n();
   const [cart, setCart] = useState<Cart | null>(null);
   const [ready, setReady] = useState(false);
@@ -104,6 +114,7 @@ export function CartProvider({ children, demoMode }: { children: ReactNode; demo
       cart,
       ready,
       demoMode,
+      suggestions,
       isOpen,
       openCart: () => setIsOpen(true),
       closeCart: () => setIsOpen(false),
@@ -113,7 +124,7 @@ export function CartProvider({ children, demoMode }: { children: ReactNode; demo
       replaceCart: setCart,
       notify,
     }),
-    [cart, ready, demoMode, isOpen, pendingLineId, addItem, updateItem, notify],
+    [cart, ready, demoMode, suggestions, isOpen, pendingLineId, addItem, updateItem, notify],
   );
 
   return (

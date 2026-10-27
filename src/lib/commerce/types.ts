@@ -56,14 +56,26 @@ export type ProductSummary = {
   /** Set when the product can be added straight from a card. */
   singleVariantId: string | null;
   updatedAt: string | null;
+  /** Options and variants, so cards can show colour swatches and add to cart. */
+  options: ProductOption[];
+  variants: ProductVariant[];
+};
+
+/** A photo or video in the product gallery (Shopify product media). */
+export type ProductVideo = {
+  /** Playable sources for a video uploaded to Shopify. */
+  sources: { url: string; mimeType: string }[];
+  /** YouTube or Vimeo embed address for an external video. */
+  embedUrl: string | null;
+  poster: Image | null;
+  alt: string | null;
 };
 
 export type Product = ProductSummary & {
   description: string;
   descriptionHtml: string;
-  options: ProductOption[];
-  variants: ProductVariant[];
   images: Image[];
+  videos: ProductVideo[];
   seo: { title: string | null; description: string | null };
   vendor: string | null;
 };

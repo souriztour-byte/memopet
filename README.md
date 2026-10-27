@@ -1,9 +1,15 @@
 # MimiPets — headless Shopify storefront
 
 A Next.js storefront for **MimiPets** (“Little things. Happier pets.” / “Pequeños detalles.
-Mascotas más felices.”), built from the `mimopets_4.html` prototype. It uses the same palette,
-fonts (Poppins + Nunito Sans), logo, illustrations and copy. Products, prices, the cart and
-checkout come from Shopify through the **Storefront API**. The site is in **English and Spanish**.
+Mascotas más felices.”), first built from the `mimopets_4.html` prototype and now in a
+luxury look with three palettes: **white & gold** (current: warm ivory, champagne gold,
+espresso and soft beige), **sand** and **black & gold**, switched with `look` in
+`src/lib/config.ts` (palettes in `src/app/globals.css`). All use Playfair Display for headings
+and the MIMIPETS wordmark, and Inter for text. The home page is laid out like a catalogue: the name over a framed photo, a row
+of products on stone tiles, product + lifestyle pairs, the promises and a guide block. Products,
+prices, the cart and checkout come from Shopify through the **Storefront API**. The site is in
+**English and Spanish**. The share-preview images (`src/lib/og/frame.tsx`) still use the
+prototype's purple and pink.
 
 - **Next.js 16** (App Router, React 19, TypeScript), plain CSS with CSS Modules — no UI framework.
 - **Shopify Storefront API** (GraphQL) for catalog, collections, cart and store policies.
@@ -152,6 +158,17 @@ These conventions keep the storefront looking like the prototype:
   that sentence as a note under the photo.
 - **Policies**: policies written in *Settings → Policies* replace the local drafts automatically,
   one by one, in each language.
+- **Demonstration videos**: add a video to the product's media (upload, or a YouTube/Vimeo
+  link). The product page shows a "See it in action" section, and the home page shows the paw
+  washer's first video.
+- **Before & after**: give two of a product's images alt text starting with “Before” and
+  “After” (Spanish: “Antes” / “Después”). The product page, and the home page for the paw
+  washer, then show a slider comparing them. Nothing shows until both exist.
+- **Colour swatches** on product cards come from an option named Colour/Color. Shades for
+  each colour name are in `swatchFor` (`src/lib/commerce/presentation.ts`); a new colour shows
+  its name until a shade is added there.
+- **Quiz**: the product quiz (`/quiz`) suggests sizes from the supplier measurements in
+  `src/lib/content/quiz.ts`; update them there if a product's sizes change.
 
 ### Offers: shipping, bundle and welcome code
 
@@ -193,7 +210,8 @@ The site states nothing that isn’t in one of these sources:
 
 | Content | Source |
 | --- | --- |
-| Colours, fonts, logo, illustrations, hero copy, card labels | HTML prototype (the wordmark now reads “mimipets”, using the prototype’s own letter shapes) |
+| Colours, fonts, wordmark | The luxury design picked by the shop owner (look “D”), in white & gold or black & gold |
+| Illustrations (shown only when a product has no photo), card labels | HTML prototype |
 | Product names, card badges | HTML prototype (Silicone Paw Washer, Luxury Cat Sofa Bed, Warming Sleeping Bag Bed); the Paw Washer Cup is named after its listing |
 | Product details: materials, measurements, colours, sizes, what’s in the box, photos | Supplier listings (CJ Dropshipping), one per product. The paw washer studio shots are the supplier photos cut out and set on the shop’s cream background; the size charts are redrawn with the listed measurements |
 | AI-retouched photos (sofa, sleeping bag bed and Paw Washer Cup studio shots, the sofa and bed lifestyle photos) | The supplier photos, cleaned up with an AI image tool by the shop owner, checked against the originals for shape and colour |
@@ -229,8 +247,6 @@ Supplier costs and supplier SKUs are **not** shown anywhere.
       no analytics or advertising cookies, which is true of this code. Update it if you add
       tracking.
 - [ ] **Contact details and legal entity** (environment variables above).
-- [ ] **Dark mode.** The prototype ships light-only (`<html data-theme="light">`). The dark palette
-      is kept in `globals.css`; remove the attribute in `src/app/[lang]/layout.tsx` to enable it.
 
 ## Project structure
 

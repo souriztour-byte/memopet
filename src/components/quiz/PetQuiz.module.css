@@ -1,0 +1,124 @@
+.card,
+.results {
+  max-width: 820px;
+  margin-inline: auto;
+  padding: 48px 40px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  display: grid;
+  gap: 24px;
+}
+.card {
+  justify-items: center;
+  text-align: center;
+}
+.progress {
+  font-size: 0.7rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--gold-text);
+}
+.question {
+  font-size: clamp(1.8rem, 4vw, 2.6rem);
+}
+.options {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 12px;
+}
+.option {
+  min-height: 64px;
+  padding: 14px 18px;
+  border: 1px solid var(--panel-2);
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--display);
+  font-size: 1.15rem;
+  cursor: pointer;
+  transition:
+    border-color 0.2s,
+    background 0.2s;
+}
+.option:hover {
+  border-color: var(--gold);
+  background: var(--panel);
+}
+.back {
+  border: 0;
+  background: none;
+  color: var(--muted);
+  font-size: 0.75rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  cursor: pointer;
+  min-height: 44px;
+}
+.back:hover {
+  color: var(--ink);
+}
+.picks {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 16px;
+}
+.pick {
+  display: grid;
+  grid-template-columns: 180px 1fr;
+  gap: 20px;
+  align-items: center;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--line);
+}
+.pic {
+  position: relative;
+  display: block;
+  aspect-ratio: 1;
+  overflow: hidden;
+  background: var(--tile, var(--panel));
+}
+.pickText {
+  display: grid;
+  gap: 6px;
+  justify-items: start;
+}
+.pickText b {
+  font-family: var(--display);
+  font-size: 1.4rem;
+  font-weight: 500;
+}
+.price {
+  color: var(--gold-text);
+  font-size: 0.92rem;
+}
+.size {
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+.reason {
+  color: var(--ink-soft);
+  font-size: 0.92rem;
+  margin-bottom: 6px;
+}
+.note {
+  padding: 14px 18px;
+  background: var(--panel);
+  color: var(--ink);
+  font-size: 0.92rem;
+}
+@media (max-width: 560px) {
+  .card,
+  .results {
+    padding: 32px 18px;
+  }
+  .pick {
+    grid-template-columns: 110px 1fr;
+    gap: 14px;
+  }
+  .pickText b {
+    font-size: 1.15rem;
+  }
+}

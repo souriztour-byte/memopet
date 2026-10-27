@@ -45,7 +45,16 @@ export const siteConfig = {
 export const navLinks = [
   { href: "/shop", key: "shop" },
   { href: "/collections", key: "collections" },
+  { href: "/quiz", key: "quiz" },
   { href: "/how-to-order", key: "howToOrder" },
   { href: "/faq", key: "faq" },
   { href: "/contact", key: "contact" },
 ] as const;
+
+/**
+ * The site's look: "dark" is black & gold, "light" is white & gold, "sand" is
+ * warm beige. The palettes live in src/app/globals.css; switch here.
+ */
+export const look: "dark" | "light" | "sand" = "light";
+/** Browser-bar and home-screen colour for each look. */
+export const lookColor = { dark: "#0F0E0D", light: "#FAF8F4", sand: "#F1EEE9" } as const;

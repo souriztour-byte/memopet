@@ -1,37 +1,101 @@
+/* An espresso band above the footer on every page, with "Club" written
+   huge and faint in gold behind it. Its colours are set here, so it stays
+   dark in every look. */
 .band {
-  background: var(--lilac);
-  padding-block: 36px;
+  --ink: #f4efe6;
+  --ink-soft: #ded6c9;
+  --muted: #bfb4a4;
+  --gold-text: #d4b67e;
+  --gold-ink: #e6cf9f;
+  --panel-2: rgba(244, 239, 230, 0.3);
+  --ghost-line: rgba(244, 239, 230, 0.45);
+  --danger: #f09a86;
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  padding-block: 112px;
+  background: #302820;
+  color: var(--ink);
 }
-.inner {
+.watermark {
+  position: absolute;
+  z-index: -1;
+  left: 50%;
+  bottom: -0.22em;
+  translate: -50% 0;
+  font-family: var(--display);
+  font-style: italic;
+  font-size: clamp(9rem, 30vw, 28rem);
+  line-height: 1;
+  white-space: nowrap;
+  color: var(--gold);
+  opacity: 0.1;
+  pointer-events: none;
+  user-select: none;
+}
+.band :global(.muted),
+.band :global(.small) {
+  color: var(--muted);
+}
+.band :global(.text-link) {
+  color: var(--gold-ink);
+}
+/* Two classes so it outranks the global .wrap width. */
+.band .inner {
+  max-width: 760px;
   display: grid;
-  grid-template-columns: 1fr minmax(0, 460px);
-  gap: 20px 40px;
-  align-items: center;
+  justify-items: center;
+  gap: 28px;
+  text-align: center;
 }
 .copy {
   display: grid;
-  gap: 6px;
+  justify-items: center;
+  gap: 14px;
 }
 .title {
-  font-size: clamp(1.4rem, 3vw, 1.9rem);
+  font-size: clamp(2rem, 4vw, 3rem);
+}
+.perks {
+  list-style: none;
+  margin: 4px 0 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px 24px;
+  font-size: 0.9rem;
+  color: var(--ink-soft);
+}
+.perks li {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.perks svg {
+  width: 16px;
+  height: 16px;
+  color: var(--gold-text);
 }
 .form {
+  width: 100%;
+  max-width: 520px;
   display: grid;
-  gap: 10px;
+  gap: 14px;
 }
 .fields {
   display: flex;
-  gap: 10px;
+  gap: 12px;
   flex-wrap: wrap;
 }
 .inputWrap {
   position: relative;
-  flex: 1 1 220px;
+  flex: 1 1 240px;
   display: flex;
 }
 .inputIcon {
   position: absolute;
-  left: 16px;
+  left: 2px;
   top: 50%;
   width: 18px;
   height: 18px;
@@ -42,53 +106,54 @@
 .inputWrap input {
   flex: 1;
   min-width: 0;
+  min-height: 50px;
   font: inherit;
-  padding: 12px 16px 12px 44px;
-  border: 1px solid var(--line);
-  border-radius: 999px;
-  background: var(--surface);
+  padding: 12px 4px 12px 30px;
+  border: 0;
+  border-bottom: 1px solid var(--panel-2);
+  border-radius: 0;
+  background: transparent;
   color: var(--ink);
+}
+.inputWrap input::placeholder {
+  color: var(--muted);
 }
 .inputWrap input:focus {
   outline: none;
-  border-color: var(--purple);
+  border-bottom-color: var(--gold-text);
 }
 .inputWrap input[aria-invalid="true"] {
-  border-color: var(--pink);
+  border-bottom-color: var(--danger);
 }
-.fields .btn {
+.fields :global(.btn) {
   flex: 0 0 auto;
 }
 .error {
-  color: var(--pink);
+  color: var(--danger);
   font-size: 0.9rem;
-  font-weight: 600;
 }
 .codeRow {
   display: flex;
   align-items: center;
-  gap: 12px;
+  justify-content: center;
+  gap: 14px;
   flex-wrap: wrap;
 }
 .code {
   font-family: var(--display);
-  font-weight: 700;
-  font-size: 1.4rem;
-  letter-spacing: 0.08em;
-  padding: 10px 20px;
-  border-radius: 14px;
-  border: 2px dashed var(--purple);
-  background: var(--surface);
-  color: var(--purple-ink);
+  font-weight: 600;
+  font-size: 1.8rem;
+  letter-spacing: 0.18em;
+  padding: 10px 24px;
+  border: 1px dashed var(--gold);
+  color: var(--gold-ink);
 }
 
-@media (max-width: 820px) {
-  .inner {
-    grid-template-columns: 1fr;
+@media (max-width: 560px) {
+  .band {
+    padding-block: 80px;
   }
-}
-@media (max-width: 420px) {
-  .fields .btn {
+  .fields :global(.btn) {
     flex: 1 1 100%;
   }
 }

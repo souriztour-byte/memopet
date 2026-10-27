@@ -24,14 +24,15 @@ export function CartButton() {
   return (
     <button
       type="button"
-      className={`btn btn-pink btn-sm ${styles.cartBtn}`}
+      className={styles.cartBtn}
+      data-cart-target
       onClick={openCart}
       aria-label={count ? plural(lang, count, dict.cart.openWithCount) : dict.cart.open}
     >
       <span key={bumps} className={bumps ? `${styles.bag} ${styles.bump}` : styles.bag}>
         <BagIcon />
       </span>
-      {dict.cart.button}
+      <span className={styles.cartLabel}>{dict.cart.button}</span>
       {count ? (
         <span key={`badge-${bumps}`} className={styles.badge} aria-hidden="true">
           {count}

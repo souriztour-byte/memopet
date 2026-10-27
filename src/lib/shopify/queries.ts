@@ -40,35 +40,10 @@ const PRODUCT_CARD = /* GraphQL */ `
         currencyCode
       }
     }
-    variants(first: 2) {
-      nodes {
-        id
-        availableForSale
-      }
-    }
-  }
-  ${IMAGE}
-`;
-
-const PRODUCT_DETAIL = /* GraphQL */ `
-  fragment ProductDetailFields on Product {
-    ...ProductCardFields
-    vendor
-    description
-    descriptionHtml
-    seo {
-      title
-      description
-    }
     options {
       name
       optionValues {
         name
-      }
-    }
-    images(first: 20) {
-      nodes {
-        ...ImageFields
       }
     }
     allVariants: variants(first: 100) {
@@ -90,6 +65,44 @@ const PRODUCT_DETAIL = /* GraphQL */ `
         }
         image {
           ...ImageFields
+        }
+      }
+    }
+  }
+  ${IMAGE}
+`;
+
+const PRODUCT_DETAIL = /* GraphQL */ `
+  fragment ProductDetailFields on Product {
+    ...ProductCardFields
+    vendor
+    description
+    descriptionHtml
+    seo {
+      title
+      description
+    }
+    images(first: 20) {
+      nodes {
+        ...ImageFields
+      }
+    }
+    # Demonstration videos uploaded to the product (or linked from YouTube/Vimeo).
+    media(first: 20) {
+      nodes {
+        mediaContentType
+        alt
+        previewImage {
+          ...ImageFields
+        }
+        ... on Video {
+          sources {
+            url
+            mimeType
+          }
+        }
+        ... on ExternalVideo {
+          embedUrl
         }
       }
     }

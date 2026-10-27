@@ -51,7 +51,16 @@ type RawProductCard = {
   updatedAt: string;
   featuredImage: Image | null;
   priceRange: { minVariantPrice: Money; maxVariantPrice: Money };
-  variants: Nodes<{ id: string; availableForSale: boolean }>;
+  options: { name: string; optionValues: { name: string }[] }[];
+  allVariants: Nodes<Product["variants"][number]>;
+};
+
+type RawMedia = {
+  mediaContentType: "IMAGE" | "VIDEO" | "EXTERNAL_VIDEO" | "MODEL_3D";
+  alt: string | null;
+  previewImage: Image | null;
+  sources?: { url: string; mimeType: string }[];
+  embedUrl?: string;
 };
 
 type RawProduct = RawProductCard & {
@@ -59,9 +68,8 @@ type RawProduct = RawProductCard & {
   description: string;
   descriptionHtml: string;
   seo: { title: string | null; description: string | null };
-  options: { name: string; optionValues: { name: string }[] }[];
   images: Nodes<Image>;
-  allVariants: Nodes<Product["variants"][number]>;
+  media: Nodes<RawMedia>;
 };
 
 type RawCart = {
@@ -100,7 +108,11 @@ const withNote = (image: Image | null): Image | null =>
 
 function reshapeSummary(p: RawProductCard, lang: Locale): ProductSummary {
   const illustration = illustrationFor(p.tags, p.productType, p.title);
-  const variants = p.variants.nodes;
+  const variants = p.allVariants.nodes.map((v) => ({ ...v, image: withNote(v.image) }));
+  // Shopify always returns a "Title" option for products without variants.
+  const options = p.options
+    .map((o) => ({ name: o.name, values: o.optionValues.map((v) => v.name) }))
+    .filter((o) => !(o.name === "Title" && o.values.length === 1 && o.values[0] === "Default Title"));
   return {
     id: p.id,
     handle: p.handle,
@@ -114,23 +126,28 @@ function reshapeSummary(p: RawProductCard, lang: Locale): ProductSummary {
     tile: tileFor(illustration),
     singleVariantId: variants.length === 1 && variants[0].availableForSale ? variants[0].id : null,
     updatedAt: p.updatedAt,
+    options,
+    variants,
   };
 }
 
 function reshapeProduct(p: RawProduct, lang: Locale): Product {
-  // Shopify always returns a "Title" option for products without variants.
-  const options = p.options
-    .map((o) => ({ name: o.name, values: o.optionValues.map((v) => v.name) }))
-    .filter((o) => !(o.name === "Title" && o.values.length === 1 && o.values[0] === "Default Title"));
+  const videos = p.media.nodes
+    .filter((m) => m.mediaContentType === "VIDEO" || m.mediaContentType === "EXTERNAL_VIDEO")
+    .map((m) => ({
+      sources: m.sources ?? [],
+      embedUrl: m.embedUrl ?? null,
+      poster: m.previewImage,
+      alt: m.alt,
+    }));
   return {
     ...reshapeSummary(p, lang),
     vendor: p.vendor || null,
     description: p.description,
     descriptionHtml: p.descriptionHtml,
     seo: p.seo,
-    options,
     images: p.images.nodes.map((image) => ({ ...image, note: aiNoteFor(image.altText) })),
-    variants: p.allVariants.nodes.map((v) => ({ ...v, image: withNote(v.image) })),
+    videos,
   };
 }
 

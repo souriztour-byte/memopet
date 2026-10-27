@@ -1,5 +1,5 @@
 import type { MetadataRoute } from "next";
-import { siteConfig } from "@/lib/config";
+import { look, lookColor, siteConfig } from "@/lib/config";
 
 /** Lets phones save the shop to the home screen with its name, colours and icon. */
 export default function manifest(): MetadataRoute.Manifest {
@@ -8,8 +8,8 @@ export default function manifest(): MetadataRoute.Manifest {
     short_name: siteConfig.name,
     start_url: "/",
     display: "standalone",
-    background_color: "#FFFFFF",
-    theme_color: "#6C4AB6",
+    background_color: lookColor[look],
+    theme_color: lookColor[look],
     icons: [
       { src: "/icon.svg", sizes: "any", type: "image/svg+xml" },
       { src: "/apple-icon", sizes: "180x180", type: "image/png" },

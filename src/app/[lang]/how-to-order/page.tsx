@@ -85,7 +85,7 @@ export default async function HowToOrderPage(props: PageProps<"/[lang]/how-to-or
       </section>
 
       <section className="block">
-        <Link href={href("/shop")} className="btn btn-pink">
+        <Link href={href("/shop")} className="btn btn-gold">
           {dict.common.startShopping}
         </Link>
       </section>

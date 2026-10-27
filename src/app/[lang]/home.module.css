@@ -1,297 +1,247 @@
-/* Hero — ported from the prototype's .hero / .hero-art / .chip rules */
-.hero {
+/* Home page: the sections between the client scenes in src/components/home. */
+
+.sectionHead {
   display: grid;
-  grid-template-columns: 1.05fr 0.95fr;
-  gap: 40px;
-  align-items: center;
-  padding-block: 56px 80px;
-}
-.title {
-  margin-top: 14px;
-}
-.pink {
-  color: var(--pink);
-}
-.hero :global(.lead) {
-  margin-top: 20px;
-}
-.cta {
-  display: flex;
-  flex-wrap: wrap;
+  justify-items: center;
   gap: 12px;
-  margin-top: 32px;
+  margin-bottom: 40px;
+  text-align: center;
 }
-.trust {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px 24px;
-  margin: 32px 0 0;
-  padding: 0;
-  list-style: none;
-  color: var(--muted);
-  font-size: 0.95rem;
+.sectionTitle {
+  font-size: clamp(2.4rem, 5vw, 4.2rem);
+  line-height: 1;
 }
-.trust li {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
+/* Small centred section titles in spaced capitals */
+.kicker {
+  font-family: var(--body);
+  font-size: 0.74rem;
+  font-weight: 500;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  text-align: center;
 }
-.trust svg {
-  width: 18px;
-  height: 18px;
-  color: var(--purple);
-}
-.art {
-  position: relative;
-  aspect-ratio: 1 / 1;
-  max-width: 100%;
-  width: min(460px, 100%);
-  justify-self: center;
-}
-.blob {
-  position: absolute;
-  inset: 0;
-  background: var(--lilac);
-  border-radius: 46% 54% 42% 58% / 52% 44% 56% 48%;
-}
-.ill {
-  position: absolute;
-  inset: 2%;
-  width: 96%;
-  height: 96%;
-}
-.photo {
-  object-fit: cover;
-  object-position: center;
-  border-radius: 38% 38% 24px 24px;
-  box-shadow: 0 20px 50px #221a3320;
-}
-.chip {
-  position: absolute;
-  z-index: 2;
-  background: var(--surface);
-  border-radius: 16px;
-  padding: 10px 14px;
-  box-shadow: var(--shadow);
-  font-size: 0.88rem;
-  line-height: 1.3;
-  display: flex;
+.kickerRow {
+  display: grid;
+  justify-items: center;
   gap: 10px;
-  align-items: center;
+  margin-bottom: 36px;
 }
-.chip b {
-  font-family: var(--display);
-  font-weight: 600;
-  display: block;
-  color: var(--ink);
-}
-.chip small {
+.swipe {
+  display: none;
+  font-size: 0.68rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
   color: var(--muted);
 }
-.dot {
-  width: 34px;
-  height: 34px;
-  border-radius: 50%;
+.center {
+  margin-top: 40px;
+  text-align: center;
+}
+/* "Discover →" links: small capitals with a thin underline */
+.more {
+  display: inline-block;
+  padding-bottom: 3px;
+  border-bottom: 1px solid var(--ghost-line);
+  color: var(--ink);
+  font-size: 0.7rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition:
+    color 0.2s,
+    border-color 0.2s;
+}
+a.more:hover,
+a:hover .more {
+  color: var(--gold-ink);
+  border-bottom-color: var(--gold-text);
+}
+
+.collection {
+  padding-block: 120px 96px;
+}
+.cover {
+  object-fit: cover;
+}
+
+/* The paw washer's before/after and video, once they're in Shopify */
+.proof {
+  padding-block: 24px 96px;
   display: grid;
-  place-items: center;
-  flex: none;
-}
-.dot svg {
-  width: 18px;
-  height: 18px;
-}
-.c1 {
-  left: -6%;
-  top: 30%;
-}
-.c1 .dot {
-  background: var(--pink-soft);
-  color: var(--pink);
-}
-.c2 {
-  right: -6%;
-  bottom: 10%;
-}
-.c2 .dot {
-  background: var(--lilac);
-  color: var(--purple);
-}
-@media (prefers-reduced-motion: no-preference) {
-  .chip {
-    animation: float 6s ease-in-out infinite;
-  }
-  .c2 {
-    animation-delay: -3s;
-  }
-}
-@keyframes float {
-  50% {
-    transform: translateY(-8px);
-  }
-}
-/* Delivery and returns facts under the hero (from src/lib/content/shipping.ts). */
-.facts {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  justify-items: center;
   gap: 12px;
-  margin: 0 0 40px;
-  padding: 14px;
+  text-align: center;
+}
+.proof > div {
+  width: 100%;
+  margin-top: 24px;
+}
+.proofTwo {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 16px;
+  align-items: center;
+}
+
+/* Quiz invitation between the features and the promises */
+.quizTeaser {
+  margin-top: 64px;
+  padding: 56px 24px;
+  background: var(--panel);
+  display: grid;
+  justify-items: center;
+  gap: 14px;
+  text-align: center;
+}
+.quizTeaser h2 {
+  font-size: clamp(1.9rem, 3.4vw, 2.6rem);
+}
+.quizTeaser :global(.btn) {
+  margin-top: 6px;
+}
+
+/* Promises in a quiet row, like a line of press mentions */
+.promises {
   list-style: none;
-  background: var(--lilac);
-  border-radius: var(--radius);
+  margin: 80px 0;
+  padding: 36px 0;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+  border-block: 1px solid var(--line);
+  text-align: center;
 }
-.facts li {
-  display: flex;
-  gap: 12px;
-  align-items: center;
-  padding: 10px 12px;
+.promises li {
+  display: grid;
+  gap: 8px;
+  justify-items: center;
 }
-.facts b {
-  display: block;
+.promises b {
   font-family: var(--display);
+  font-size: 1.3rem;
   font-weight: 600;
+  line-height: 1.15;
+}
+.promises span {
+  max-width: 22em;
+  font-size: 0.86rem;
+  line-height: 1.5;
+  color: var(--muted);
+}
+
+/* Guide: one large story beside three small ones */
+.guide {
+  background: var(--surface);
+  padding: 40px;
+  margin-bottom: 104px;
+}
+.guide .kicker {
+  text-align: left;
+  margin-bottom: 28px;
+}
+.guideGrid {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr;
+  gap: 28px;
+}
+.guideMain,
+.guideItem {
+  text-decoration: none;
   color: var(--ink);
 }
-.facts small {
-  color: var(--muted);
-  font-size: 0.88rem;
-}
-.factIcon {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background: var(--surface);
-  color: var(--purple);
+.guideMain {
   display: grid;
-  place-items: center;
-  flex: none;
+  gap: 18px;
 }
-.factIcon svg {
-  width: 20px;
-  height: 20px;
+.guideMainPic {
+  position: relative;
+  display: block;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
 }
-@media (max-width: 860px) {
-  .facts {
-    grid-template-columns: 1fr;
-    gap: 0;
-    padding: 8px;
-    margin-bottom: 28px;
-  }
+.guideMainText,
+.guideItemText {
+  display: grid;
+  gap: 8px;
+  justify-items: start;
 }
-
-/* Gentle entrance for the hero, skipped for people who prefer less motion. */
-@media (prefers-reduced-motion: no-preference) {
-  .hero > div:first-child > * {
-    animation: rise 0.6s ease both;
-  }
-  .hero > div:first-child > :nth-child(2) {
-    animation-delay: 0.06s;
-  }
-  .hero > div:first-child > :nth-child(3) {
-    animation-delay: 0.12s;
-  }
-  .hero > div:first-child > :nth-child(4) {
-    animation-delay: 0.18s;
-  }
-  .hero > div:first-child > :nth-child(5) {
-    animation-delay: 0.24s;
-  }
-  .art {
-    animation: pop 0.7s 0.1s ease both;
-  }
+.guideMainText b {
+  font-family: var(--display);
+  font-size: 1.8rem;
+  font-weight: 500;
+  line-height: 1.1;
 }
-@keyframes rise {
-  from {
-    opacity: 0;
-    transform: translateY(14px);
-  }
+.guideMainText > span:not(.more),
+.guideItemText > span:not(.more) {
+  color: var(--ink-soft);
+  font-size: 0.92rem;
+  line-height: 1.55;
 }
-@keyframes pop {
-  from {
-    opacity: 0;
-    transform: scale(0.94);
-  }
+.guideList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 20px;
+  align-content: start;
 }
-@media (max-width: 860px) {
-  .hero {
-    grid-template-columns: 1fr;
-    gap: 22px;
-    padding-block: 36px 56px;
-  }
-  .art {
-    width: min(360px, 100%);
-  }
-  .c1 {
-    left: 0;
-    top: 6%;
-  }
-  .c2 {
-    right: 0;
-  }
+.guideItem {
+  display: grid;
+  grid-template-columns: 120px 1fr;
+  gap: 18px;
+  align-items: start;
 }
-@media (max-width: 820px) {
-  .title {
-    font-size: 2.6rem;
-  }
-  .art {
-    width: min(280px, 100%);
-  }
+.guideThumb {
+  position: relative;
+  display: block;
+  aspect-ratio: 1;
+  overflow: hidden;
+  background: var(--panel);
+}
+.guideItemText b {
+  font-family: var(--display);
+  font-size: 1.3rem;
+  font-weight: 500;
+  line-height: 1.15;
+}
+.guideMainPic img,
+.guideThumb img {
+  transition: transform 0.8s ease;
+}
+.guideMain:hover .guideMainPic img,
+.guideItem:hover .guideThumb img {
+  transform: scale(1.04);
 }
 
-/* Icons that move: delivery facts bob in turn, the chip's truck drives and its
-   chat bubble pops. */
-@media (prefers-reduced-motion: no-preference) {
-  .factIcon svg {
-    animation: icon-bob 3s ease-in-out infinite;
+@media (max-width: 1000px) {
+  .promises {
+    grid-template-columns: repeat(2, 1fr);
+    row-gap: 36px;
   }
-  .facts li:nth-child(2) .factIcon svg {
-    animation-name: icon-drive;
-    animation-delay: -1s;
-  }
-  .facts li:nth-child(3) .factIcon svg {
-    animation-name: icon-turn;
-    animation-delay: -2s;
-  }
-  .c1 .dot svg {
-    animation: icon-drive 2.4s ease-in-out infinite;
-  }
-  .c2 .dot svg {
-    animation: icon-pop 3s ease-in-out infinite;
+  .guideGrid {
+    grid-template-columns: 1fr;
   }
 }
-@keyframes icon-bob {
-  50% {
-    transform: translateY(-3px);
+@media (max-width: 760px) {
+  .collection {
+    padding-block: 72px 56px;
+  }
+  .promises {
+    grid-template-columns: 1fr;
+    margin: 56px 0;
+  }
+  .guide {
+    padding: 28px 20px;
+    margin-inline: calc(-1 * var(--gutter));
+    margin-bottom: 72px;
+  }
+  .guideItem {
+    grid-template-columns: 96px 1fr;
+    gap: 14px;
   }
 }
-@keyframes icon-drive {
-  0%,
-  100% {
-    transform: translateX(-2px);
-  }
-  50% {
-    transform: translateX(2px) translateY(-1px);
-  }
-}
-@keyframes icon-turn {
-  0%,
-  100% {
-    transform: rotate(0deg);
-  }
-  50% {
-    transform: rotate(-25deg);
-  }
-}
-@keyframes icon-pop {
-  0%,
-  70%,
-  100% {
-    transform: scale(1);
-  }
-  80% {
-    transform: scale(1.2);
-  }
-  90% {
-    transform: scale(0.95);
-  }
+.quizText {
+  max-width: 26em;
+  color: var(--ink-soft);
+  font-size: 0.95rem;
 }

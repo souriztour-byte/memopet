@@ -1,14 +1,16 @@
 .announcement {
   text-align: center;
-  background: var(--purple);
-  color: #fff;
+  background: var(--bg);
+  color: var(--gold-text);
+  border-bottom: 1px solid var(--gold-line);
   padding: 9px 16px;
-  font-size: 0.82rem;
+  font-size: 0.7rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
 }
 .announcementLink {
-  color: inherit;
-  font-weight: 700;
-  text-underline-offset: 3px;
+  color: var(--ink);
+  text-underline-offset: 4px;
 }
 /* Phones: the offers alone fit on one or two lines. */
 @media (max-width: 600px) {
@@ -17,106 +19,325 @@
   }
 }
 .top {
+  view-transition-name: site-header;
   position: sticky;
   top: env(safe-area-inset-top, 0px);
   z-index: 20;
-  background: color-mix(in srgb, var(--bg) 88%, transparent);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  background: var(--bg);
   border-bottom: 1px solid var(--line);
 }
+/* Logo centred, actions on the right; the nav is a second row underneath. */
 .bar {
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
   align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  height: var(--header-h);
+  column-gap: 16px;
   position: relative;
 }
 .logoLink {
+  grid-column: 2;
+  grid-row: 1;
   display: block;
-  flex: none;
+  padding-block: 22px;
+  text-decoration: none;
+  transition: padding 0.3s ease;
 }
 .logo {
-  height: 54px;
-  width: auto;
-  display: block;
+  transition: font-size 0.3s ease;
 }
-.nav ul {
+.actions {
+  grid-column: 3;
+  grid-row: 1;
+  justify-self: end;
   display: flex;
-  gap: 28px;
+  align-items: center;
+  gap: 14px;
+}
+.nav {
+  grid-column: 1 / -1;
+  grid-row: 2;
+}
+.nav > ul {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  list-style: none;
+  margin: 0;
+  padding: 14px 0 16px;
+  border-top: 1px solid var(--line);
+  font-size: 0.72rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  transition: padding 0.3s ease;
+}
+/* Top-level links: a gold line grows from the middle on hover. */
+.nav > ul > li > a {
+  position: relative;
+  text-decoration: none;
+  color: var(--ink);
+  padding-block: 4px;
+  transition: color var(--dur-fast);
+}
+.nav > ul > li > a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 1px;
+  background: var(--gold-text);
+  transform: scaleX(0);
+  transition: transform var(--dur-base) var(--ease-out);
+}
+.nav > ul > li > a:hover {
+  color: var(--gold-ink);
+}
+.nav > ul > li > a:hover::after,
+.nav > ul > li > a[aria-current="page"]::after,
+.hasDrop:focus-within > a::after {
+  transform: scaleX(1);
+}
+.nav > ul > li > a[aria-current="page"] {
+  color: var(--gold-text);
+}
+.menuToggle,
+.menuHead,
+.scrim {
+  display: none;
+}
+
+/* Categories panel (computers): round photos with an arrow that slides. */
+.drop {
+  position: absolute;
+  left: 50%;
+  width: 100vw;
+  margin-left: -50vw;
+  top: 100%;
+  padding: 32px 0 36px;
+  background: var(--bg);
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  box-shadow: 0 30px 50px -30px rgba(25, 19, 14, 0.3);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-8px);
+  transition:
+    opacity var(--dur-base) var(--ease-out),
+    transform var(--dur-base) var(--ease-out),
+    visibility 0s linear var(--dur-base);
+  text-transform: none;
+  letter-spacing: normal;
+}
+.hasDrop:hover .drop,
+.hasDrop:focus-within .drop {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+  transition-delay: 0s;
+}
+.dropList {
   list-style: none;
   margin: 0;
   padding: 0;
-  font-family: var(--display);
-  font-weight: 500;
-  font-size: 0.95rem;
-}
-.nav a {
-  text-decoration: none;
-  color: var(--muted);
-}
-.nav a:hover,
-.nav a[aria-current="page"] {
-  color: var(--purple);
-}
-.nav a[aria-current="page"] {
-  font-weight: 600;
-}
-/* Scoped under .bar so it outranks the global .btn display rule. */
-.bar .menuToggle {
-  display: none;
-}
-.actions {
   display: flex;
+  justify-content: center;
+  gap: 56px;
+}
+.dropItem {
+  display: grid;
+  justify-items: center;
+  gap: 14px;
+  color: var(--ink);
+  text-decoration: none;
+}
+.dropPic {
+  position: relative;
+  width: 112px;
+  height: 112px;
+  border-radius: 50%;
+  overflow: hidden;
+  background: var(--panel);
+  outline: 1px solid transparent;
+  outline-offset: 4px;
+  transition: outline-color var(--dur-base) var(--ease-out);
+}
+.dropPic img {
+  object-fit: cover;
+  transition: transform 0.8s var(--ease-out);
+}
+.dropAll {
+  display: grid;
+  place-items: center;
+  color: var(--gold-text);
+  font-size: 1.6rem;
+}
+.dropItem:hover .dropPic {
+  outline-color: var(--gold);
+}
+.dropItem:hover .dropPic img {
+  transform: scale(1.08);
+}
+.dropTitle {
+  display: inline-flex;
   align-items: center;
-  gap: 12px;
-  flex: none;
+  gap: 8px;
+  font-family: var(--display);
+  font-size: 1.1rem;
+}
+.dropTitle svg {
+  width: 16px;
+  height: 16px;
+  transition: transform var(--dur-base) var(--ease-out);
+}
+.dropItem:hover .dropTitle svg {
+  transform: translateX(4px);
+}
+
+/* Search (computers; phones use the tab bar) */
+.searchButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 0 4px;
+  border: 0;
+  background: none;
+  color: var(--ink);
+  font-size: 0.7rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+.searchButton:hover {
+  color: var(--gold-ink);
+}
+.searchButton svg {
+  width: 20px;
+  height: 20px;
+}
+@media (max-width: 1100px) {
+  .searchButton span {
+    display: none;
+  }
+}
+@media (max-width: 760px) {
+  .searchButton {
+    display: none;
+  }
 }
 /* The language switch sits next to the cart; inside the menu on phones. */
 .nav .langMenu {
   display: none;
 }
 
-@media (max-width: 1100px) {
-  .nav ul {
-    gap: 18px;
-  }
-}
-/* The nav collapses into the Menu button below 1000px — the Spanish labels and
-   the language switch need the extra room. */
+/* Phones and small tablets: one row, and the nav drops down from Menu. */
 @media (max-width: 1000px) {
-  .bar .menuToggle {
+  .menuToggle {
+    grid-column: 1;
+    grid-row: 1;
+    justify-self: start;
     display: inline-flex;
-    padding: 9px 12px;
-    margin-left: auto;
+    align-items: center;
+    gap: 8px;
+    min-height: 44px;
+    padding: 0 4px;
+    border: 0;
+    background: none;
+    color: var(--ink);
+    font-size: 0.7rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    cursor: pointer;
   }
-  .nav ul {
+  .menuToggle svg {
+    width: 22px;
+    height: 22px;
+  }
+  .logoLink {
+    padding-block: 18px;
+  }
+  .drop {
     display: none;
   }
-  .nav ul.isOpen {
+  /* The menu slides in from the left over a dimmed page. */
+  .nav > ul {
+    display: none;
+  }
+  .nav > ul.isOpen {
+    justify-content: flex-start;
     display: flex;
-    position: absolute;
-    top: var(--header-h);
-    left: 0;
-    right: 0;
-    padding: 24px var(--gutter);
+    position: fixed;
+    z-index: 2;
+    inset: 0 auto 0 0;
+    width: min(360px, 86vw);
+    padding: calc(16px + env(safe-area-inset-top, 0px)) 28px 32px;
     flex-direction: column;
-    gap: 18px;
-    background: var(--surface);
+    align-items: flex-start;
+    gap: 6px;
+    overflow-y: auto;
+    background: var(--bg);
+    border: 0;
+    box-shadow: 30px 0 60px -30px rgba(25, 19, 14, 0.4);
+    font-size: 0.82rem;
+  }
+  .nav > ul.isOpen > li > a {
+    display: block;
+    padding-block: 14px;
+  }
+  .nav > ul.isOpen > li:not(.menuHead, .langMenu) {
+    align-self: stretch;
     border-bottom: 1px solid var(--line);
-    box-shadow: var(--shadow);
+  }
+  .menuHead {
+    display: block;
+    align-self: flex-end;
+  }
+  .scrim {
+    display: block;
+    position: fixed;
+    inset: 0;
+    z-index: 1;
+    background: rgba(25, 19, 14, 0.35);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
   }
 }
-@media (max-width: 820px) {
-  .bar {
-    gap: 8px;
+@media (max-width: 1000px) and (prefers-reduced-motion: no-preference) {
+  .nav > ul.isOpen {
+    justify-content: flex-start;
+    animation: menu-in 0.45s var(--ease-out) both;
   }
-  .logo {
-    height: 42px;
+  .nav > ul.isOpen > li {
+    animation: menu-item 0.5s var(--ease-out) both;
+    animation-delay: calc(0.1s + var(--i, 0) * 45ms);
+  }
+  .scrim {
+    animation: scrim-in 0.3s ease both;
+  }
+}
+@keyframes menu-in {
+  from {
+    transform: translateX(-100%);
+  }
+}
+@keyframes menu-item {
+  from {
+    opacity: 0;
+    transform: translateX(-16px);
+  }
+}
+@keyframes scrim-in {
+  from {
+    opacity: 0;
   }
 }
 @media (max-width: 560px) {
+  .menuToggle span {
+    display: none;
+  }
+  .logo {
+    font-size: 1.45rem;
+  }
   .actions .langBar {
     display: none;
   }
@@ -124,8 +345,36 @@
     display: block;
   }
 }
-@media (max-width: 380px) {
-  .logo {
-    height: 34px;
+
+/* After a little scrolling the header slims down (ScrollState.tsx), leaving
+   more room for products. */
+:global(html[data-scrolled]) .logoLink {
+  padding-block: 12px;
+}
+:global(html[data-scrolled]) .logo {
+  font-size: 1.7rem;
+}
+:global(html[data-scrolled]) .nav > ul {
+  padding-block: 10px 11px;
+}
+@media (max-width: 560px) {
+  :global(html[data-scrolled]) .logoLink {
+    padding-block: 12px;
   }
+  :global(html[data-scrolled]) .logo {
+    font-size: 1.25rem;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .logoLink,
+  .logo,
+  .nav ul,
+  .drop,
+  .nav > ul > li > a::after {
+    transition: none;
+  }
+}
+/* The open phone menu covers the tab bar too. */
+.top:has(.isOpen) {
+  z-index: 40;
 }

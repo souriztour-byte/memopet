@@ -15,7 +15,7 @@ export default async function NotFound() {
       <h1>{dict.notFound.title}</h1>
       <p className="lead">{dict.notFound.lead}</p>
       <div className={styles.actions}>
-        <Link href={localizePath(lang, "/")} className="btn btn-pink">
+        <Link href={localizePath(lang, "/")} className="btn btn-gold">
           {dict.common.backHome}
         </Link>
         <Link href={localizePath(lang, "/shop")} className="btn btn-ghost">

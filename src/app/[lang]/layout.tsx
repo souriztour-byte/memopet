@@ -1,33 +1,36 @@
 import type { Metadata, Viewport } from "next";
-import { Nunito_Sans, Poppins } from "next/font/google";
+import { Inter, Playfair_Display } from "next/font/google";
 import { notFound } from "next/navigation";
 import { CartDrawer } from "@/components/cart/CartDrawer";
 import { CartProvider } from "@/components/cart/CartProvider";
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
+import { TabBar } from "@/components/layout/TabBar";
 import { WelcomeSignup } from "@/components/marketing/WelcomeSignup";
+import { SearchOverlay } from "@/components/search/SearchOverlay";
+import { CursorRing } from "@/components/ui/CursorRing";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
+import { ScrollState } from "@/components/ui/ScrollState";
 import { hasLocale, locales, ogLocale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/dictionaries";
 import { fmt } from "@/i18n/format";
 import { I18nProvider } from "@/i18n/I18nProvider";
-import { isDemoMode } from "@/lib/commerce";
-import { siteConfig } from "@/lib/config";
+import { getProducts, isDemoMode } from "@/lib/commerce";
+import { look, lookColor, siteConfig } from "@/lib/config";
 import "../globals.css";
 
-// Same families and weights as the prototype.
-const poppins = Poppins({
+// Playfair Display for headings and the wordmark, Inter for text. Both are
+// variable fonts: loading them without a `weight` list fetches each file once
+// (listing weights makes Google repeat the files, which breaks the Turbopack build).
+const playfair = Playfair_Display({
   subsets: ["latin"],
-  weight: ["500", "600", "700"],
-  variable: "--font-poppins",
+  style: ["normal", "italic"],
+  variable: "--font-playfair",
   display: "swap",
 });
-// Nunito Sans is a variable font: loading it without a `weight` list fetches the
-// same files and covers the prototype's 400/600/700. Listing the weights makes
-// Google repeat each file per weight, which breaks the Turbopack production build.
-const nunitoSans = Nunito_Sans({
+const inter = Inter({
   subsets: ["latin"],
-  variable: "--font-nunito-sans",
+  variable: "--font-inter",
   display: "swap",
 });
 
@@ -63,33 +66,38 @@ export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   viewportFit: "cover",
-  themeColor: "#6C4AB6",
+  themeColor: lookColor[look],
 };
 
 export default async function RootLayout({ children, params }: LayoutProps<"/[lang]">) {
   const { lang } = await params;
   if (!hasLocale(lang)) notFound();
   const dict = getDictionary(lang);
+  const catalogue = await getProducts(lang, { sort: "best-selling", limit: 8 });
 
   return (
     <html
       lang={lang}
-      data-theme="light"
+      data-theme={look}
       data-scroll-behavior="smooth"
-      className={`${poppins.variable} ${nunitoSans.variable}`}
+      className={`${playfair.variable} ${inter.variable}`}
     >
       <body>
         <a className="skip" href="#main">
           {dict.common.skipToContent}
         </a>
         <I18nProvider lang={lang} dict={dict}>
-          <CartProvider demoMode={isDemoMode()}>
+          <CartProvider demoMode={isDemoMode()} suggestions={catalogue}>
             <Header />
             <main id="main">{children}</main>
             <WelcomeSignup />
             <Footer />
+            <TabBar />
             <CartDrawer />
             <ScrollReveal />
+            <ScrollState />
+            <SearchOverlay />
+            <CursorRing />
           </CartProvider>
         </I18nProvider>
       </body>

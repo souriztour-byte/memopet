@@ -6,6 +6,7 @@ import { useI18n } from "@/i18n/I18nProvider";
 import { rich } from "@/i18n/rich";
 import { CartLines } from "./CartLines";
 import { CartPerks } from "./CartPerks";
+import { CartSuggestions } from "./CartSuggestions";
 import { useCart } from "./CartProvider";
 import { CartSummary } from "./CartSummary";
 import styles from "./CartPage.module.css";
@@ -21,7 +22,7 @@ export function CartPageContent() {
     return (
       <div className={styles.empty}>
         <p className="lead">{t.empty}</p>
-        <Link href={localizePath(lang, "/shop")} className="btn btn-pink">
+        <Link href={localizePath(lang, "/shop")} className="btn btn-gold">
           {dict.common.startShopping}
         </Link>
       </div>
@@ -32,6 +33,7 @@ export function CartPageContent() {
     <div className={styles.layout}>
       <div className={styles.lines}>
         <CartLines lines={cart.lines} />
+        <CartSuggestions cart={cart} />
       </div>
       <div className={styles.summary}>
         <div>

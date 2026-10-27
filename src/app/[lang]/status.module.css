@@ -7,7 +7,7 @@
 .art {
   width: min(320px, 100%);
   aspect-ratio: 16 / 10;
-  border-radius: 20px;
+  border-radius: var(--radius);
   background: var(--tile);
   margin-bottom: 8px;
 }

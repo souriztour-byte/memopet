@@ -1,13 +1,15 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useMemo, useRef, useState, useTransition } from "react";
+import { useEffect, useMemo, useRef, useState, useTransition, ViewTransition } from "react";
 import { Illustration } from "@/components/art/Illustration";
 import { useCart } from "@/components/cart/CartProvider";
-import { BagIcon } from "@/components/ui/icons";
+import { BagIcon, CheckIcon } from "@/components/ui/icons";
 import { fmt } from "@/i18n/format";
 import { useI18n } from "@/i18n/I18nProvider";
+import { isColourOption, swatchFor } from "@/lib/commerce/presentation";
 import type { Image as ImageType, Product, ProductVariant } from "@/lib/commerce/types";
+import { flyToCart } from "@/lib/fly-to-cart";
 import { MAX_QTY } from "@/lib/limits";
 import { Price } from "./Price";
 import styles from "./ProductDetail.module.css";
@@ -48,6 +50,7 @@ export function ProductDetail({
   const available = Boolean(variant?.availableForSale);
 
   const buyRef = useRef<HTMLDivElement>(null);
+  const stageRef = useRef<HTMLDivElement>(null);
   const [showBar, setShowBar] = useState(false);
   useEffect(() => {
     const el = buyRef.current;
@@ -59,12 +62,26 @@ export function ProductDetail({
     return () => io.disconnect();
   }, []);
 
+  const [justAdded, setJustAdded] = useState(false);
   const add = () =>
     variant &&
     startTransition(async () => {
-      if (await addItem(variant.id, quantity)) setQuantity(1);
+      if (await addItem(variant.id, quantity)) {
+        flyToCart(stageRef.current);
+        setQuantity(1);
+        setJustAdded(true);
+        setTimeout(() => setJustAdded(false), 1600);
+      }
     });
-  const addLabel = !variant ? t.chooseOption : !available ? t.soldOut : pending ? t.adding : t.addToCart;
+  const addLabel = !variant
+    ? t.chooseOption
+    : !available
+      ? t.soldOut
+      : pending
+        ? t.adding
+        : justAdded
+          ? t.added
+          : t.addToCart;
   const price = variant ? (
     <Price min={variant.price} compareAt={variant.compareAtPrice} />
   ) : (
@@ -85,6 +102,41 @@ export function ProductDetail({
     images[0] ??
     null;
 
+  // Phones: swipe the big photo to the next or previous one (direction drives the slide-in).
+  const activeIndex = Math.max(0, images.findIndex((i) => i.url === active?.url));
+  const [slide, setSlide] = useState<"next" | "prev" | null>(null);
+  const show = (index: number, dir: "next" | "prev") => {
+    const img = images[(index + images.length) % images.length];
+    if (!img) return;
+    setSlide(dir);
+    setActiveUrl(img.url);
+  };
+  const touch = useRef<{ x: number; y: number } | null>(null);
+  const onTouchStart = (e: React.TouchEvent) => {
+    touch.current = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+  };
+  const onTouchEnd = (e: React.TouchEvent) => {
+    const start = touch.current;
+    touch.current = null;
+    if (!start || images.length < 2) return;
+    const dx = e.changedTouches[0].clientX - start.x;
+    const dy = e.changedTouches[0].clientY - start.y;
+    if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy)) show(activeIndex + (dx < 0 ? 1 : -1), dx < 0 ? "next" : "prev");
+  };
+
+  // Computers: the photo zooms in under the mouse. Written straight to the
+  // element so moving the mouse doesn't re-render the page.
+  const onPointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (e.pointerType !== "mouse") return;
+    const box = e.currentTarget.getBoundingClientRect();
+    e.currentTarget.style.setProperty("--zoom-x", `${((e.clientX - box.left) / box.width) * 100}%`);
+    e.currentTarget.style.setProperty("--zoom-y", `${((e.clientY - box.top) / box.height) * 100}%`);
+    e.currentTarget.dataset.zoom = "on";
+  };
+  const onPointerLeave = (e: React.PointerEvent<HTMLDivElement>) => {
+    delete e.currentTarget.dataset.zoom;
+  };
+
   const hasValue = (v: ProductVariant, name: string, value: string) =>
     v.selectedOptions.some((o) => o.name === name && o.value === value);
 
@@ -100,6 +152,7 @@ export function ProductDetail({
       if (closest) Object.assign(next, Object.fromEntries(closest.selectedOptions.map((o) => [o.name, o.value])));
     }
     setSelection(next);
+    setSlide(null);
     setActiveUrl(null);
   };
 
@@ -110,23 +163,47 @@ export function ProductDetail({
   return (
     <div className={styles.layout}>
       <div className={styles.gallery}>
-        <div className={`${styles.stage} ${product.tile}`}>
-          {active ? (
-            <Image
-              src={active.url}
-              alt={active.altText || product.title}
-              fill
-              preload
-              quality={90}
-              sizes="(max-width: 900px) 100vw, 560px"
-              className={styles.stagePhoto}
-            />
-          ) : (
-            <Illustration name={product.illustration} className={styles.stageArt} />
-          )}
+        <div
+          className={`${styles.stage} ${product.tile}`}
+          ref={stageRef}
+          onTouchStart={onTouchStart}
+          onTouchEnd={onTouchEnd}
+          onPointerMove={onPointerMove}
+          onPointerLeave={onPointerLeave}
+        >
+          {/* Same name as the product card's photo: opening a product glides the photo here. */}
+          <ViewTransition name={`product-${product.handle}`} share="morph" default="none">
+            {/* The key remounts the photo when the colour or thumbnail changes, so it fades in. */}
+            <span
+              key={active?.url ?? "art"}
+              className={styles.stageMedia}
+              data-slide={slide ?? undefined}
+            >
+              {active ? (
+                <Image
+                  src={active.url}
+                  alt={active.altText || product.title}
+                  fill
+                  preload
+                  quality={90}
+                  sizes="(max-width: 900px) 100vw, 560px"
+                  className={styles.stagePhoto}
+                />
+              ) : (
+                <Illustration name={product.illustration} className={styles.stageArt} />
+              )}
+            </span>
+          </ViewTransition>
           {product.badge ? <span className={styles.tag}>{product.badge}</span> : null}
         </div>
         {active?.note ? <p className={styles.photoNote}>{active.note}</p> : null}
+        {images.length > 1 ? (
+          <div className={styles.dots} aria-hidden="true">
+            {images.map((img, i) => (
+              <span key={img.url} data-active={i === activeIndex} />
+            ))}
+          </div>
+        ) : null}
         {images.length > 1 ? (
           <ul className={styles.thumbs} aria-label={t.photos}>
             {images.map((img, i) => (
@@ -136,7 +213,10 @@ export function ProductDetail({
                   className={`${styles.thumb} ${product.tile}`}
                   aria-pressed={img.url === active?.url}
                   aria-label={fmt(t.showPhoto, { index: i + 1, total: images.length })}
-                  onClick={() => setActiveUrl(img.url)}
+                  onClick={() => {
+                    setSlide(null);
+                    setActiveUrl(img.url);
+                  }}
                 >
                   <Image src={img.url} alt="" fill sizes="80px" className={styles.stagePhoto} />
                 </button>
@@ -157,7 +237,10 @@ export function ProductDetail({
             <legend>
               {option.name}
               {selection[option.name] ? (
-                <span className={styles.chosen}> ({selection[option.name]})</span>
+                // The key replays a small fade when the choice changes.
+                <span key={selection[option.name]} className={styles.chosen}>
+                  ({selection[option.name]})
+                </span>
               ) : null}
             </legend>
             <div className={styles.values} role="radiogroup" aria-label={option.name}>
@@ -171,6 +254,9 @@ export function ProductDetail({
                   disabled={!isValueAvailable(option.name, value)}
                   onClick={() => choose(option.name, value)}
                 >
+                  {isColourOption(option.name) && swatchFor(value) ? (
+                    <span className={styles.dot} style={{ background: swatchFor(value)! }} aria-hidden="true" />
+                  ) : null}
                   {value}
                 </button>
               ))}
@@ -205,11 +291,12 @@ export function ProductDetail({
           </div>
           <button
             type="button"
-            className={`btn btn-pink ${styles.addBtn}`}
+            className={`btn btn-gold ${styles.addBtn}`}
             disabled={!available || pending}
             onClick={add}
+            data-added={justAdded || undefined}
           >
-            <BagIcon />
+            {justAdded ? <CheckIcon /> : <BagIcon />}
             {addLabel}
           </button>
         </div>
@@ -224,8 +311,14 @@ export function ProductDetail({
             {variant && product.options.length ? ` · ${variant.title}` : null}
           </span>
         </div>
-        <button type="button" className="btn btn-pink" disabled={!available || pending} onClick={add}>
-          <BagIcon />
+        <button
+          type="button"
+          className="btn btn-gold"
+          disabled={!available || pending}
+          onClick={add}
+          data-added={justAdded || undefined}
+        >
+          {justAdded ? <CheckIcon /> : <BagIcon />}
           {addLabel}
         </button>
       </div>

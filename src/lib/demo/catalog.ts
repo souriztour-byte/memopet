@@ -224,12 +224,12 @@ const PRODUCTS: ProductDef[] = [
       { values: ["pink", "l"], price: 19.9, photo: "pink.jpg" },
     ],
     photos: [
+      { file: "colours.jpg", alt: { en: "The cup in three colours, cleaning a small dog's paw", es: "El vaso en tres colores, limpiando la pata de un perro pequeño" } },
       { file: "corgi.jpg", alt: { en: "A corgi resting next to the paw washer cup", es: "Un corgi descansando junto al vaso limpiapatas" } },
       { file: "in-use-ai.jpg", note: AI_SCENE, alt: { en: "A corgi with one paw in the paw washer cup", es: "Un corgi con una pata dentro del vaso limpiapatas" } },
       { file: "green.jpg", alt: { en: "Green paw washer cup", es: "Vaso limpiapatas verde" } },
       { file: "grey.jpg", alt: { en: "Grey paw washer cup", es: "Vaso limpiapatas gris" } },
       { file: "pink.jpg", alt: { en: "Pink paw washer cup", es: "Vaso limpiapatas rosa" } },
-      { file: "colours.jpg", alt: { en: "The cup in three colours, cleaning a small dog's paw", es: "El vaso en tres colores, limpiando la pata de un perro pequeño" } },
       { file: "brushes.jpg", alt: { en: "The soft silicone bristles inside the cup", es: "Las cerdas de silicona suave del interior" } },
       { file: "sizes.jpg", alt: { en: "Size S: 9 × 13 cm. Size L: 10 × 15 cm", es: "Talla S: 9 × 13 cm. Talla L: 10 × 15 cm" } },
     ],
@@ -343,6 +343,7 @@ function buildProduct(def: ProductDef, lang: Locale): DemoProduct {
       values: option.values.map((v) => v.label[lang]),
     })),
     variants,
+    videos: [],
   };
 }
 

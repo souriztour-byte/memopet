@@ -13,7 +13,7 @@ export default function Error({ reset }: { error: Error & { digest?: string }; r
       <h1>{dict.error.title}</h1>
       <p className="lead">{dict.error.lead}</p>
       <div className={styles.actions}>
-        <button type="button" className="btn btn-pink" onClick={reset}>
+        <button type="button" className="btn btn-gold" onClick={reset}>
           {dict.error.retry}
         </button>
         <Link href={localizePath(lang, "/")} className="btn btn-ghost">

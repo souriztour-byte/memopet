@@ -17,14 +17,14 @@ export function CartLines({ lines, onNavigate }: { lines: CartLine[]; onNavigate
   const t = dict.cart;
   return (
     <ul className={styles.lines}>
-      {lines.map((line) => {
+      {lines.map((line, i) => {
         const { merchandise } = line;
         const busy = pendingLineId === line.id;
         const options = optionsLabel(merchandise.selectedOptions);
         const href = localizePath(lang, `/products/${merchandise.product.handle}`);
         const title = merchandise.product.title;
         return (
-          <li key={line.id} className={styles.line} aria-busy={busy}>
+          <li key={line.id} className={styles.line} aria-busy={busy} style={{ "--i": i } as React.CSSProperties}>
             <Link
               href={href}
               className={`${styles.thumb} ${merchandise.product.tile}`}

@@ -3,7 +3,8 @@
 import { useEffect } from "react";
 
 /**
- * Lets page sections glide in as they scroll into view (styles in globals.css).
+ * Lets page sections (`.block` or `data-reveal`) glide in as they scroll into
+ * view (styles in globals.css).
  * Anything already on screen is shown straight away (`is-shown`), sections
  * further down fade in when they arrive (`is-in`), and nothing is hidden
  * unless this runs, so the page reads fine without JavaScript or with reduced
@@ -26,7 +27,7 @@ export function ScrollReveal() {
       { rootMargin: "0px 0px -10% 0px" },
     );
     const scan = () => {
-      for (const el of main.querySelectorAll(".block > :not(.is-in, .is-shown)")) {
+      for (const el of main.querySelectorAll(":is(.block, [data-reveal]) > :not(.is-in, .is-shown)")) {
         // Already on screen: just show it. Further down: fade it in on arrival.
         if (el.getBoundingClientRect().top < window.innerHeight * 0.9) el.classList.add("is-shown");
         else io.observe(el);

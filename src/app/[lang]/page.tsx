@@ -7,6 +7,7 @@ import { BrandStory } from "@/components/home/BrandStory";
 import { ComfortStory } from "@/components/home/ComfortStory";
 import { FeaturedProduct } from "@/components/home/FeaturedProduct";
 import { HomeHero } from "@/components/home/HomeHero";
+import { HomeMotion } from "@/components/home/HomeMotion";
 import { PetRail } from "@/components/home/PetRail";
 import { BeforeAfter } from "@/components/media/BeforeAfter";
 import { ProductVideos } from "@/components/media/ProductVideos";
@@ -131,7 +132,7 @@ export default async function HomePage(props: PageProps<"/[lang]">) {
   });
 
   return (
-    <>
+    <HomeMotion>
       <HomeHero
         slides={HERO_SLIDES.map((s) => ({
           ...photo(s),
@@ -156,9 +157,9 @@ export default async function HomePage(props: PageProps<"/[lang]">) {
 
       <div className="wrap">
         <section className={styles.collection} aria-labelledby="products-title">
-          <div className={styles.sectionHead} data-reveal>
+          <div className={styles.sectionHead}>
             <p className="eyebrow">{t.collectionLead}</p>
-            <h2 id="products-title" className={styles.sectionTitle}>
+            <h2 id="products-title" className={styles.sectionTitle} data-rise>
               {t.collectionTitle}
             </h2>
           </div>
@@ -257,7 +258,7 @@ export default async function HomePage(props: PageProps<"/[lang]">) {
           </h2>
           <div className={styles.guideGrid} data-reveal>
             <Link href={href("/shop")} className={styles.guideMain}>
-              <span className={`${styles.guideMainPic} unveil`}>
+              <span className={`${styles.guideMainPic} unveil`} data-drift>
                 <Image
                   src={guideMain.src}
                   alt={guideMain.alt}
@@ -297,6 +298,6 @@ export default async function HomePage(props: PageProps<"/[lang]">) {
           </div>
         </section>
       </div>
-    </>
+    </HomeMotion>
   );
 }

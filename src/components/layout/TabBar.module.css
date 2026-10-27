@@ -33,6 +33,41 @@
 .tab svg {
   width: 22px;
   height: 22px;
+  transition: transform var(--dur-fast) var(--ease-out);
+}
+/* Icons dip when tapped and spring back. */
+.tab:active svg {
+  transform: scale(0.82);
+}
+.marker {
+  position: absolute;
+  top: -1px;
+  left: 0;
+  width: 25%;
+  height: 2px;
+  transform: translateX(calc(var(--tab, 0) * 100%));
+  transition:
+    transform var(--dur-base) var(--ease-out),
+    opacity var(--dur-fast);
+  pointer-events: none;
+}
+.marker::after {
+  content: "";
+  display: block;
+  width: 28px;
+  height: 100%;
+  margin-inline: auto;
+  border-radius: 2px;
+  background: var(--gold);
+}
+.marker[data-hidden] {
+  opacity: 0;
+}
+@media (prefers-reduced-motion: reduce) {
+  .marker,
+  .tab svg {
+    transition: none;
+  }
 }
 .tab[aria-current="page"] {
   color: var(--ink);

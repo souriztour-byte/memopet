@@ -136,3 +136,15 @@
     padding-inline: 12px 24px;
   }
 }
+
+/* Phones: the scene at the front of the row is full size (useRailFocus.ts). */
+@media (max-width: 899px) and (prefers-reduced-motion: no-preference) {
+  .scene {
+    transform: scale(calc(0.9 + 0.1 * var(--focus, 1)));
+    opacity: calc(0.45 + 0.55 * var(--focus, 1));
+    transform-origin: left center;
+    transition:
+      transform 0.15s linear,
+      opacity 0.15s linear;
+  }
+}

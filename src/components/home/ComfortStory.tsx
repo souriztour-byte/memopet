@@ -70,7 +70,7 @@ export function ComfortStory({
       </div>
       <div className={styles.text}>
         <p className="eyebrow">{eyebrow}</p>
-        <h2 id="comfort-title" className={styles.title}>
+        <h2 id="comfort-title" className={styles.title} data-rise>
           {title}
         </h2>
         <ol className={styles.steps}>
@@ -85,7 +85,7 @@ export function ComfortStory({
               className={styles.step}
             >
               {/* Phones show each photo with its paragraph instead of the pinned one. */}
-              <div className={`${styles.stepPic} unveil`}>
+              <div className={`${styles.stepPic} unveil`} data-drift>
                 <Image
                   src={s.photo.src}
                   alt=""

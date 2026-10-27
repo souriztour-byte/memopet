@@ -7,6 +7,7 @@ import { useI18n } from "@/i18n/I18nProvider";
 import { isFor, petsFor, type Pet } from "@/lib/commerce/pets";
 import type { ProductSummary } from "@/lib/commerce/types";
 import { useDragScroll } from "./useDragScroll";
+import { useRailFocus } from "./useRailFocus";
 import styles from "./PetRail.module.css";
 
 /**
@@ -28,6 +29,7 @@ export function PetRail({
   const [progress, setProgress] = useState({ start: 0, size: 1 });
   const [edges, setEdges] = useState({ atStart: true, atEnd: false });
   useDragScroll(rail);
+  useRailFocus(rail, "(max-width: 720px)", pet);
 
   const shown = products.filter((p) => isFor(p, pet));
   const pets = petsFor(products);

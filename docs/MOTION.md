@@ -44,8 +44,8 @@ no reviews yet and don't invent any).
   results with photos, Esc or tap outside to close.
 - Phones: menu slides in as a panel with links rising one by one; tab bar
   stays put during page changes.
-- Desktop cursor: a small gold ring follows the mouse and grows with a
-  label over product photos ("View") and rails ("Drag").
+- Desktop cursor: the normal pointer (the gold ring that followed it was
+  removed at the shop owner's request).
 - Buttons: press-in on tap, gold sheen on hover. Cards lift on hover.
 - Cart: slides in over a blurred backdrop, lines arrive one after another,
   free-shipping bar fills and celebrates at €40; slides out on close.

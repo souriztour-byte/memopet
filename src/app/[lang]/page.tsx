@@ -180,7 +180,6 @@ export default async function HomePage(props: PageProps<"/[lang]">) {
         lead={t.careLead}
         scenes={care}
         cta={{ href: href("/collections/grooming-care"), label: t.careCta }}
-        dragLabel={t.drag}
         aiNote={AI_IMAGE_NOTE[lang]}
       />
 

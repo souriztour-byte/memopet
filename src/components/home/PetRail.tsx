@@ -103,7 +103,7 @@ export function PetRail({
       </div>
 
       {/* The key replays the cards' entrance when the switch changes. */}
-      <div key={pet} ref={rail} className={styles.rail} data-cursor={t.drag}>
+      <div key={pet} ref={rail} className={styles.rail}>
         {shown.map((p, i) => (
           <div
             key={p.id}

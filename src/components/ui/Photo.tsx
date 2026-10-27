@@ -1,7 +1,8 @@
 "use client";
 
-import Image, { type ImageProps } from "next/image";
+import { type ImageProps } from "next/image";
 import { useState } from "react";
+import { SoftImage } from "./SoftImage";
 
 /**
  * Remote photo that removes itself if it fails to load, revealing whatever is
@@ -10,6 +11,5 @@ import { useState } from "react";
 export function Photo(props: ImageProps) {
   const [failed, setFailed] = useState(false);
   if (failed) return null;
-  // eslint-disable-next-line jsx-a11y/alt-text -- alt is passed through props
-  return <Image {...props} onError={() => setFailed(true)} />;
+  return <SoftImage {...props} onError={() => setFailed(true)} />;
 }

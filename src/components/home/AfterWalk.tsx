@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+import { SoftImage } from "@/components/ui/SoftImage";
 import Link from "next/link";
 import { useRef } from "react";
 import { useScrollScene } from "@/lib/motion/gsap";
@@ -82,8 +82,8 @@ export function AfterWalk({
       <ol ref={track} className={styles.track}>
         {scenes.map((s, i) => (
           <li key={s.title} className={styles.scene}>
-            <div className={styles.pic}>
-              <Image
+            <div className={`${styles.pic} soft-frame`}>
+              <SoftImage
                 src={s.photo.src}
                 alt={s.photo.alt}
                 fill

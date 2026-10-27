@@ -18,6 +18,8 @@
   text-decoration: none;
   color: var(--on-photo);
   isolation: isolate;
+  border-radius: var(--photo-radius);
+  box-shadow: 0 22px 44px -30px rgba(48, 40, 32, 0.4);
 }
 .pic {
   position: absolute;

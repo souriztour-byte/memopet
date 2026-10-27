@@ -1,9 +1,9 @@
 "use client";
 
-import Image from "next/image";
 import { useEffect, useMemo, useRef, useState, useTransition, ViewTransition } from "react";
 import { Illustration } from "@/components/art/Illustration";
 import { useCart } from "@/components/cart/CartProvider";
+import { SoftImage } from "@/components/ui/SoftImage";
 import { BagIcon, CheckIcon } from "@/components/ui/icons";
 import { fmt } from "@/i18n/format";
 import { useI18n } from "@/i18n/I18nProvider";
@@ -164,7 +164,7 @@ export function ProductDetail({
     <div className={styles.layout}>
       <div className={styles.gallery}>
         <div
-          className={`${styles.stage} ${product.tile}`}
+          className={`${styles.stage} soft-frame ${product.tile}`}
           ref={stageRef}
           onTouchStart={onTouchStart}
           onTouchEnd={onTouchEnd}
@@ -180,7 +180,7 @@ export function ProductDetail({
               data-slide={slide ?? undefined}
             >
               {active ? (
-                <Image
+                <SoftImage
                   src={active.url}
                   alt={active.altText || product.title}
                   fill
@@ -210,7 +210,7 @@ export function ProductDetail({
               <li key={img.url}>
                 <button
                   type="button"
-                  className={`${styles.thumb} ${product.tile}`}
+                  className={`${styles.thumb} soft-frame ${product.tile}`}
                   aria-pressed={img.url === active?.url}
                   aria-label={fmt(t.showPhoto, { index: i + 1, total: images.length })}
                   onClick={() => {
@@ -218,7 +218,7 @@ export function ProductDetail({
                     setActiveUrl(img.url);
                   }}
                 >
-                  <Image src={img.url} alt="" fill sizes="80px" className={styles.stagePhoto} />
+                  <SoftImage src={img.url} alt="" fill sizes="80px" className={styles.stagePhoto} />
                 </button>
               </li>
             ))}

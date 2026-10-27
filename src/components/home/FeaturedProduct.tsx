@@ -92,7 +92,7 @@ export function FeaturedProduct({
 
   return (
     <section className={styles.featured} aria-labelledby="featured-title">
-      <div ref={pic} className={styles.pic} data-drift>
+      <div ref={pic} className={`${styles.pic} soft-frame`} data-drift>
         {/* Stays put while the photo inside changes, so the scroll drift carries on. */}
         <div className={styles.layer} data-drift-layer>
           {/* The key remounts the photo on a colour change, so it fades and settles in. */}

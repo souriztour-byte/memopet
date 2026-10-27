@@ -1,5 +1,5 @@
-import Image from "next/image";
 import { Illustration } from "@/components/art/Illustration";
+import { SoftImage } from "@/components/ui/SoftImage";
 import type { Illustration as IllustrationName, Image as ImageType } from "@/lib/commerce/types";
 import styles from "./ProductMedia.module.css";
 
@@ -15,7 +15,7 @@ type Props = {
 export function ProductMedia({ image, illustration, alt, sizes, preload }: Props) {
   if (image) {
     return (
-      <Image
+      <SoftImage
         src={image.url}
         alt={image.altText || alt}
         fill

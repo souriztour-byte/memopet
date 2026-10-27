@@ -165,20 +165,32 @@ export function collectionPresentation(handle: string, title = ""): CollectionPr
   return { tile: tileFor(illustration), illustration };
 }
 
-/** Full-width photo at the top of the home page. */
-export const HERO_PHOTO = {
-  src: photoUrl("luxury-cat-sofa-bed/cat-lounging.jpg"),
-  alt: "comfortBeds",
-} as const satisfies { src: string; alt: PhotoAlt };
+/** Photos the home hero cross-fades between (the first one loads first). */
+export const HERO_SLIDES = [
+  { src: photoUrl("luxury-cat-sofa-bed/cat-lounging.jpg"), alt: "comfortBeds" },
+  { src: photoUrl("warming-sleeping-bag-bed/cat-sleeping.jpg"), alt: "catAsleep" },
+  { src: photoUrl("paw-washer-cup/corgi.jpg"), alt: "corgiCup" },
+  { src: photoUrl("luxury-cat-sofa-bed/cat-playing.jpg"), alt: "sofaPlay" },
+] as const satisfies readonly { src: string; alt: PhotoAlt }[];
 
-/** Photos for the home page's feature blocks and guide (public/photos). */
+/** Photos for the home page's story sections and guide (public/photos). */
 export const HOME_PHOTOS = {
-  groomingTile: { src: photoUrl("paw-washer-cup/grey.jpg"), alt: "cupGrey" },
-  groomingScene: { src: photoUrl("paw-washer-cup/corgi.jpg"), alt: "corgiCup" },
-  bedsScene: { src: photoUrl("luxury-cat-sofa-bed/cat-playing.jpg"), alt: "sofaPlay" },
-  bedsTile: { src: photoUrl("warming-sleeping-bag-bed/bed.jpg"), alt: "bagBed" },
+  comfort: [
+    { src: photoUrl("luxury-cat-sofa-bed/cat-lounging.jpg"), alt: "comfortBeds" },
+    { src: photoUrl("warming-sleeping-bag-bed/cat-sleeping.jpg"), alt: "catAsleep" },
+    { src: photoUrl("warming-sleeping-bag-bed/ears.jpg"), alt: "bedEars" },
+  ],
+  care: [
+    { src: photoUrl("paw-washer-cup/colours.jpg"), alt: "cupColours" },
+    { src: photoUrl("silicone-paw-washer/from-above.jpg"), alt: "bristles" },
+    { src: photoUrl("paw-washer-cup/corgi.jpg"), alt: "corgiCup" },
+    { src: photoUrl("paw-washer-cup/brushes.jpg"), alt: "cupBrushes" },
+  ],
   guideMain: { src: photoUrl("warming-sleeping-bag-bed/cat-sleeping.jpg"), alt: "catAsleep" },
   guideOrder: { src: photoUrl("paw-washer-cup/brushes.jpg"), alt: "cupBrushes" },
   guideDelivery: { src: photoUrl("luxury-cat-sofa-bed/coffee.jpg"), alt: "sofaCoffee" },
   guideFaq: { src: photoUrl("warming-sleeping-bag-bed/ears.jpg"), alt: "bedEars" },
-} as const satisfies Record<string, { src: string; alt: PhotoAlt }>;
+} as const satisfies {
+  comfort: readonly { src: string; alt: PhotoAlt }[];
+  care: readonly { src: string; alt: PhotoAlt }[];
+} & Record<`guide${string}`, { src: string; alt: PhotoAlt }>;

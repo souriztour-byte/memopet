@@ -1,0 +1,177 @@
+.head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 28px;
+}
+/* All / Dogs / Cats: a pill with a gold fill that slides between choices */
+.switch {
+  display: inline-flex;
+  padding: 4px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--surface);
+}
+.switch button {
+  min-height: 40px;
+  padding: 0 20px;
+  border: 0;
+  border-radius: 999px;
+  background: none;
+  color: var(--ink-soft);
+  font: inherit;
+  font-size: 0.72rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition:
+    background var(--dur-base) var(--ease-out),
+    color var(--dur-base) var(--ease-out);
+}
+.switch button:hover {
+  color: var(--ink);
+}
+.switch button[aria-pressed="true"] {
+  background: var(--gold);
+  color: var(--on-gold);
+}
+.arrows {
+  display: flex;
+  gap: 8px;
+}
+.arrows[hidden] {
+  display: none;
+}
+.track[data-full] {
+  visibility: hidden;
+}
+.arrows button {
+  width: 46px;
+  height: 46px;
+  border: 1px solid var(--ghost-line);
+  border-radius: 50%;
+  background: var(--bg);
+  color: var(--ink);
+  font-size: 1rem;
+  cursor: pointer;
+  transition:
+    background var(--dur-fast),
+    border-color var(--dur-fast),
+    color var(--dur-fast),
+    opacity var(--dur-fast);
+}
+.arrows button:hover:not(:disabled) {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: var(--bg);
+}
+.arrows button:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+.rail {
+  display: flex;
+  gap: 16px;
+  overflow-x: auto;
+  scroll-snap-type: x proximity;
+  scrollbar-width: none;
+  padding-block: 6px 12px;
+  cursor: grab;
+  overscroll-behavior-x: contain;
+}
+.rail::-webkit-scrollbar {
+  display: none;
+}
+.rail[data-dragging] {
+  cursor: grabbing;
+  scroll-snap-type: none;
+  user-select: none;
+}
+.rail[data-dragging] a {
+  pointer-events: none;
+}
+.item {
+  flex: 0 0 calc((100% - 3 * 16px) / 4);
+  min-width: 240px;
+  scroll-snap-align: start;
+}
+
+.foot {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  margin-top: 28px;
+}
+.track {
+  position: relative;
+  flex: 1;
+  height: 1px;
+  background: var(--line);
+}
+.track span {
+  position: absolute;
+  top: -0.5px;
+  height: 2px;
+  background: var(--gold);
+  transition:
+    left 0.15s linear,
+    width var(--dur-base) var(--ease-out);
+}
+.viewAll {
+  padding-bottom: 3px;
+  border-bottom: 1px solid var(--ghost-line);
+  color: var(--ink);
+  font-size: 0.7rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  text-decoration: none;
+  white-space: nowrap;
+}
+.viewAll:hover {
+  color: var(--gold-ink);
+  border-bottom-color: var(--gold-text);
+}
+
+@media (max-width: 1000px) {
+  .item {
+    flex-basis: calc((100% - 2 * 16px) / 3);
+  }
+}
+@media (max-width: 720px) {
+  .arrows {
+    display: none;
+  }
+  .head {
+    justify-content: center;
+  }
+  .rail {
+    margin-inline: calc(-1 * var(--gutter));
+    padding-inline: var(--gutter);
+    scroll-padding-inline: var(--gutter);
+    scroll-snap-type: x mandatory;
+    gap: 14px;
+  }
+  .item {
+    flex-basis: 68%;
+    min-width: 0;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .item {
+    animation: card-in var(--dur-slow) var(--ease-out) both;
+    animation-delay: calc(var(--i) * 70ms);
+  }
+}
+@keyframes card-in {
+  from {
+    opacity: 0;
+    transform: translateX(40px);
+  }
+}
+/* The cards have their own entrance here; the photo reveal is for the page's vertical scroll. */
+.rail :global(.unveil) {
+  animation: none;
+}

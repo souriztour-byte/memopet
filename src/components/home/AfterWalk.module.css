@@ -1,0 +1,128 @@
+.section {
+  padding-block: 96px 64px;
+  background: var(--panel);
+  overflow: hidden;
+}
+.head {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  gap: 24px;
+  margin-bottom: 44px;
+}
+.title {
+  font-size: clamp(2.4rem, 5vw, 4.4rem);
+  line-height: 1;
+}
+.lead {
+  max-width: 22em;
+  color: var(--ink-soft);
+}
+/* A swipeable row by default; GSAP moves it with the page scroll on computers. */
+.track {
+  list-style: none;
+  margin: 0;
+  display: flex;
+  gap: 24px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  padding-inline: max(var(--gutter), calc((100vw - 1280px) / 2));
+  scroll-padding-inline: max(var(--gutter), calc((100vw - 1280px) / 2));
+  cursor: grab;
+}
+.track::-webkit-scrollbar {
+  display: none;
+}
+.track[data-dragging] {
+  cursor: grabbing;
+  scroll-snap-type: none;
+  user-select: none;
+}
+.section[data-pinned] .track {
+  overflow: visible;
+  cursor: default;
+}
+.scene {
+  flex: 0 0 min(32vw, 460px);
+  scroll-snap-align: start;
+  display: grid;
+  align-content: start;
+  gap: 10px;
+}
+.pic {
+  position: relative;
+  height: min(50svh, 540px);
+  overflow: hidden;
+  border-radius: 4px;
+  background: var(--panel-2);
+  margin-bottom: 10px;
+}
+.photo {
+  object-fit: cover;
+  transition: transform 1.2s var(--ease-out);
+}
+.scene:hover .photo {
+  transform: scale(1.04);
+}
+.num {
+  font-size: 0.7rem;
+  letter-spacing: 0.24em;
+  color: var(--gold-text);
+}
+.scene h3 {
+  font-size: clamp(1.4rem, 2vw, 1.8rem);
+}
+.scene p {
+  max-width: 24em;
+  color: var(--ink-soft);
+}
+/* The button sits level with the middle of the photos. */
+.end {
+  flex: 0 0 auto;
+  display: grid;
+  align-items: center;
+  height: min(50svh, 540px);
+  padding-inline: 40px 8px;
+}
+/* Shows how far through the row you are while it's pinned. */
+.bar {
+  margin-top: 36px;
+  height: 1px;
+  background: var(--line);
+  visibility: hidden;
+}
+.section[data-pinned] .bar {
+  visibility: visible;
+}
+.bar span {
+  display: block;
+  height: 2px;
+  margin-top: -0.5px;
+  background: var(--gold);
+  transform-origin: left;
+  transform: scaleX(var(--progress, 0));
+}
+
+@media (max-width: 900px) {
+  .section {
+    padding-block: 72px 56px;
+  }
+  .head {
+    flex-direction: column;
+    align-items: start;
+    margin-bottom: 28px;
+  }
+  .scene {
+    flex-basis: 78%;
+  }
+  .pic {
+    height: auto;
+    aspect-ratio: 4 / 5;
+  }
+  .end {
+    height: auto;
+    aspect-ratio: 1 / 2.5;
+    padding-inline: 12px 24px;
+  }
+}

@@ -1,85 +1,16 @@
-/* Editorial home page: a framed hero with the shop name, catalogue rows on
-   stone tiles, product + lifestyle pairs, and a guide block. */
+/* Home page: the sections between the client scenes in src/components/home. */
 
-/* Hero: the photo sits inside the page margins with the name over it. Its
-   text uses the on-photo colours, so it reads the same in every look. */
-.hero {
-  position: relative;
-  margin-top: 24px;
-  min-height: min(640px, calc(100svh - var(--header-h) - 80px));
-  display: grid;
-  place-items: end center;
-  overflow: hidden;
-  isolation: isolate;
-}
-.heroParallax {
-  position: absolute;
-  inset: -12% 0;
-  z-index: -2;
-}
-.heroPhoto {
-  object-fit: cover;
-  object-position: center 45%;
-}
-/* Parallax: as the hero scrolls away, the photo moves down a little, so it
-   seems to drift slower than the page. Browsers without scroll-driven
-   animations show a still photo. */
-@supports (animation-timeline: view()) {
-  @media (prefers-reduced-motion: no-preference) {
-    .heroParallax {
-      animation: hero-drift linear both;
-      animation-timeline: view();
-      animation-range: exit 0% exit 100%;
-    }
-  }
-}
-@keyframes hero-drift {
-  to {
-    translate: 0 14%;
-  }
-}
-.hero::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  background: linear-gradient(180deg, rgba(20, 16, 12, 0.08) 25%, rgba(20, 16, 12, 0.72) 100%);
-}
-.heroText {
-  padding: 120px 24px 56px;
+.sectionHead {
   display: grid;
   justify-items: center;
-  gap: 14px;
+  gap: 12px;
+  margin-bottom: 40px;
   text-align: center;
-  color: var(--on-photo);
 }
-.heroName {
-  font-size: clamp(3.4rem, 10vw, 8.5rem);
-  font-weight: 500;
-  line-height: 0.9;
-  letter-spacing: 0.08em;
-  /* Balances the tracking after the last letter. */
-  margin-right: -0.08em;
-  text-transform: uppercase;
-  text-shadow: 0 2px 30px rgba(0, 0, 0, 0.25);
+.sectionTitle {
+  font-size: clamp(2.4rem, 5vw, 4.2rem);
+  line-height: 1;
 }
-.heroTagline {
-  font-size: 0.74rem;
-  letter-spacing: 0.3em;
-  text-transform: uppercase;
-}
-.heroLead {
-  max-width: 30em;
-  font-size: 0.98rem;
-  color: var(--on-photo-soft);
-}
-/* Two classes so it outranks the shared .more colours below. */
-.heroText .heroMore {
-  margin-top: 6px;
-  color: var(--on-photo);
-  border-bottom-color: rgba(244, 239, 230, 0.6);
-}
-
 /* Small centred section titles in spaced capitals */
 .kicker {
   font-family: var(--body);
@@ -127,61 +58,23 @@ a:hover .more {
 }
 
 .collection {
-  padding-block: 88px 96px;
-}
-
-/* Feature pair: product tile + lifestyle photo, flipped every other time */
-.feature {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 16px;
-  margin-bottom: 16px;
-}
-.flip .featureTile {
-  order: 2;
-}
-.featureTile {
-  background: var(--panel);
-  padding: 48px 40px 52px;
-  display: grid;
-  justify-items: center;
-  align-content: center;
-  gap: 14px;
-  text-align: center;
-}
-.featureProduct {
-  position: relative;
-  width: min(360px, 80%);
-  aspect-ratio: 1;
-  margin-bottom: 12px;
-  /* Lets the studio photo's white background take the tile's colour. */
-  mix-blend-mode: multiply;
-}
-.contain {
-  object-fit: contain;
+  padding-block: 120px 96px;
 }
 .cover {
   object-fit: cover;
 }
-.featureTitle {
-  font-size: clamp(1.9rem, 3vw, 2.6rem);
-}
-.featureText {
-  max-width: 26em;
-  color: var(--ink-soft);
-  font-size: 0.95rem;
-}
-.featureScene {
-  position: relative;
-  min-height: 620px;
-}
 
 /* The paw washer's before/after and video, once they're in Shopify */
 .proof {
-  padding-block: 56px 40px;
+  padding-block: 24px 96px;
+  display: grid;
+  justify-items: center;
+  gap: 12px;
+  text-align: center;
 }
-.proof .kicker {
-  margin-bottom: 28px;
+.proof > div {
+  width: 100%;
+  margin-top: 24px;
 }
 .proofTwo {
   display: grid;
@@ -330,38 +223,8 @@ a:hover .more {
   }
 }
 @media (max-width: 760px) {
-  .hero {
-    margin-top: 12px;
-    min-height: 560px;
-    margin-inline: calc(-1 * var(--gutter));
-  }
-  .heroText {
-    padding-bottom: 44px;
-  }
-  .heroName {
-    letter-spacing: 0.04em;
-    margin-right: -0.04em;
-  }
   .collection {
-    padding-block: 64px 72px;
-  }
-  .swipe {
-    display: inline;
-  }
-  .feature {
-    grid-template-columns: 1fr;
-    gap: 0;
-    margin-bottom: 40px;
-    margin-inline: calc(-1 * var(--gutter));
-  }
-  .flip .featureTile {
-    order: 0;
-  }
-  .featureTile {
-    padding: 40px var(--gutter) 44px;
-  }
-  .featureScene {
-    min-height: 420px;
+    padding-block: 72px 56px;
   }
   .promises {
     grid-template-columns: 1fr;
@@ -377,33 +240,8 @@ a:hover .more {
     gap: 14px;
   }
 }
-
-/* Gentle entrance for the hero, skipped for people who prefer less motion. */
-@media (prefers-reduced-motion: no-preference) {
-  .heroText > * {
-    animation: rise 0.9s ease both;
-  }
-  .heroText > :nth-child(2) {
-    animation-delay: 0.1s;
-  }
-  .heroText > :nth-child(3) {
-    animation-delay: 0.18s;
-  }
-  .heroText > :nth-child(4) {
-    animation-delay: 0.26s;
-  }
-  .heroPhoto {
-    animation: settle 1.8s ease both;
-  }
-}
-@keyframes rise {
-  from {
-    opacity: 0;
-    transform: translateY(16px);
-  }
-}
-@keyframes settle {
-  from {
-    transform: scale(1.05);
-  }
+.quizText {
+  max-width: 26em;
+  color: var(--ink-soft);
+  font-size: 0.95rem;
 }

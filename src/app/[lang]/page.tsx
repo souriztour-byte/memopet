@@ -2,14 +2,19 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { AfterWalk } from "@/components/home/AfterWalk";
+import { BrandStory } from "@/components/home/BrandStory";
+import { ComfortStory } from "@/components/home/ComfortStory";
+import { FeaturedProduct } from "@/components/home/FeaturedProduct";
+import { HomeHero } from "@/components/home/HomeHero";
+import { PetRail } from "@/components/home/PetRail";
 import { BeforeAfter } from "@/components/media/BeforeAfter";
 import { ProductVideos } from "@/components/media/ProductVideos";
-import { ProductGrid } from "@/components/product/ProductGrid";
 import { alternatesFor, hasLocale, localizePath } from "@/i18n/config";
 import { getDictionary } from "@/i18n/dictionaries";
 import { fmt } from "@/i18n/format";
 import { getProduct, getProducts } from "@/lib/commerce";
-import { beforeAfterImages, HERO_PHOTO, HOME_PHOTOS } from "@/lib/commerce/presentation";
+import { beforeAfterImages, HERO_SLIDES, HOME_PHOTOS } from "@/lib/commerce/presentation";
 import { siteConfig } from "@/lib/config";
 import { offerMoney, offers } from "@/lib/content/offers";
 import { policySettings } from "@/lib/content/policy-settings";
@@ -26,50 +31,11 @@ export async function generateMetadata(props: PageProps<"/[lang]">): Promise<Met
 
 type Photo = { src: string; alt: string };
 
-/** Product on a stone tile with its story, beside a lifestyle photo. */
-function Feature({
-  id,
-  eyebrow,
-  title,
-  text,
-  href,
-  cta,
-  tile,
-  scene,
-  flip,
-}: {
-  id: string;
-  eyebrow: string;
-  title: string;
-  text: string;
-  href: string;
-  cta: string;
-  tile: Photo;
-  scene: Photo;
-  flip?: boolean;
-}) {
-  return (
-    <section className={`${styles.feature} ${flip ? styles.flip : ""}`} aria-labelledby={id} data-reveal>
-      <div className={styles.featureTile}>
-        <div className={styles.featureProduct}>
-          <Image src={tile.src} alt={tile.alt} fill sizes="(max-width: 760px) 80vw, 420px" className={styles.contain} />
-        </div>
-        <p className="eyebrow">{eyebrow}</p>
-        <h2 id={id} className={styles.featureTitle}>
-          {title}
-        </h2>
-        <p className={styles.featureText}>{text}</p>
-        <Link href={href} className={styles.more}>
-          {cta} →
-        </Link>
-      </div>
-      <div className={`${styles.featureScene} unveil`}>
-        <Image src={scene.src} alt={scene.alt} fill quality={90} sizes="(max-width: 760px) 100vw, 640px" className={styles.cover} />
-      </div>
-    </section>
-  );
-}
-
+/**
+ * The home page tells the shop's story in scenes (docs/MOTION.md): a
+ * full-screen hero, the collection to drag through, a pinned comfort story,
+ * the paw washer step by step, the bestseller ready to buy, and our story.
+ */
 export default async function HomePage(props: PageProps<"/[lang]">) {
   const { lang } = await props.params;
   if (!hasLocale(lang)) notFound();
@@ -79,13 +45,13 @@ export default async function HomePage(props: PageProps<"/[lang]">) {
   const shipping = getShipping(lang, dict);
   const returnDays = policySettings.returnWindowDays;
   const money = (amount: number) => formatMoney(offerMoney(amount), lang);
-  const photo = (p: (typeof HOME_PHOTOS)[keyof typeof HOME_PHOTOS]): Photo => ({
+  const photo = (p: { src: string; alt: keyof typeof dict.photos }): Photo => ({
     src: p.src,
     alt: dict.photos[p.alt],
   });
 
   const [products, pawWasher] = await Promise.all([
-    getProducts(lang, { sort: "best-selling", limit: 8 }),
+    getProducts(lang, { sort: "best-selling", limit: 12 }),
     getProduct(lang, siteConfig.featuredProductHandle),
   ]);
   // Shown once the paw washer has a video, or Before/After photos, in Shopify.
@@ -126,134 +92,140 @@ export default async function HomePage(props: PageProps<"/[lang]">) {
   ];
   const guideMain = photo(HOME_PHOTOS.guideMain);
 
+  const comfort = [
+    { title: t.comfort1Title, text: t.comfort1Text },
+    { title: t.comfort2Title, text: t.comfort2Text },
+    { title: t.comfort3Title, text: t.comfort3Text },
+  ].map((s, i) => ({ ...s, photo: photo(HOME_PHOTOS.comfort[i]) }));
+  const care = [
+    { title: t.care1Title, text: t.care1Text },
+    { title: t.care2Title, text: t.care2Text },
+    { title: t.care3Title, text: t.care3Text },
+    { title: t.care4Title, text: t.care4Text },
+  ].map((s, i) => ({ ...s, photo: photo(HOME_PHOTOS.care[i]) }));
+
   return (
-    <div className="wrap">
-      <section className={styles.hero} aria-labelledby="hero-title">
-        {/* Taller than the hero so it can drift slower than the page (parallax). */}
-        <div className={styles.heroParallax}>
-          <Image
-            src={HERO_PHOTO.src}
-            alt={dict.photos[HERO_PHOTO.alt]}
-            fill
-            preload
-            quality={90}
-            sizes="(max-width: 1360px) 100vw, 1280px"
-            className={styles.heroPhoto}
-          />
-        </div>
-        <div className={styles.heroText}>
-          <h1 id="hero-title" className={styles.heroName}>
-            {siteConfig.name}
-          </h1>
-          <p className={styles.heroTagline}>{dict.brand.tagline}</p>
-          <p className={styles.heroLead}>{t.heroLead}</p>
-          <Link href={href("/shop")} className={`${styles.more} ${styles.heroMore}`}>
-            {t.ctaDiscover} →
-          </Link>
-        </div>
-      </section>
-
-      <section className={styles.collection} aria-labelledby="products-title">
-        <div className={styles.kickerRow}>
-          <h2 id="products-title" className={styles.kicker}>
-            {t.collectionTitle}
-          </h2>
-          <span className={styles.swipe} aria-hidden="true">
-            {t.swipe} →
-          </span>
-        </div>
-        <ProductGrid products={products} rail />
-        <p className={styles.center}>
-          <Link href={href("/shop")} className={styles.more}>
-            {t.viewAll} →
-          </Link>
-        </p>
-      </section>
-
-      <Feature
-        id="grooming-title"
-        eyebrow={t.groomingEyebrow}
-        title={t.groomingTitle}
-        text={t.groomingText}
-        href={href("/collections/grooming-care")}
-        cta={t.discover}
-        tile={photo(HOME_PHOTOS.groomingTile)}
-        scene={photo(HOME_PHOTOS.groomingScene)}
+    <>
+      <HomeHero
+        slides={HERO_SLIDES.map(photo)}
+        eyebrow={t.heroEyebrow}
+        line1={t.heroLine1}
+        line2={t.heroLine2}
+        lead={t.heroLead}
+        primary={{ href: href("/shop"), label: t.ctaDiscover }}
+        secondary={{ href: href("/quiz"), label: t.ctaQuiz }}
+        ticker={promises.map((p) => p.title)}
+        labels={{ scroll: t.scroll, slides: t.slidesLabel, pause: t.pause, play: t.play }}
       />
-      {pawWasher && (compare || video) ? (
-        <section className={styles.proof} aria-labelledby="proof-title">
-          <h2 id="proof-title" className={styles.kicker}>
-            {compare ? dict.product.beforeAfterTitle : dict.product.videoTitle} · {pawWasher.title}
+
+      <div className="wrap">
+        <section className={styles.collection} aria-labelledby="products-title">
+          <div className={styles.sectionHead} data-reveal>
+            <p className="eyebrow">{t.collectionLead}</p>
+            <h2 id="products-title" className={styles.sectionTitle}>
+              {t.collectionTitle}
+            </h2>
+          </div>
+          <PetRail products={products} viewAllHref={href("/shop")} />
+        </section>
+
+        <ComfortStory
+          eyebrow={t.comfortEyebrow}
+          title={t.comfortTitle}
+          steps={comfort}
+          cta={{ href: href("/collections/comfort-beds"), label: t.comfortCta }}
+        />
+      </div>
+
+      <AfterWalk
+        eyebrow={t.careEyebrow}
+        title={t.careTitle}
+        lead={t.careLead}
+        scenes={care}
+        cta={{ href: href("/collections/grooming-care"), label: t.careCta }}
+        dragLabel={t.drag}
+      />
+
+      <div className="wrap">
+        {pawWasher ? (
+          <FeaturedProduct
+            product={pawWasher}
+            eyebrow={t.featuredEyebrow}
+            lead={t.featuredLead}
+            detailsHref={href(`/products/${pawWasher.handle}`)}
+            detailsLabel={t.featuredDetails}
+          />
+        ) : null}
+
+        {pawWasher && (compare || video) ? (
+          <section className={styles.proof} aria-labelledby="proof-title" data-reveal>
+            <p className="eyebrow">{t.proofEyebrow}</p>
+            <h2 id="proof-title" className={styles.sectionTitle}>
+              {compare ? dict.product.beforeAfterTitle : dict.product.videoTitle}
+            </h2>
+            <div className={compare && video ? styles.proofTwo : undefined}>
+              {compare ? <BeforeAfter before={compare.before} after={compare.after} /> : null}
+              {video ? <ProductVideos videos={[video]} title={pawWasher.title} /> : null}
+            </div>
+          </section>
+        ) : null}
+      </div>
+
+      <BrandStory eyebrow={t.storyEyebrow} text={t.storyText} cta={{ href: href("/shop"), label: t.storyCta }} />
+
+      <div className="wrap">
+        <section className={styles.quizTeaser} aria-labelledby="quiz-title" data-reveal>
+          <p className="eyebrow">{dict.quiz.eyebrow}</p>
+          <h2 id="quiz-title">{dict.quiz.teaserTitle}</h2>
+          <p className={styles.quizText}>{dict.quiz.teaserText}</p>
+          <Link href={href("/quiz")} className="btn btn-gold">
+            {dict.quiz.teaserCta}
+          </Link>
+        </section>
+
+        <ul className={styles.promises} aria-label={t.promisesLabel} data-reveal>
+          {promises.map((p) => (
+            <li key={p.title}>
+              <b>{p.title}</b>
+              <span>{p.text}</span>
+            </li>
+          ))}
+        </ul>
+
+        <section className={styles.guide} aria-labelledby="guide-title">
+          <h2 id="guide-title" className={styles.kicker}>
+            {t.guideEyebrow}
           </h2>
-          <div className={compare && video ? styles.proofTwo : undefined}>
-            {compare ? <BeforeAfter before={compare.before} after={compare.after} /> : null}
-            {video ? <ProductVideos videos={[video]} title={pawWasher.title} /> : null}
+          <div className={styles.guideGrid} data-reveal>
+            <Link href={href("/shop")} className={styles.guideMain}>
+              <span className={`${styles.guideMainPic} unveil`}>
+                <Image src={guideMain.src} alt={guideMain.alt} fill sizes="(max-width: 900px) 100vw, 760px" className={styles.cover} />
+              </span>
+              <span className={styles.guideMainText}>
+                <b>{t.guideMainTitle}</b>
+                <span>{t.guideMainText}</span>
+                <span className={styles.more}>{t.readMore} →</span>
+              </span>
+            </Link>
+            <ul className={styles.guideList}>
+              {guides.map((g) => (
+                <li key={g.href}>
+                  <Link href={href(g.href)} className={styles.guideItem}>
+                    <span className={styles.guideThumb}>
+                      <Image src={g.photo.src} alt={g.photo.alt} fill sizes="120px" className={styles.cover} />
+                    </span>
+                    <span className={styles.guideItemText}>
+                      <b>{g.title}</b>
+                      <span>{g.text}</span>
+                      <span className={styles.more}>{t.readMore} →</span>
+                    </span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
           </div>
         </section>
-      ) : null}
-      <Feature
-        id="beds-title"
-        eyebrow={t.bedsEyebrow}
-        title={t.bedsTitle}
-        text={t.bedsText}
-        href={href("/collections/comfort-beds")}
-        cta={t.discover}
-        tile={photo(HOME_PHOTOS.bedsTile)}
-        scene={photo(HOME_PHOTOS.bedsScene)}
-        flip
-      />
-
-      <section className={styles.quizTeaser} aria-labelledby="quiz-title" data-reveal>
-        <p className="eyebrow">{dict.quiz.eyebrow}</p>
-        <h2 id="quiz-title">{dict.quiz.teaserTitle}</h2>
-        <p className={styles.featureText}>{dict.quiz.teaserText}</p>
-        <Link href={href("/quiz")} className="btn btn-gold">
-          {dict.quiz.teaserCta}
-        </Link>
-      </section>
-
-      <ul className={styles.promises} aria-label={t.promisesLabel} data-reveal>
-        {promises.map((p) => (
-          <li key={p.title}>
-            <b>{p.title}</b>
-            <span>{p.text}</span>
-          </li>
-        ))}
-      </ul>
-
-      <section className={styles.guide} aria-labelledby="guide-title">
-        <h2 id="guide-title" className={styles.kicker}>
-          {t.guideEyebrow}
-        </h2>
-        <div className={styles.guideGrid} data-reveal>
-          <Link href={href("/shop")} className={styles.guideMain}>
-            <span className={`${styles.guideMainPic} unveil`}>
-              <Image src={guideMain.src} alt={guideMain.alt} fill sizes="(max-width: 900px) 100vw, 760px" className={styles.cover} />
-            </span>
-            <span className={styles.guideMainText}>
-              <b>{t.guideMainTitle}</b>
-              <span>{t.guideMainText}</span>
-              <span className={styles.more}>{t.readMore} →</span>
-            </span>
-          </Link>
-          <ul className={styles.guideList}>
-            {guides.map((g) => (
-              <li key={g.href}>
-                <Link href={href(g.href)} className={styles.guideItem}>
-                  <span className={styles.guideThumb}>
-                    <Image src={g.photo.src} alt={g.photo.alt} fill sizes="120px" className={styles.cover} />
-                  </span>
-                  <span className={styles.guideItemText}>
-                    <b>{g.title}</b>
-                    <span>{g.text}</span>
-                    <span className={styles.more}>{t.readMore} →</span>
-                  </span>
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </section>
-    </div>
+      </div>
+    </>
   );
 }

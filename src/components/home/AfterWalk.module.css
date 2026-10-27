@@ -50,11 +50,25 @@
   align-content: start;
   gap: 10px;
 }
+/* The photos are toned to the section's beige, so white and pale studio
+   backgrounds become the background itself, and their lower edge fades into
+   it instead of ending in a hard line. */
+.section {
+  --photo-tint: var(--panel);
+}
 .pic {
   position: relative;
   height: min(50svh, 540px);
-  background: var(--panel-2);
+  background: var(--panel);
   margin-bottom: 10px;
+  -webkit-mask-image: linear-gradient(180deg, #000 70%, transparent 100%);
+  mask-image: linear-gradient(180deg, #000 70%, transparent 100%);
+}
+.pic:global(.soft-frame) {
+  box-shadow: none;
+}
+.pic:global(.soft-frame)::after {
+  box-shadow: none;
 }
 .photo {
   object-fit: cover;
@@ -67,7 +81,7 @@
   position: absolute;
   z-index: 2;
   left: 10px;
-  bottom: 10px;
+  top: 10px;
   padding: 3px 9px;
   border-radius: 999px;
   background: rgba(25, 19, 14, 0.5);
@@ -131,7 +145,6 @@
   }
   .end {
     height: auto;
-    aspect-ratio: 1 / 2.5;
     padding-inline: 12px 24px;
   }
 }

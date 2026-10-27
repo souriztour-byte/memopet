@@ -273,6 +273,11 @@
       rgba(25, 19, 14, 0.78) 100%
     );
   }
+  /* Over the brighter middle of the photo, a paler gold reads better. */
+  .eyebrow {
+    color: #f3e2bd;
+    text-shadow: 0 1px 12px rgba(0, 0, 0, 0.6);
+  }
   .text {
     padding-bottom: 116px;
     justify-items: center;

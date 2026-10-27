@@ -20,8 +20,17 @@ export function TabBar() {
   const home = localizePath(lang, "/");
   const shop = localizePath(lang, "/shop");
 
+  // A gold marker slides to the tab for the current page.
+  const current = pathname === home ? 0 : pathname === shop || pathname.startsWith(`${shop}/`) ? 1 : -1;
+
   return (
     <nav className={styles.bar} aria-label={t.tabBar}>
+      <span
+        className={styles.marker}
+        style={{ "--tab": Math.max(current, 0) } as React.CSSProperties}
+        data-hidden={current < 0 || undefined}
+        aria-hidden="true"
+      />
       <Link href={home} className={styles.tab} aria-current={pathname === home ? "page" : undefined}>
         <HomeIcon />
         {t.tabHome}

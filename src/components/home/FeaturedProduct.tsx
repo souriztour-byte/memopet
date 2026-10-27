@@ -92,16 +92,19 @@ export function FeaturedProduct({
 
   return (
     <section className={styles.featured} aria-labelledby="featured-title">
-      <div ref={pic} className={styles.pic}>
-        {/* The key remounts the photo on a colour change, so it fades and settles in. */}
-        <span key={image?.url ?? "art"} className={styles.media}>
-          <ProductMedia
-            image={image}
-            illustration={product.illustration}
-            alt={product.title}
-            sizes="(max-width: 900px) 100vw, 50vw"
-          />
-        </span>
+      <div ref={pic} className={styles.pic} data-drift>
+        {/* Stays put while the photo inside changes, so the scroll drift carries on. */}
+        <div className={styles.layer} data-drift-layer>
+          {/* The key remounts the photo on a colour change, so it fades and settles in. */}
+          <span key={image?.url ?? "art"} className={styles.media}>
+            <ProductMedia
+              image={image}
+              illustration={product.illustration}
+              alt={product.title}
+              sizes="(max-width: 900px) 100vw, 50vw"
+            />
+          </span>
+        </div>
         {colour ? (
           <span
             className={styles.colourName}
@@ -115,7 +118,7 @@ export function FeaturedProduct({
 
       <div className={styles.buy}>
         <p className="eyebrow">{eyebrow}</p>
-        <h2 id="featured-title" className={styles.title}>
+        <h2 id="featured-title" className={styles.title} data-rise>
           {product.title}
         </h2>
         <p className={styles.lead}>{lead}</p>

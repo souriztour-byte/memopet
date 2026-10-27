@@ -378,3 +378,14 @@
 .top:has(.isOpen) {
   z-index: 40;
 }
+
+/* Phones: the header slides away while scrolling down and back on the way up
+   (ScrollState.tsx), leaving the screen to the page. */
+@media (max-width: 760px) {
+  .top {
+    transition: transform var(--dur-base) var(--ease-out);
+  }
+  :global(html[data-scroll-down]) .top:not(:has(.isOpen)) {
+    transform: translateY(-100%);
+  }
+}

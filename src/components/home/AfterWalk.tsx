@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRef } from "react";
 import { useScrollScene } from "@/lib/motion/gsap";
 import { useDragScroll } from "./useDragScroll";
+import { useRailFocus } from "./useRailFocus";
 import styles from "./AfterWalk.module.css";
 
 type Scene = {
@@ -39,6 +40,7 @@ export function AfterWalk({
   const root = useRef<HTMLElement>(null);
   const track = useRef<HTMLOListElement>(null);
   useDragScroll(track);
+  useRailFocus(track, "(max-width: 899px)");
 
   useScrollScene(root, ({ gsap, root }) => {
     const mm = gsap.matchMedia();
@@ -73,7 +75,7 @@ export function AfterWalk({
       <div className={`wrap ${styles.head}`}>
         <div>
           <p className="eyebrow">{eyebrow}</p>
-          <h2 id="care-title" className={styles.title}>
+          <h2 id="care-title" className={styles.title} data-rise>
             {title}
           </h2>
         </div>

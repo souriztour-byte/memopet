@@ -54,7 +54,8 @@ export function HomeHero({
       if (!document.hidden) setActive((i) => (i + 1) % slides.length);
     }, SLIDE_MS);
     return () => clearInterval(id);
-  }, [playing, slides.length]);
+    // Restarts the wait after each change, including a swipe or a dot.
+  }, [playing, slides.length, active]);
 
   // Fill the screen below the header, however tall the header and offer bar are.
   useEffect(() => {
@@ -69,6 +70,23 @@ export function HomeHero({
     window.addEventListener("resize", measure);
     return () => window.removeEventListener("resize", measure);
   }, []);
+
+  // Phones: swipe sideways on the photo to change it. Vertical scrolling is
+  // left to the browser.
+  const touch = useRef<{ x: number; y: number } | null>(null);
+  const onTouchStart = (e: React.TouchEvent) => {
+    if ((e.target as Element).closest("a, button")) return;
+    touch.current = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+  };
+  const onTouchEnd = (e: React.TouchEvent) => {
+    const start = touch.current;
+    touch.current = null;
+    if (!start || slides.length < 2) return;
+    const dx = e.changedTouches[0].clientX - start.x;
+    const dy = e.changedTouches[0].clientY - start.y;
+    if (Math.abs(dx) < 50 || Math.abs(dx) < Math.abs(dy) * 1.5) return;
+    setActive((i) => (i + (dx < 0 ? 1 : -1) + slides.length) % slides.length);
+  };
 
   useScrollScene(root, ({ gsap, root }) => {
     const trigger = {
@@ -97,7 +115,13 @@ export function HomeHero({
   });
 
   return (
-    <section ref={root} className={styles.hero} aria-labelledby="hero-title">
+    <section
+      ref={root}
+      className={styles.hero}
+      aria-labelledby="hero-title"
+      onTouchStart={onTouchStart}
+      onTouchEnd={onTouchEnd}
+    >
       <div
         className={styles.photos}
         data-layer="photos"

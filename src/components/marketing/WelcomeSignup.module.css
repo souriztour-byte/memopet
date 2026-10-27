@@ -1,12 +1,48 @@
-/* A centred box with a thin gold frame, above the footer on every page. */
+/* An espresso band above the footer on every page, with "Club" written
+   huge and faint in gold behind it. Its colours are set here, so it stays
+   dark in every look. */
 .band {
-  padding-block: 8px 112px;
+  --ink: #f4efe6;
+  --ink-soft: #ded6c9;
+  --muted: #bfb4a4;
+  --gold-text: #d4b67e;
+  --gold-ink: #e6cf9f;
+  --panel-2: rgba(244, 239, 230, 0.3);
+  --ghost-line: rgba(244, 239, 230, 0.45);
+  --danger: #f09a86;
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  padding-block: 112px;
+  background: #302820;
+  color: var(--ink);
+}
+.watermark {
+  position: absolute;
+  z-index: -1;
+  left: 50%;
+  bottom: -0.22em;
+  translate: -50% 0;
+  font-family: var(--display);
+  font-style: italic;
+  font-size: clamp(9rem, 30vw, 28rem);
+  line-height: 1;
+  white-space: nowrap;
+  color: var(--gold);
+  opacity: 0.1;
+  pointer-events: none;
+  user-select: none;
+}
+.band :global(.muted),
+.band :global(.small) {
+  color: var(--muted);
+}
+.band :global(.text-link) {
+  color: var(--gold-ink);
 }
 /* Two classes so it outranks the global .wrap width. */
 .band .inner {
   max-width: 760px;
-  padding: 64px 48px;
-  border: 1px solid var(--gold-line);
   display: grid;
   justify-items: center;
   gap: 28px;
@@ -115,10 +151,7 @@
 
 @media (max-width: 560px) {
   .band {
-    padding-bottom: 80px;
-  }
-  .inner {
-    padding: 44px 22px;
+    padding-block: 80px;
   }
   .fields :global(.btn) {
     flex: 1 1 100%;

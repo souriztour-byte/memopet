@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useCart } from "@/components/cart/CartProvider";
+import { openSearch } from "@/components/search/open-search";
 import { BagIcon, GridIcon, HomeIcon, SearchIcon } from "@/components/ui/icons";
 import { localizePath } from "@/i18n/config";
 import { plural } from "@/i18n/format";
@@ -29,10 +30,10 @@ export function TabBar() {
         <GridIcon />
         {t.tabShop}
       </Link>
-      <Link href={`${shop}#shop-search`} className={styles.tab}>
+      <button type="button" className={styles.tab} onClick={openSearch} aria-haspopup="dialog">
         <SearchIcon />
         {t.tabSearch}
-      </Link>
+      </button>
       <button
         type="button"
         className={styles.tab}

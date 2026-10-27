@@ -56,6 +56,9 @@ export function WelcomeSignup() {
 
   return (
     <section className={styles.band} aria-labelledby="welcome-title">
+      <span className={styles.watermark} aria-hidden="true">
+        Club
+      </span>
       <div className={`wrap ${styles.inner}`}>
         <div className={styles.copy}>
           <p className="eyebrow">{fmt(t.eyebrow, { name })}</p>

@@ -64,3 +64,20 @@
     grid-template-columns: 1fr 1fr;
   }
 }
+
+/* Our name across the full width, faint, at the foot of every page. */
+.watermark {
+  margin: 56px 0 0;
+  overflow: hidden;
+  text-align: center;
+  font-family: var(--display);
+  font-weight: 600;
+  font-size: 15.5vw;
+  line-height: 0.85;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: transparent;
+  -webkit-text-stroke: 1px var(--gold-line);
+  user-select: none;
+}

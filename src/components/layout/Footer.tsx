@@ -60,6 +60,9 @@ export async function Footer() {
           </ul>
         </nav>
       </div>
+      <p className={styles.watermark} aria-hidden="true">
+        {siteConfig.name}
+      </p>
       <div className="wrap">
         <div className={styles.bottom}>
           <span>{fmt(t.copyright, { year, name: siteConfig.name })}</span>

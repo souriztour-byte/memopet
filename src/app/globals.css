@@ -306,6 +306,27 @@ section[id] {
 .btn-gold:hover:not(:disabled) {
   background: var(--gold-hover);
 }
+/* A soft light sweeps across gold buttons on hover. */
+.btn-gold {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+.btn-gold::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(105deg, transparent 30%, rgba(255, 248, 230, 0.55) 50%, transparent 70%);
+  transform: translateX(-110%);
+  pointer-events: none;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .btn-gold:hover:not(:disabled)::after {
+    transition: transform 0.9s var(--ease-out);
+    transform: translateX(110%);
+  }
+}
 .btn-ghost {
   background: transparent;
   color: var(--ink);

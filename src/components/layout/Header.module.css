@@ -57,7 +57,7 @@
   grid-column: 1 / -1;
   grid-row: 2;
 }
-.nav ul {
+.nav > ul {
   display: flex;
   justify-content: center;
   gap: 40px;
@@ -70,21 +70,160 @@
   text-transform: uppercase;
   transition: padding 0.3s ease;
 }
-.nav a {
+/* Top-level links: a gold line grows from the middle on hover. */
+.nav > ul > li > a {
+  position: relative;
   text-decoration: none;
   color: var(--ink);
   padding-block: 4px;
-  border-bottom: 1px solid transparent;
+  transition: color var(--dur-fast);
 }
-.nav a:hover {
+.nav > ul > li > a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 1px;
+  background: var(--gold-text);
+  transform: scaleX(0);
+  transition: transform var(--dur-base) var(--ease-out);
+}
+.nav > ul > li > a:hover {
   color: var(--gold-ink);
 }
-.nav a[aria-current="page"] {
-  color: var(--gold-text);
-  border-bottom-color: var(--gold-text);
+.nav > ul > li > a:hover::after,
+.nav > ul > li > a[aria-current="page"]::after,
+.hasDrop:focus-within > a::after {
+  transform: scaleX(1);
 }
-.menuToggle {
+.nav > ul > li > a[aria-current="page"] {
+  color: var(--gold-text);
+}
+.menuToggle,
+.menuHead,
+.scrim {
   display: none;
+}
+
+/* Categories panel (computers): round photos with an arrow that slides. */
+.drop {
+  position: absolute;
+  left: 50%;
+  width: 100vw;
+  margin-left: -50vw;
+  top: 100%;
+  padding: 32px 0 36px;
+  background: var(--bg);
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  box-shadow: 0 30px 50px -30px rgba(25, 19, 14, 0.3);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-8px);
+  transition:
+    opacity var(--dur-base) var(--ease-out),
+    transform var(--dur-base) var(--ease-out),
+    visibility 0s linear var(--dur-base);
+  text-transform: none;
+  letter-spacing: normal;
+}
+.hasDrop:hover .drop,
+.hasDrop:focus-within .drop {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+  transition-delay: 0s;
+}
+.dropList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  gap: 56px;
+}
+.dropItem {
+  display: grid;
+  justify-items: center;
+  gap: 14px;
+  color: var(--ink);
+  text-decoration: none;
+}
+.dropPic {
+  position: relative;
+  width: 112px;
+  height: 112px;
+  border-radius: 50%;
+  overflow: hidden;
+  background: var(--panel);
+  outline: 1px solid transparent;
+  outline-offset: 4px;
+  transition: outline-color var(--dur-base) var(--ease-out);
+}
+.dropPic img {
+  object-fit: cover;
+  transition: transform 0.8s var(--ease-out);
+}
+.dropAll {
+  display: grid;
+  place-items: center;
+  color: var(--gold-text);
+  font-size: 1.6rem;
+}
+.dropItem:hover .dropPic {
+  outline-color: var(--gold);
+}
+.dropItem:hover .dropPic img {
+  transform: scale(1.08);
+}
+.dropTitle {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--display);
+  font-size: 1.1rem;
+}
+.dropTitle svg {
+  width: 16px;
+  height: 16px;
+  transition: transform var(--dur-base) var(--ease-out);
+}
+.dropItem:hover .dropTitle svg {
+  transform: translateX(4px);
+}
+
+/* Search (computers; phones use the tab bar) */
+.searchButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 0 4px;
+  border: 0;
+  background: none;
+  color: var(--ink);
+  font-size: 0.7rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+.searchButton:hover {
+  color: var(--gold-ink);
+}
+.searchButton svg {
+  width: 20px;
+  height: 20px;
+}
+@media (max-width: 1100px) {
+  .searchButton span {
+    display: none;
+  }
+}
+@media (max-width: 760px) {
+  .searchButton {
+    display: none;
+  }
 }
 /* The language switch sits next to the cart; inside the menu on phones. */
 .nav .langMenu {
@@ -117,24 +256,79 @@
   .logoLink {
     padding-block: 18px;
   }
-  .nav ul {
+  .drop {
     display: none;
   }
-  .nav ul.isOpen {
+  /* The menu slides in from the left over a dimmed page. */
+  .nav > ul {
+    display: none;
+  }
+  .nav > ul.isOpen {
+    justify-content: flex-start;
     display: flex;
-    position: absolute;
-    top: 100%;
-    left: 0;
-    right: 0;
-    padding: 28px var(--gutter) 32px;
+    position: fixed;
+    z-index: 2;
+    inset: 0 auto 0 0;
+    width: min(360px, 86vw);
+    padding: calc(16px + env(safe-area-inset-top, 0px)) 28px 32px;
     flex-direction: column;
     align-items: flex-start;
-    gap: 22px;
-    background: var(--surface);
-    border-top: 1px solid var(--line);
+    gap: 6px;
+    overflow-y: auto;
+    background: var(--bg);
+    border: 0;
+    box-shadow: 30px 0 60px -30px rgba(25, 19, 14, 0.4);
+    font-size: 0.82rem;
+  }
+  .nav > ul.isOpen > li > a {
+    display: block;
+    padding-block: 14px;
+  }
+  .nav > ul.isOpen > li:not(.menuHead, .langMenu) {
+    align-self: stretch;
     border-bottom: 1px solid var(--line);
-    box-shadow: var(--shadow);
-    font-size: 0.8rem;
+  }
+  .menuHead {
+    display: block;
+    align-self: flex-end;
+  }
+  .scrim {
+    display: block;
+    position: fixed;
+    inset: 0;
+    z-index: 1;
+    background: rgba(25, 19, 14, 0.35);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+  }
+}
+@media (max-width: 1000px) and (prefers-reduced-motion: no-preference) {
+  .nav > ul.isOpen {
+    justify-content: flex-start;
+    animation: menu-in 0.45s var(--ease-out) both;
+  }
+  .nav > ul.isOpen > li {
+    animation: menu-item 0.5s var(--ease-out) both;
+    animation-delay: calc(0.1s + var(--i, 0) * 45ms);
+  }
+  .scrim {
+    animation: scrim-in 0.3s ease both;
+  }
+}
+@keyframes menu-in {
+  from {
+    transform: translateX(-100%);
+  }
+}
+@keyframes menu-item {
+  from {
+    opacity: 0;
+    transform: translateX(-16px);
+  }
+}
+@keyframes scrim-in {
+  from {
+    opacity: 0;
   }
 }
 @media (max-width: 560px) {
@@ -160,7 +354,7 @@
 :global(html[data-scrolled]) .logo {
   font-size: 1.7rem;
 }
-:global(html[data-scrolled]) .nav ul {
+:global(html[data-scrolled]) .nav > ul {
   padding-block: 10px 11px;
 }
 @media (max-width: 560px) {
@@ -174,7 +368,13 @@
 @media (prefers-reduced-motion: reduce) {
   .logoLink,
   .logo,
-  .nav ul {
+  .nav ul,
+  .drop,
+  .nav > ul > li > a::after {
     transition: none;
   }
+}
+/* The open phone menu covers the tab bar too. */
+.top:has(.isOpen) {
+  z-index: 40;
 }

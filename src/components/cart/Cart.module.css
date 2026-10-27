@@ -60,17 +60,53 @@
   box-shadow: -24px 0 60px -20px rgba(0, 0, 0, 0.7);
 }
 .drawer::backdrop {
-  background: rgba(0, 0, 0, 0.6);
+  background: rgba(25, 19, 14, 0.4);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
 }
+/* Slides in from the right, its items arriving one after another; slides back out on close. */
 @media (prefers-reduced-motion: no-preference) {
   .drawer[open] {
-    animation: slide-in 0.25s ease;
+    animation: slide-in 0.5s var(--ease-out) both;
+  }
+  .drawer[open]::backdrop {
+    animation: backdrop-in 0.4s ease both;
+  }
+  .drawer[open] .line {
+    animation: line-in 0.55s var(--ease-out) both;
+    animation-delay: calc(0.12s + var(--i, 0) * 60ms);
+  }
+  .drawer[data-closing] {
+    animation: slide-out 0.28s var(--ease-in-out) both;
+  }
+  .drawer[data-closing]::backdrop {
+    animation: backdrop-out 0.28s ease both;
   }
 }
 @keyframes slide-in {
   from {
-    transform: translateX(40px);
+    transform: translateX(100%);
+  }
+}
+@keyframes slide-out {
+  to {
+    transform: translateX(100%);
+  }
+}
+@keyframes backdrop-in {
+  from {
     opacity: 0;
+  }
+}
+@keyframes backdrop-out {
+  to {
+    opacity: 0;
+  }
+}
+@keyframes line-in {
+  from {
+    opacity: 0;
+    transform: translateX(24px);
   }
 }
 .panel {

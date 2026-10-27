@@ -67,9 +67,11 @@ export const en = {
     copyright: "© {year} {name} · Online pet shop",
   },
   photos: {
+    pawInCup: "A black and white dog with a paw in the blue silicone paw washer, beside a cat and a small dog",
+    dogInUse: "AI-generated illustration of the product in use: a fluffy dog with one paw in the blue silicone paw washer",
+    corgiInUse: "AI-generated illustration of the product in use: a corgi with one paw in the paw washer cup",
     groomingCare: "Silicone paw washers in blue, pink and green",
     comfortBeds: "A grey cat lounging on the cat sofa bed",
-    corgiCup: "A corgi resting next to the paw washer cup",
     cupGrey: "The Paw Washer Cup in grey",
     sofaPlay: "A grey cat climbing onto the cat sofa bed",
     bagBed: "The Warming Sleeping Bag Bed",
@@ -78,7 +80,6 @@ export const en = {
     sofaCoffee: "The cat sofa bed in coffee",
     cupBrushes: "Two paw washer cups showing the soft brushes inside",
     cupColours: "Paw washer cups in green, grey and pink, with a small dog having its paw cleaned",
-    bristles: "The silicone paw washers from above, showing the soft bristles inside",
   },
   home: {
     heroEyebrow: "The comfort collection",

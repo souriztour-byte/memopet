@@ -44,6 +44,17 @@
       rgba(25, 19, 14, 0.55) 100%
     );
 }
+.aiNote {
+  position: absolute;
+  z-index: 1;
+  right: var(--gutter);
+  top: 16px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: rgba(25, 19, 14, 0.45);
+  color: var(--on-photo-soft);
+  font-size: 0.68rem;
+}
 /* Darkens as the hero scrolls away (GSAP). */
 .shadeScroll {
   position: absolute;

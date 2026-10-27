@@ -64,9 +64,11 @@ export const es: Dictionary = {
     copyright: "© {year} {name} · Tienda online para mascotas",
   },
   photos: {
+    pawInCup: "Un perro blanco y negro con una pata en el limpiapatas de silicona azul, junto a un gato y un perro pequeño",
+    dogInUse: "Ilustración generada con IA del producto en uso: un perro peludo con una pata en el limpiapatas de silicona azul",
+    corgiInUse: "Ilustración generada con IA del producto en uso: un corgi con una pata dentro del vaso limpiapatas",
     groomingCare: "Limpiapatas de silicona en azul, rosa y verde",
     comfortBeds: "Un gato gris tumbado en el sofá cama",
-    corgiCup: "Un corgi descansando junto al vaso limpiapatas",
     cupGrey: "El vaso limpiapatas en gris",
     sofaPlay: "Un gato gris subiendo al sofá cama",
     bagBed: "La cama saco térmica",
@@ -75,7 +77,6 @@ export const es: Dictionary = {
     sofaCoffee: "El sofá cama para gatos en color café",
     cupBrushes: "Dos vasos limpiapatas con los cepillos suaves por dentro",
     cupColours: "Vasos limpiapatas en verde, gris y rosa, con un perrito al que le limpian la pata",
-    bristles: "Los limpiapatas de silicona vistos desde arriba, con las cerdas suaves por dentro",
   },
   home: {
     heroEyebrow: "La colección confort",

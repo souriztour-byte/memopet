@@ -7,7 +7,7 @@ import { EASE, prefersReducedMotion, useScrollScene } from "@/lib/motion/gsap";
 import styles from "./HomeHero.module.css";
 
 type Props = {
-  slides: { src: string; alt: string }[];
+  slides: { src: string; alt: string; ai?: boolean; focus?: string }[];
   eyebrow: string;
   line1: string;
   line2: string;
@@ -15,7 +15,13 @@ type Props = {
   primary: { href: string; label: string };
   secondary: { href: string; label: string };
   ticker: string[];
-  labels: { scroll: string; slides: string; pause: string; play: string };
+  labels: {
+    scroll: string;
+    slides: string;
+    pause: string;
+    play: string;
+    aiNote: string;
+  };
 };
 
 const SLIDE_MS = 6000;
@@ -114,10 +120,15 @@ export function HomeHero({
               quality={90}
               sizes="100vw"
               className={styles.photo}
+              style={s.focus ? { objectPosition: s.focus } : undefined}
             />
           </div>
         ))}
       </div>
+      {/* AI illustrations are labelled while they're on screen. */}
+      {slides[active]?.ai ? (
+        <span className={styles.aiNote}>{labels.aiNote}</span>
+      ) : null}
       <div className={styles.shade} aria-hidden="true" />
       <div
         className={styles.shadeScroll}

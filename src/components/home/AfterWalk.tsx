@@ -11,6 +11,7 @@ type Scene = {
   title: string;
   text: string;
   photo: { src: string; alt: string };
+  ai?: boolean;
 };
 
 /**
@@ -25,6 +26,7 @@ export function AfterWalk({
   scenes,
   cta,
   dragLabel,
+  aiNote,
 }: {
   eyebrow: string;
   title: string;
@@ -32,6 +34,7 @@ export function AfterWalk({
   scenes: Scene[];
   cta: { href: string; label: string };
   dragLabel: string;
+  aiNote: string;
 }) {
   const root = useRef<HTMLElement>(null);
   const track = useRef<HTMLOListElement>(null);
@@ -88,6 +91,7 @@ export function AfterWalk({
                 sizes="(max-width: 900px) 80vw, 40vw"
                 className={styles.photo}
               />
+              {s.ai ? <span className={styles.aiNote}>{aiNote}</span> : null}
             </div>
             <span className={styles.num} aria-hidden="true">
               0{i + 1}

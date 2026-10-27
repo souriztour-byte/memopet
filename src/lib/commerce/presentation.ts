@@ -165,13 +165,17 @@ export function collectionPresentation(handle: string, title = ""): CollectionPr
   return { tile: tileFor(illustration), illustration };
 }
 
-/** Photos the home hero cross-fades between (the first one loads first). */
+/**
+ * Photos the home hero cross-fades between (the first one loads first).
+ * `ai` marks an AI illustration, which shows the AI note while it's on screen;
+ * `focus` is the part of the photo to keep in view when it's cropped.
+ */
 export const HERO_SLIDES = [
-  { src: photoUrl("luxury-cat-sofa-bed/cat-lounging.jpg"), alt: "comfortBeds" },
-  { src: photoUrl("warming-sleeping-bag-bed/cat-sleeping.jpg"), alt: "catAsleep" },
-  { src: photoUrl("paw-washer-cup/corgi.jpg"), alt: "corgiCup" },
-  { src: photoUrl("luxury-cat-sofa-bed/cat-playing.jpg"), alt: "sofaPlay" },
-] as const satisfies readonly { src: string; alt: PhotoAlt }[];
+  { src: photoUrl("luxury-cat-sofa-bed/cat-lounging.jpg"), alt: "comfortBeds", ai: false },
+  { src: photoUrl("warming-sleeping-bag-bed/cat-sleeping.jpg"), alt: "catAsleep", ai: false },
+  { src: photoUrl("paw-washer-cup/in-use-ai.jpg"), alt: "corgiInUse", ai: true, focus: "center 12%" },
+  { src: photoUrl("luxury-cat-sofa-bed/cat-playing.jpg"), alt: "sofaPlay", ai: false },
+] as const satisfies readonly { src: string; alt: PhotoAlt; ai: boolean; focus?: string }[];
 
 /** Photos for the home page's story sections and guide (public/photos). */
 export const HOME_PHOTOS = {
@@ -182,8 +186,8 @@ export const HOME_PHOTOS = {
   ],
   care: [
     { src: photoUrl("paw-washer-cup/colours.jpg"), alt: "cupColours" },
-    { src: photoUrl("silicone-paw-washer/from-above.jpg"), alt: "bristles" },
-    { src: photoUrl("paw-washer-cup/corgi.jpg"), alt: "corgiCup" },
+    { src: photoUrl("silicone-paw-washer/dog-and-cats.jpg"), alt: "pawInCup" },
+    { src: photoUrl("silicone-paw-washer/in-use-ai.jpg"), alt: "dogInUse", ai: true },
     { src: photoUrl("paw-washer-cup/brushes.jpg"), alt: "cupBrushes" },
   ],
   guideMain: { src: photoUrl("warming-sleeping-bag-bed/cat-sleeping.jpg"), alt: "catAsleep" },
@@ -192,5 +196,5 @@ export const HOME_PHOTOS = {
   guideFaq: { src: photoUrl("warming-sleeping-bag-bed/ears.jpg"), alt: "bedEars" },
 } as const satisfies {
   comfort: readonly { src: string; alt: PhotoAlt }[];
-  care: readonly { src: string; alt: PhotoAlt }[];
+  care: readonly { src: string; alt: PhotoAlt; ai?: boolean }[];
 } & Record<`guide${string}`, { src: string; alt: PhotoAlt }>;

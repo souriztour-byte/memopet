@@ -1,0 +1,62 @@
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 24px;
+}
+/* Same pill switch as the home page rail */
+.switch {
+  display: inline-flex;
+  padding: 4px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--surface);
+}
+.switch button {
+  min-height: 40px;
+  padding: 0 18px;
+  border: 0;
+  border-radius: 999px;
+  background: none;
+  color: var(--ink-soft);
+  font: inherit;
+  font-size: 0.72rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition:
+    background var(--dur-base) var(--ease-out),
+    color var(--dur-base) var(--ease-out);
+}
+.switch button:hover {
+  color: var(--ink);
+}
+.switch button[aria-pressed="true"] {
+  background: var(--gold);
+  color: var(--on-gold);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .switched article {
+    animation: card-in 0.7s var(--ease-out) both;
+  }
+  .switched article:nth-child(2) {
+    animation-delay: 60ms;
+  }
+  .switched article:nth-child(3) {
+    animation-delay: 120ms;
+  }
+  .switched article:nth-child(4) {
+    animation-delay: 180ms;
+  }
+  .switched article:nth-child(n + 5) {
+    animation-delay: 240ms;
+  }
+}
+@keyframes card-in {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+}

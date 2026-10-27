@@ -2,11 +2,11 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { PageIntro } from "@/components/content/PageIntro";
-import { ProductGrid } from "@/components/product/ProductGrid";
+import { ShopResults } from "@/components/shop/ShopResults";
 import { ShopToolbar } from "@/components/shop/ShopToolbar";
 import { alternatesFor, hasLocale, localizePath } from "@/i18n/config";
 import { getDictionary } from "@/i18n/dictionaries";
-import { fmt, plural } from "@/i18n/format";
+import { fmt } from "@/i18n/format";
 import { rich } from "@/i18n/rich";
 import { getCollections, getProducts } from "@/lib/commerce";
 import { parseSort } from "@/lib/commerce/sort";
@@ -51,12 +51,8 @@ export default async function ShopPage(props: PageProps<"/[lang]/shop">) {
           category={category}
           categories={collections.map((c) => ({ handle: c.handle, title: c.title }))}
         />
-        <p className="small" aria-live="polite" style={{ marginBottom: 18 }}>
-          {plural(lang, products.length, t.count)}
-          {query ? <> {fmt(t.forQuery, { query })}</> : null}
-        </p>
         {products.length ? (
-          <ProductGrid products={products} />
+          <ShopResults products={products} query={query} />
         ) : (
           <div className="note">
             <p>

@@ -4,20 +4,10 @@ import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { ProductCard } from "@/components/product/ProductCard";
 import { useI18n } from "@/i18n/I18nProvider";
+import { isFor, petsFor, type Pet } from "@/lib/commerce/pets";
 import type { ProductSummary } from "@/lib/commerce/types";
 import { useDragScroll } from "./useDragScroll";
 import styles from "./PetRail.module.css";
-
-type Pet = "all" | "dogs" | "cats";
-
-// Matches the "for" line from Shopify (tag pet:…), in English and Spanish.
-const PET_WORDS: Record<Exclude<Pet, "all">, RegExp> = {
-  dogs: /\b(dogs?|perros?)\b/i,
-  cats: /\b(cats?|gatos?)\b/i,
-};
-// A product without a "for" line shows for both.
-const isFor = (p: ProductSummary, pet: Pet) =>
-  pet === "all" || !p.petType || PET_WORDS[pet].test(p.petType);
 
 /**
  * The collection as a row you can drag (mouse), swipe (touch) or step
@@ -40,10 +30,7 @@ export function PetRail({
   useDragScroll(rail);
 
   const shown = products.filter((p) => isFor(p, pet));
-  // Only offer a pet that has products of its own.
-  const pets = (["all", "dogs", "cats"] as const).filter(
-    (p) => p === "all" || products.some((x) => isFor(x, p)),
-  );
+  const pets = petsFor(products);
 
   useEffect(() => {
     const el = rail.current;

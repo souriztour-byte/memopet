@@ -7,6 +7,7 @@ import { useCart } from "@/components/cart/CartProvider";
 import { BagIcon, CheckIcon } from "@/components/ui/icons";
 import { fmt } from "@/i18n/format";
 import { useI18n } from "@/i18n/I18nProvider";
+import { isColourOption, swatchFor } from "@/lib/commerce/presentation";
 import type { Image as ImageType, Product, ProductVariant } from "@/lib/commerce/types";
 import { flyToCart } from "@/lib/fly-to-cart";
 import { MAX_QTY } from "@/lib/limits";
@@ -236,7 +237,10 @@ export function ProductDetail({
             <legend>
               {option.name}
               {selection[option.name] ? (
-                <span className={styles.chosen}> ({selection[option.name]})</span>
+                // The key replays a small fade when the choice changes.
+                <span key={selection[option.name]} className={styles.chosen}>
+                  ({selection[option.name]})
+                </span>
               ) : null}
             </legend>
             <div className={styles.values} role="radiogroup" aria-label={option.name}>
@@ -250,6 +254,9 @@ export function ProductDetail({
                   disabled={!isValueAvailable(option.name, value)}
                   onClick={() => choose(option.name, value)}
                 >
+                  {isColourOption(option.name) && swatchFor(value) ? (
+                    <span className={styles.dot} style={{ background: swatchFor(value)! }} aria-hidden="true" />
+                  ) : null}
                   {value}
                 </button>
               ))}

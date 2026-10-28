@@ -19,5 +19,5 @@
   /* Balances the tracking after the last letter so the word sits centred. */
   margin-right: -0.14em;
   text-transform: uppercase;
-  color: var(--ink);
+  color: var(--logo-name);
 }

@@ -59,6 +59,10 @@
   --sheen-a: #e9d3a6;
   --sheen-b: #c6a66b;
   --sheen-c: #fff4dc;
+  /* The logo: paw toes, heart and name. */
+  --logo-paw: var(--gold);
+  --logo-heart: var(--gold-ink);
+  --logo-name: var(--ink);
 }
 /* White & gold. Gold is a deeper bronze here so text stays readable on white. */
 :root[data-theme="light"] {
@@ -116,6 +120,10 @@
   --sheen-a: #f4d9a0;
   --sheen-b: #e3a159;
   --sheen-c: #fff3da;
+  /* Logo on cream: soft gold paw, amber-brown heart, mocha name. */
+  --logo-paw: #d9b26a;
+  --logo-heart: #b07a3a;
+  --logo-name: #5b4632;
 }
 /* Sand: warm greige page, pale stone tiles behind products, deep taupe accents. */
 :root[data-theme="sand"] {

@@ -15,6 +15,10 @@
   isolation: isolate;
   padding-block: 112px;
   background: var(--band);
+  /* On the dark band the logo is all champagne gold. */
+  --logo-paw: #f4d9a0;
+  --logo-heart: #f4d9a0;
+  --logo-name: #f4d9a0;
   color: var(--ink);
 }
 .watermark {
@@ -47,6 +51,10 @@
   justify-items: center;
   gap: 28px;
   text-align: center;
+}
+.logo {
+  font-size: 1.5rem;
+  margin-bottom: 6px;
 }
 .copy {
   display: grid;

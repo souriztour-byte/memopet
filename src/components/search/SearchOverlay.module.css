@@ -52,13 +52,13 @@
   display: none;
 }
 .form:focus-within {
-  box-shadow: 0 1px 0 var(--gold);
+  box-shadow: 0 1px 0 var(--accent);
 }
 .input::placeholder {
   color: var(--muted);
 }
 .form:focus-within {
-  border-bottom-color: var(--gold);
+  border-bottom-color: var(--accent);
 }
 .close {
   width: 44px;

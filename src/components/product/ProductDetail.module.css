@@ -100,7 +100,7 @@
   }
   .dots span[data-active="true"] {
     width: 22px;
-    background: var(--gold);
+    background: var(--accent);
   }
   /* Two classes so it outranks the .thumbs rule further down. */
   .gallery .thumbs {
@@ -225,7 +225,7 @@
   box-shadow:
     inset 0 0 0 1px rgba(48, 40, 32, 0.15),
     0 0 0 2px var(--bg),
-    0 0 0 3.5px var(--gold);
+    0 0 0 3.5px var(--accent);
 }
 @media (prefers-reduced-motion: no-preference) {
   .values :global(.pill):active:not(:disabled) {

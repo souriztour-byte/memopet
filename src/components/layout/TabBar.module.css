@@ -58,7 +58,7 @@
   height: 100%;
   margin-inline: auto;
   border-radius: 2px;
-  background: var(--gold);
+  background: var(--accent);
 }
 .marker[data-hidden] {
   opacity: 0;

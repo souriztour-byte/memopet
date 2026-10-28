@@ -14,7 +14,7 @@
   overflow: hidden;
   isolation: isolate;
   padding-block: 112px;
-  background: #302820;
+  background: var(--band);
   color: var(--ink);
 }
 .watermark {

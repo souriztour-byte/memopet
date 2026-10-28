@@ -101,7 +101,7 @@
   position: absolute;
   inset: -5px;
   border-radius: 50%;
-  border: 1.5px solid var(--gold);
+  border: 1.5px solid var(--accent);
   opacity: 0;
   transform: scale(0.7);
   transition:

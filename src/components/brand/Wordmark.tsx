@@ -6,7 +6,7 @@ export function Wordmark({ className }: { className?: string }) {
   return (
     <span className={`${styles.wordmark} ${className ?? ""}`}>
       <svg viewBox="20 12 160 180" className={styles.mark} aria-hidden="true" focusable="false">
-        <g fill="var(--gold)">
+        <g fill="var(--accent)">
           <ellipse cx="46" cy="84" rx="17" ry="22" transform="rotate(-25 46 84)" />
           <ellipse cx="80" cy="46" rx="18" ry="24" transform="rotate(-8 80 46)" />
           <ellipse cx="120" cy="46" rx="18" ry="24" transform="rotate(8 120 46)" />

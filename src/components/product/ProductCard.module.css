@@ -96,7 +96,7 @@
   outline: none;
 }
 .link:focus-visible::after {
-  outline: 2px solid var(--gold);
+  outline: 2px solid var(--accent);
   outline-offset: 4px;
 }
 .price {

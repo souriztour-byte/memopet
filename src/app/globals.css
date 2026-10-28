@@ -1,7 +1,8 @@
 /* ──────────────────────────────────────────────────────────────────────────
-   MimiPets design tokens. Three looks share every rule: black & gold (the
-   default), white & gold (<html data-theme="light">) and sand
-   (<html data-theme="sand">), picked with `look` in src/lib/config.ts.
+   MimiPets design tokens. Four looks share every rule: black & gold (the
+   default), white & gold (<html data-theme="light">), sand
+   (<html data-theme="sand">) and mocha (<html data-theme="mocha">), picked
+   with `look` in src/lib/config.ts.
    Change colours here and every page follows.
    ────────────────────────────────────────────────────────────────────────── */
 :root {
@@ -50,6 +51,14 @@
      multiplied with so white studio backgrounds match the page. */
   --photo-radius: 14px;
   --photo-tint: transparent;
+  /* Accent lines and marks (underlines, progress bars, focus rings). */
+  --accent: var(--gold);
+  /* The dark band behind the MimiPets Club sign-up. */
+  --band: #302820;
+  /* The shining gold of the hero's second line. */
+  --sheen-a: #e9d3a6;
+  --sheen-b: #c6a66b;
+  --sheen-c: #fff4dc;
 }
 /* White & gold. Gold is a deeper bronze here so text stays readable on white. */
 :root[data-theme="light"] {
@@ -75,6 +84,38 @@
   --danger: #b3412c;
   --shadow: 0 24px 48px -28px rgba(48, 40, 32, 0.35);
   --photo-tint: #f7f2ea;
+}
+/* Mocha: mocha brown text and bands, champagne gold buttons, burnt amber
+   accents. Burnt amber is too light for small text on cream, so small text
+   uses a deeper amber (--gold-text). */
+:root[data-theme="mocha"] {
+  color-scheme: light;
+  --bg: #fbf6ee;
+  --surface: #fffcf7;
+  --panel: #f3e7d1;
+  --panel-2: #e6d5b8;
+  --tile-2: #f6ecda;
+  --tile-3: #f9f1e4;
+  --ink: #5b4632; /* mocha brown */
+  --ink-soft: #6b5541;
+  --muted: #75614d;
+  --line: #ecdfca;
+  --gold: #f4d9a0; /* champagne gold: buttons and fills */
+  --gold-text: #9a571b;
+  --gold-ink: #844915;
+  --gold-hover: #ecc77c;
+  --on-gold: #5b4632;
+  --gold-line: rgba(200, 121, 44, 0.45);
+  --ghost-line: rgba(91, 70, 50, 0.4);
+  --danger: #b3412c;
+  --shadow: 0 24px 48px -28px rgba(91, 70, 50, 0.38);
+  --gold-photo: #f4d9a0;
+  --photo-tint: #fbf2e3;
+  --accent: #c8792c; /* burnt amber */
+  --band: #5b4632;
+  --sheen-a: #f4d9a0;
+  --sheen-b: #e3a159;
+  --sheen-c: #fff3da;
 }
 /* Sand: warm greige page, pale stone tiles behind products, deep taupe accents. */
 :root[data-theme="sand"] {
@@ -186,7 +227,7 @@ textarea {
   color: inherit;
 }
 :focus-visible {
-  outline: 2px solid var(--gold);
+  outline: 2px solid var(--accent);
   outline-offset: 3px;
   border-radius: var(--radius);
 }

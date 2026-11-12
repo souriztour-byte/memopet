@@ -27,7 +27,7 @@ export const revalidate = 3600;
 /** FAQ questions (ids from src/content/faq) shown on a product page, by kind of product. */
 const QUESTIONS: Record<"care" | "comfort", string[]> = {
   care: ["paw-washer-use", "paw-washer-sizes", "cats-or-dogs", "delivery-time", "return-item"],
-  comfort: ["cats-or-dogs", "delivery-time", "shipping-cost", "return-item"],
+  comfort: ["delivery-time", "shipping-cost", "return-item"],
 };
 
 export async function generateStaticParams() {

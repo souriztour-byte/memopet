@@ -36,7 +36,9 @@
   --gold-photo: #c9a96e;
   --display: var(--font-playfair), "Playfair Display", Georgia, "Times New Roman", serif;
   --body: var(--font-inter), "Inter", "Segoe UI", system-ui, -apple-system, sans-serif;
-  --radius: 2px;
+  /* Corners: controls (buttons, pills, fields) and cards (boxes, FAQ rows). */
+  --radius: 10px;
+  --card-radius: 14px;
   --gutter: clamp(16px, 4vw, 40px);
   --header-h: 72px;
   /* Height of the phone tab bar (TabBar.tsx), without the home-indicator area. */
@@ -169,6 +171,18 @@
 html {
   scroll-behavior: smooth;
   -webkit-text-size-adjust: 100%;
+}
+/* Gliding scroll on computers (SmoothScroll.tsx, Lenis): it moves the page
+   itself, so the browser's own smooth scrolling steps aside. */
+html.lenis {
+  scroll-behavior: auto;
+}
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-stopped {
+  overflow: clip;
 }
 @media (prefers-reduced-motion: reduce) {
   html {
@@ -507,7 +521,7 @@ section[id] {
 .step {
   background: var(--surface);
   border: 1px solid var(--line);
-  border-radius: var(--radius);
+  border-radius: var(--card-radius);
   padding: 30px;
   counter-increment: s;
   display: grid;
@@ -541,7 +555,7 @@ section[id] {
 .cbox {
   background: var(--surface);
   border: 1px solid var(--line);
-  border-radius: var(--radius);
+  border-radius: var(--card-radius);
   padding: 28px;
 }
 .cbox .eyebrow {
@@ -563,25 +577,76 @@ section[id] {
 .faq details {
   border: 1px solid var(--line);
   background: var(--surface);
-  padding: 20px 24px;
-  border-radius: var(--radius);
+  border-radius: var(--card-radius);
+  transition: border-color var(--dur-base) var(--ease-out);
 }
+.faq details:hover,
+.faq details[open] {
+  border-color: var(--gold-line);
+}
+/* The whole row is the button; a plus on the right turns into a minus. */
 .faq summary {
+  position: relative;
+  display: block;
+  padding: 20px 60px 20px 24px;
   cursor: pointer;
   font-family: var(--display);
   font-size: 1.2rem;
   font-weight: 500;
-  list-style-position: outside;
+  list-style: none;
+  border-radius: var(--card-radius);
+}
+.faq summary::-webkit-details-marker {
+  display: none;
+}
+.faq summary::before,
+.faq summary::after {
+  content: "";
+  position: absolute;
+  right: 24px;
+  top: 50%;
+  width: 14px;
+  height: 1.5px;
+  margin-top: -0.75px;
+  background: var(--gold-text);
+  transition: transform var(--dur-base) var(--ease-out);
+}
+.faq summary::after {
+  transform: rotate(90deg);
+}
+.faq details[open] summary::after {
+  transform: rotate(0deg);
 }
 .faq details[open] summary {
   color: var(--gold-ink);
 }
 .faq .answer {
-  margin-top: 12px;
+  padding: 0 24px 22px;
   color: var(--muted);
 }
 .faq .answer p + p {
   margin-top: 10px;
+}
+/* The answer slides open where the browser can animate it; elsewhere it just opens. */
+@supports (interpolate-size: allow-keywords) {
+  @media (prefers-reduced-motion: no-preference) {
+    .faq details {
+      interpolate-size: allow-keywords;
+    }
+    .faq details::details-content {
+      block-size: 0;
+      overflow: clip;
+      opacity: 0;
+      transition:
+        block-size var(--dur-base) var(--ease-out),
+        opacity var(--dur-base) var(--ease-out),
+        content-visibility var(--dur-base) allow-discrete;
+    }
+    .faq details[open]::details-content {
+      block-size: auto;
+      opacity: 1;
+    }
+  }
 }
 
 /* Long-form content (policies) */
@@ -644,7 +709,7 @@ section[id] {
 .note {
   background: var(--surface);
   border: 1px solid var(--line);
-  border-radius: var(--radius);
+  border-radius: var(--card-radius);
   padding: 16px 20px;
   color: var(--ink);
   font-size: 0.95rem;

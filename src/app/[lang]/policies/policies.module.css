@@ -20,7 +20,7 @@
   height: 100%;
   background: var(--surface);
   border: 1px solid var(--line);
-  border-radius: var(--radius);
+  border-radius: var(--card-radius);
   padding: 24px;
   text-decoration: none;
   color: inherit;

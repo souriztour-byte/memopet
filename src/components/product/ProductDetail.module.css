@@ -19,6 +19,13 @@
   gap: 12px;
   min-width: 0;
 }
+/* Computers: the photo stays in view while the buy box scrolls beside it. */
+@media (min-width: 901px) {
+  .gallery {
+    position: sticky;
+    top: calc(var(--header-h) - 12px);
+  }
+}
 .stage {
   position: relative;
   border-radius: var(--photo-radius);
@@ -264,6 +271,7 @@
 }
 .qty {
   border: 1px solid var(--panel-2);
+  border-radius: var(--radius);
   padding: 4px;
   min-height: 50px;
 }

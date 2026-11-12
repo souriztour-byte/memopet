@@ -4,6 +4,7 @@ import Link from "next/link";
 import { localizePath } from "@/i18n/config";
 import { useI18n } from "@/i18n/I18nProvider";
 import { rich } from "@/i18n/rich";
+import { ProductGrid } from "@/components/product/ProductGrid";
 import { CartLines } from "./CartLines";
 import { CartPerks } from "./CartPerks";
 import { CartSuggestions } from "./CartSuggestions";
@@ -12,7 +13,7 @@ import { CartSummary } from "./CartSummary";
 import styles from "./CartPage.module.css";
 
 export function CartPageContent() {
-  const { cart, ready, demoMode } = useCart();
+  const { cart, ready, demoMode, suggestions } = useCart();
   const { lang, dict } = useI18n();
   const t = dict.cart;
 
@@ -20,12 +21,22 @@ export function CartPageContent() {
 
   if (!cart || !cart.lines.length) {
     return (
-      <div className={styles.empty}>
-        <p className="lead">{t.empty}</p>
-        <Link href={localizePath(lang, "/shop")} className="btn btn-gold">
-          {dict.common.startShopping}
-        </Link>
-      </div>
+      <>
+        <div className={styles.empty}>
+          <p className="lead">{t.empty}</p>
+          <Link href={localizePath(lang, "/shop")} className="btn btn-gold">
+            {dict.common.startShopping}
+          </Link>
+        </div>
+        {suggestions.length ? (
+          <section className={`block ${styles.picks}`} aria-labelledby="empty-picks-title">
+            <div className="head">
+              <h2 id="empty-picks-title">{dict.header.searchPopular}</h2>
+            </div>
+            <ProductGrid products={suggestions.slice(0, 4)} />
+          </section>
+        ) : null}
+      </>
     );
   }
 

@@ -340,3 +340,163 @@
   font-size: 0.82rem;
   letter-spacing: 0.04em;
 }
+
+/* "Size guide", at the end of the Size label's line */
+.option legend {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+.sizeGuide {
+  margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 32px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--gold-text);
+  font: inherit;
+  font-size: 0.8rem;
+  letter-spacing: normal;
+  text-transform: none;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  cursor: pointer;
+}
+.sizeGuide:hover {
+  color: var(--gold-ink);
+}
+.sizeGuide svg {
+  width: 18px;
+  height: 18px;
+}
+.sizeDialog {
+  width: min(560px, calc(100vw - 32px));
+  max-height: calc(100dvh - 32px);
+  padding: 0;
+  border: 0;
+  border-radius: var(--photo-radius);
+  background: var(--surface);
+  color: var(--ink);
+  box-shadow: var(--shadow);
+}
+.sizeDialog::backdrop {
+  background: rgba(25, 19, 14, 0.45);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+.sizeDialogBody {
+  display: grid;
+  gap: 14px;
+  padding: 20px;
+}
+.sizeDialogBody header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.sizeDialogBody h2 {
+  font-size: 1.5rem;
+}
+.sizeDialogBody img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
+}
+.sizeDialogBody p {
+  color: var(--ink-soft);
+  font-size: 0.92rem;
+}
+
+/* Buy 1, or buy 2 and save: two tiles with the exact price of each */
+.offers {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+.offer {
+  display: grid;
+  align-content: start;
+  justify-items: start;
+  gap: 6px;
+  min-height: 76px;
+  padding: 14px 16px;
+  border: 1px solid var(--panel-2);
+  border-radius: 12px;
+  background: transparent;
+  color: var(--ink);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition:
+    border-color var(--dur-base) var(--ease-out),
+    background var(--dur-base) var(--ease-out),
+    box-shadow var(--dur-base) var(--ease-out);
+}
+.offer:hover {
+  border-color: var(--muted);
+}
+.offer[aria-checked="true"] {
+  border-color: var(--accent);
+  background: var(--surface);
+  box-shadow: inset 0 0 0 1px var(--accent);
+}
+.offerName {
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+.offerPrice {
+  font-family: var(--display);
+  font-size: 1.35rem;
+  line-height: 1.1;
+}
+.offerPrice s {
+  font-family: var(--body);
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+.offerTag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.78rem;
+  color: var(--gold-text);
+}
+.offerTag svg {
+  width: 16px;
+  height: 16px;
+}
+@media (prefers-reduced-motion: reduce) {
+  .offer {
+    transition: none;
+  }
+}
+
+.share {
+  justify-self: start;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--ink-soft);
+  font: inherit;
+  font-size: 0.72rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+.share:hover {
+  color: var(--gold-ink);
+}
+.share svg {
+  width: 18px;
+  height: 18px;
+}

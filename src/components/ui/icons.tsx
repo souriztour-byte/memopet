@@ -108,6 +108,20 @@ export const SearchIcon = ({ className }: IconProps) => (
   </svg>
 );
 
+export const ShareIcon = ({ className }: IconProps) => (
+  <svg {...base} strokeWidth={1.4} className={className}>
+    <path d="M12 15V4M8 7.5L12 4l4 3.5" />
+    <path d="M6 11.5v7.5h12v-7.5" />
+  </svg>
+);
+
+export const RulerIcon = ({ className }: IconProps) => (
+  <svg {...base} strokeWidth={1.4} className={className}>
+    <rect x="2.5" y="8" width="19" height="8" rx="1" />
+    <path d="M6.5 8v3M10 8v4M13.5 8v3M17 8v4" />
+  </svg>
+);
+
 /** Filled paw print (the logo's toes and pad), for small decorations. */
 export const PawIcon = ({ className }: IconProps) => (
   <svg viewBox="20 12 160 180" fill="currentColor" aria-hidden focusable={false} className={className}>

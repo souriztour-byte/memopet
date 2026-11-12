@@ -4,12 +4,14 @@ import { useEffect, useMemo, useRef, useState, useTransition, ViewTransition } f
 import { Illustration } from "@/components/art/Illustration";
 import { useCart } from "@/components/cart/CartProvider";
 import { SoftImage } from "@/components/ui/SoftImage";
-import { BagIcon, CheckIcon } from "@/components/ui/icons";
+import { BagIcon, CheckIcon, RulerIcon, ShareIcon, TruckIcon } from "@/components/ui/icons";
 import { fmt } from "@/i18n/format";
 import { useI18n } from "@/i18n/I18nProvider";
-import { isColourOption, swatchFor } from "@/lib/commerce/presentation";
+import { isColourOption, isSizeOption, sizeChartImage, swatchFor } from "@/lib/commerce/presentation";
 import type { Image as ImageType, Product, ProductVariant } from "@/lib/commerce/types";
+import { bundlePrice, offerMoney, offers } from "@/lib/content/offers";
 import { flyToCart } from "@/lib/fly-to-cart";
+import { formatMoney } from "@/lib/format";
 import { MAX_QTY } from "@/lib/limits";
 import { Price } from "./Price";
 import styles from "./ProductDetail.module.css";
@@ -39,8 +41,8 @@ export function ProductDetail({
   perks?: React.ReactNode;
   children?: React.ReactNode;
 }) {
-  const { addItem } = useCart();
-  const { dict } = useI18n();
+  const { addItem, notify } = useCart();
+  const { lang, dict } = useI18n();
   const t = dict.product;
   const [selection, setSelection] = useState<Selection>(() => initialSelection(product));
   const [quantity, setQuantity] = useState(1);
@@ -87,6 +89,31 @@ export function ProductDetail({
   ) : (
     <Price min={product.priceRange.minVariantPrice} max={product.priceRange.maxVariantPrice} />
   );
+
+  // "Buy 1" or "Buy 2, save 10%": what each costs for the chosen variant.
+  // The discount itself is Shopify's automatic one, taken off in the cart.
+  const money = (amount: number) => formatMoney(offerMoney(amount), lang);
+  const bundleCount = Math.max(offers.bundle.minItems, quantity);
+  const one = variant ? bundlePrice(Number(variant.price.amount), 1) : null;
+  const more = variant ? bundlePrice(Number(variant.price.amount), bundleCount) : null;
+
+  // The size chart (a product photo) opens from "Size guide".
+  const sizeChart = sizeChartImage(product.images);
+  const sizeDialog = useRef<HTMLDialogElement>(null);
+
+  // Phones open their share sheet (WhatsApp, Messages…); computers copy the link.
+  const share = async () => {
+    const url = window.location.href;
+    try {
+      if (navigator.share) await navigator.share({ title: product.title, url });
+      else {
+        await navigator.clipboard.writeText(url);
+        notify(t.linkCopied);
+      }
+    } catch {
+      // Closed the share sheet, or the browser refused: nothing to do.
+    }
+  };
 
   // Photos: the selected variant's photo first, then the rest.
   const images = useMemo(() => {
@@ -242,7 +269,14 @@ export function ProductDetail({
                   ({selection[option.name]})
                 </span>
               ) : null}
+              {sizeChart && isSizeOption(option.name) ? (
+                <button type="button" className={styles.sizeGuide} onClick={() => sizeDialog.current?.showModal()}>
+                  <RulerIcon />
+                  {t.sizeGuide}
+                </button>
+              ) : null}
             </legend>
+
             <div className={styles.values} role="radiogroup" aria-label={option.name}>
               {option.values.map((value) => (
                 <button
@@ -263,6 +297,41 @@ export function ProductDetail({
             </div>
           </fieldset>
         ))}
+
+        {one && more && available ? (
+          <div className={styles.offers} role="radiogroup" aria-label={t.offerLabel}>
+            <button
+              type="button"
+              role="radio"
+              className={styles.offer}
+              aria-checked={quantity < offers.bundle.minItems}
+              onClick={() => setQuantity(1)}
+            >
+              <span className={styles.offerName}>{t.offerOne}</span>
+              <span className={styles.offerPrice}>{money(one.total)}</span>
+            </button>
+            <button
+              type="button"
+              role="radio"
+              className={styles.offer}
+              aria-checked={quantity >= offers.bundle.minItems}
+              onClick={() => setQuantity(bundleCount)}
+            >
+              <span className={styles.offerName}>
+                {fmt(t.offerMore, { count: bundleCount, percent: offers.bundle.percent })}
+              </span>
+              <span className={styles.offerPrice}>
+                {money(more.total)} <s>{money(more.full)}</s>
+              </span>
+              {more.freeShipping ? (
+                <span className={styles.offerTag}>
+                  <TruckIcon />
+                  {fmt(t.offerFreeShipping, { destination: offers.shipping.destination[lang] })}
+                </span>
+              ) : null}
+            </button>
+          </div>
+        ) : null}
 
         <div className={styles.buy} ref={buyRef}>
           <div className={styles.qtyWrap}>
@@ -300,8 +369,41 @@ export function ProductDetail({
             {addLabel}
           </button>
         </div>
+        <button type="button" className={styles.share} onClick={share}>
+          <ShareIcon />
+          {t.share}
+        </button>
         {children}
       </div>
+
+      {sizeChart ? (
+        <dialog
+          ref={sizeDialog}
+          className={styles.sizeDialog}
+          aria-label={t.sizeGuide}
+          onClick={(e) => {
+            if (e.target === sizeDialog.current) sizeDialog.current.close();
+          }}
+        >
+          <div className={styles.sizeDialogBody}>
+            <header>
+              <h2>{t.sizeGuide}</h2>
+              <button type="button" className="x" onClick={() => sizeDialog.current?.close()} aria-label={t.sizeGuideClose}>
+                ×
+              </button>
+            </header>
+            {/* The chart's alt text spells out the measurements. */}
+            <SoftImage
+              src={sizeChart.url}
+              alt={sizeChart.altText ?? t.sizeGuide}
+              width={sizeChart.width ?? 1200}
+              height={sizeChart.height ?? 1200}
+              sizes="(max-width: 600px) 100vw, 560px"
+            />
+            <p>{sizeChart.altText}</p>
+          </div>
+        </dialog>
+      ) : null}
 
       <div className={styles.stickyBar} data-visible={showBar} aria-hidden={!showBar} inert={!showBar}>
         <div className={styles.stickyInfo}>

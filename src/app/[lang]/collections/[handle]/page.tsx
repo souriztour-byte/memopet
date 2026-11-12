@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { PageIntro } from "@/components/content/PageIntro";
+import { CompareProducts } from "@/components/product/CompareProducts";
 import { ProductGrid } from "@/components/product/ProductGrid";
 import { alternatesFor, hasLocale, localizePath, type Locale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/dictionaries";
@@ -35,7 +36,8 @@ export default async function CollectionPage(props: PageProps<"/[lang]/collectio
   if (!hasLocale(lang)) notFound();
   const collection = await getCollection(lang, handle);
   if (!collection) notFound();
-  const t = getDictionary(lang).collections;
+  const dict = getDictionary(lang);
+  const t = dict.collections;
 
   const products = await getProducts(lang, { collection: collection.handle });
 
@@ -67,6 +69,18 @@ export default async function CollectionPage(props: PageProps<"/[lang]/collectio
           </div>
         )}
       </section>
+      {/* A small category reads well side by side. */}
+      {products.length === 2 || products.length === 3 ? (
+        <section className="block" aria-labelledby="compare-title">
+          <div className="head">
+            <div>
+              <p className="eyebrow">{dict.product.compareEyebrow}</p>
+              <h2 id="compare-title">{dict.product.compareTitle}</h2>
+            </div>
+          </div>
+          <CompareProducts products={products} />
+        </section>
+      ) : null}
     </div>
   );
 }

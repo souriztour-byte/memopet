@@ -16,7 +16,8 @@ export const aiNoteFor = (altText: string | null) =>
 
 /* ─── Pairs well with ─────────────────────────────────────────────────── */
 
-const kindOf = (illustration: Illustration) => (illustration === "care" ? "care" : "comfort");
+/** Paw washers are "care"; beds and the rest are "comfort". Products of one kind can be compared. */
+export const kindOf = (illustration: Illustration) => (illustration === "care" ? "care" : "comfort");
 
 /**
  * Suggestions to go with what the shopper is looking at or has in the cart:
@@ -65,6 +66,18 @@ const SWATCHES: Record<string, string> = {
   blanco: "#f6f4ef",
 };
 export const swatchFor = (value: string) => SWATCHES[value.trim().toLowerCase()] ?? null;
+
+/* ─── Sizes ──────────────────────────────────────────────────────────── */
+
+/** Option names that hold sizes, in English and Spanish. */
+export const isSizeOption = (name: string) => /^(sizes?|tallas?|tamaños?|medidas?)$/i.test(name.trim());
+
+/**
+ * The product's size chart: the Shopify image whose alt text starts with
+ * "Size" (or "Talla"). It opens from "Size guide" next to the size choices.
+ */
+export const sizeChartImage = <T extends { altText: string | null }>(images: T[]) =>
+  images.find((i) => i.altText && /^(sizes?|tallas?)\b/i.test(i.altText.trim())) ?? null;
 
 /* ─── Before & after ─────────────────────────────────────────────────── */
 

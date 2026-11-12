@@ -69,11 +69,14 @@ export function CartDrawer() {
               {cart ? <CartSuggestions cart={cart} onNavigate={closeCart} /> : null}
             </>
           ) : (
-            <p className={styles.empty}>
-              {t.empty}
-              <br />
-              {t.emptyHint}
-            </p>
+            <>
+              <p className={styles.empty}>
+                {t.empty}
+                <br />
+                {t.emptyHint}
+              </p>
+              <CartSuggestions cart={null} onNavigate={closeCart} />
+            </>
           )}
         </div>
         {cart && lines.length ? (

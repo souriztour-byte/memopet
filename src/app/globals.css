@@ -1,7 +1,8 @@
 /* ──────────────────────────────────────────────────────────────────────────
-   MimiPets design tokens. Three looks share every rule: black & gold (the
-   default), white & gold (<html data-theme="light">) and sand
-   (<html data-theme="sand">), picked with `look` in src/lib/config.ts.
+   MimiPets design tokens. Four looks share every rule: black & gold (the
+   default), white & gold (<html data-theme="light">), sand
+   (<html data-theme="sand">) and mocha (<html data-theme="mocha">), picked
+   with `look` in src/lib/config.ts.
    Change colours here and every page follows.
    ────────────────────────────────────────────────────────────────────────── */
 :root {
@@ -35,7 +36,9 @@
   --gold-photo: #c9a96e;
   --display: var(--font-playfair), "Playfair Display", Georgia, "Times New Roman", serif;
   --body: var(--font-inter), "Inter", "Segoe UI", system-ui, -apple-system, sans-serif;
-  --radius: 2px;
+  /* Corners: controls (buttons, pills, fields) and cards (boxes, FAQ rows). */
+  --radius: 10px;
+  --card-radius: 14px;
   --gutter: clamp(16px, 4vw, 40px);
   --header-h: 72px;
   /* Height of the phone tab bar (TabBar.tsx), without the home-indicator area. */
@@ -50,6 +53,18 @@
      multiplied with so white studio backgrounds match the page. */
   --photo-radius: 14px;
   --photo-tint: transparent;
+  /* Accent lines and marks (underlines, progress bars, focus rings). */
+  --accent: var(--gold);
+  /* The dark band behind the MimiPets Club sign-up. */
+  --band: #302820;
+  /* The shining gold of the hero's second line. */
+  --sheen-a: #e9d3a6;
+  --sheen-b: #c6a66b;
+  --sheen-c: #fff4dc;
+  /* The logo: paw toes, heart and name. */
+  --logo-paw: var(--gold);
+  --logo-heart: var(--gold-ink);
+  --logo-name: var(--ink);
 }
 /* White & gold. Gold is a deeper bronze here so text stays readable on white. */
 :root[data-theme="light"] {
@@ -75,6 +90,42 @@
   --danger: #b3412c;
   --shadow: 0 24px 48px -28px rgba(48, 40, 32, 0.35);
   --photo-tint: #f7f2ea;
+}
+/* Mocha: mocha brown text and bands, champagne gold buttons, burnt amber
+   accents. Burnt amber is too light for small text on cream, so small text
+   uses a deeper amber (--gold-text). */
+:root[data-theme="mocha"] {
+  color-scheme: light;
+  --bg: #fbf6ee;
+  --surface: #fffcf7;
+  --panel: #f3e7d1;
+  --panel-2: #e6d5b8;
+  --tile-2: #f6ecda;
+  --tile-3: #f9f1e4;
+  --ink: #5b4632; /* mocha brown */
+  --ink-soft: #6b5541;
+  --muted: #75614d;
+  --line: #ecdfca;
+  --gold: #f4d9a0; /* champagne gold: buttons and fills */
+  --gold-text: #9a571b;
+  --gold-ink: #844915;
+  --gold-hover: #ecc77c;
+  --on-gold: #5b4632;
+  --gold-line: rgba(200, 121, 44, 0.45);
+  --ghost-line: rgba(91, 70, 50, 0.4);
+  --danger: #b3412c;
+  --shadow: 0 24px 48px -28px rgba(91, 70, 50, 0.38);
+  --gold-photo: #f4d9a0;
+  --photo-tint: #fbf2e3;
+  --accent: #c8792c; /* burnt amber */
+  --band: #5b4632;
+  --sheen-a: #f4d9a0;
+  --sheen-b: #e3a159;
+  --sheen-c: #fff3da;
+  /* Logo on cream: soft gold paw, amber-brown heart, mocha name. */
+  --logo-paw: #d9b26a;
+  --logo-heart: #b07a3a;
+  --logo-name: #5b4632;
 }
 /* Sand: warm greige page, pale stone tiles behind products, deep taupe accents. */
 :root[data-theme="sand"] {
@@ -120,6 +171,18 @@
 html {
   scroll-behavior: smooth;
   -webkit-text-size-adjust: 100%;
+}
+/* Gliding scroll on computers (SmoothScroll.tsx, Lenis): it moves the page
+   itself, so the browser's own smooth scrolling steps aside. */
+html.lenis {
+  scroll-behavior: auto;
+}
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-stopped {
+  overflow: clip;
 }
 @media (prefers-reduced-motion: reduce) {
   html {
@@ -186,7 +249,7 @@ textarea {
   color: inherit;
 }
 :focus-visible {
-  outline: 2px solid var(--gold);
+  outline: 2px solid var(--accent);
   outline-offset: 3px;
   border-radius: var(--radius);
 }
@@ -458,7 +521,7 @@ section[id] {
 .step {
   background: var(--surface);
   border: 1px solid var(--line);
-  border-radius: var(--radius);
+  border-radius: var(--card-radius);
   padding: 30px;
   counter-increment: s;
   display: grid;
@@ -492,7 +555,7 @@ section[id] {
 .cbox {
   background: var(--surface);
   border: 1px solid var(--line);
-  border-radius: var(--radius);
+  border-radius: var(--card-radius);
   padding: 28px;
 }
 .cbox .eyebrow {
@@ -514,25 +577,76 @@ section[id] {
 .faq details {
   border: 1px solid var(--line);
   background: var(--surface);
-  padding: 20px 24px;
-  border-radius: var(--radius);
+  border-radius: var(--card-radius);
+  transition: border-color var(--dur-base) var(--ease-out);
 }
+.faq details:hover,
+.faq details[open] {
+  border-color: var(--gold-line);
+}
+/* The whole row is the button; a plus on the right turns into a minus. */
 .faq summary {
+  position: relative;
+  display: block;
+  padding: 20px 60px 20px 24px;
   cursor: pointer;
   font-family: var(--display);
   font-size: 1.2rem;
   font-weight: 500;
-  list-style-position: outside;
+  list-style: none;
+  border-radius: var(--card-radius);
+}
+.faq summary::-webkit-details-marker {
+  display: none;
+}
+.faq summary::before,
+.faq summary::after {
+  content: "";
+  position: absolute;
+  right: 24px;
+  top: 50%;
+  width: 14px;
+  height: 1.5px;
+  margin-top: -0.75px;
+  background: var(--gold-text);
+  transition: transform var(--dur-base) var(--ease-out);
+}
+.faq summary::after {
+  transform: rotate(90deg);
+}
+.faq details[open] summary::after {
+  transform: rotate(0deg);
 }
 .faq details[open] summary {
   color: var(--gold-ink);
 }
 .faq .answer {
-  margin-top: 12px;
+  padding: 0 24px 22px;
   color: var(--muted);
 }
 .faq .answer p + p {
   margin-top: 10px;
+}
+/* The answer slides open where the browser can animate it; elsewhere it just opens. */
+@supports (interpolate-size: allow-keywords) {
+  @media (prefers-reduced-motion: no-preference) {
+    .faq details {
+      interpolate-size: allow-keywords;
+    }
+    .faq details::details-content {
+      block-size: 0;
+      overflow: clip;
+      opacity: 0;
+      transition:
+        block-size var(--dur-base) var(--ease-out),
+        opacity var(--dur-base) var(--ease-out),
+        content-visibility var(--dur-base) allow-discrete;
+    }
+    .faq details[open]::details-content {
+      block-size: auto;
+      opacity: 1;
+    }
+  }
 }
 
 /* Long-form content (policies) */
@@ -595,7 +709,7 @@ section[id] {
 .note {
   background: var(--surface);
   border: 1px solid var(--line);
-  border-radius: var(--radius);
+  border-radius: var(--card-radius);
   padding: 16px 20px;
   color: var(--ink);
   font-size: 0.95rem;

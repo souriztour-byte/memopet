@@ -9,7 +9,9 @@ import { TabBar } from "@/components/layout/TabBar";
 import { WelcomeSignup } from "@/components/marketing/WelcomeSignup";
 import { SearchOverlay } from "@/components/search/SearchOverlay";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
+import { ScrollMemory } from "@/components/ui/ScrollMemory";
 import { ScrollState } from "@/components/ui/ScrollState";
+import { SmoothScroll } from "@/components/ui/SmoothScroll";
 import { hasLocale, locales, ogLocale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/dictionaries";
 import { fmt } from "@/i18n/format";
@@ -95,6 +97,8 @@ export default async function RootLayout({ children, params }: LayoutProps<"/[la
             <CartDrawer />
             <ScrollReveal />
             <ScrollState />
+            <SmoothScroll />
+            <ScrollMemory />
             <SearchOverlay />
           </CartProvider>
         </I18nProvider>

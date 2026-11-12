@@ -10,20 +10,23 @@ const clean = (value: string | undefined) => {
   return v ? v : null;
 };
 
-// Set by Vercel on every build, without "https://".
-const vercelDomain = clean(process.env.VERCEL_PROJECT_PRODUCTION_URL);
+// Set by the host on every build, without "https://": Vercel's production
+// domain, or the public domain of a Railway service.
+const hostDomain =
+  clean(process.env.VERCEL_PROJECT_PRODUCTION_URL) ?? clean(process.env.RAILWAY_PUBLIC_DOMAIN);
 
 const instagramHandle = clean(process.env.NEXT_PUBLIC_INSTAGRAM_HANDLE)?.replace(/^@/, "") ?? null;
 
 export const siteConfig = {
   name: "MimiPets",
   /**
-   * Public address used for canonical links, the sitemap and robots.txt. On Vercel it
-   * falls back to the project's production domain (e.g. mimipets.shop once connected).
+   * Public address used for canonical links, the sitemap and robots.txt. Set
+   * NEXT_PUBLIC_SITE_URL; otherwise it falls back to the host's domain (Vercel's
+   * production domain, or the Railway service's public domain).
    */
   url:
     clean(process.env.NEXT_PUBLIC_SITE_URL) ??
-    (vercelDomain ? `https://${vercelDomain}` : "http://localhost:3000"),
+    (hostDomain ? `https://${hostDomain}` : "http://localhost:3000"),
   /** Handle of the hero product (the paw washer) — match it to the Shopify product handle. */
   featuredProductHandle:
     clean(process.env.NEXT_PUBLIC_FEATURED_PRODUCT_HANDLE) ?? "silicone-paw-washer",
@@ -55,6 +58,6 @@ export const navLinks = [
  * The site's look: "dark" is black & gold, "light" is white & gold, "sand" is
  * warm beige. The palettes live in src/app/globals.css; switch here.
  */
-export const look: "dark" | "light" | "sand" = "light";
+export const look: "dark" | "light" | "sand" | "mocha" = "mocha";
 /** Browser-bar and home-screen colour for each look. */
-export const lookColor = { dark: "#0F0E0D", light: "#FAF8F4", sand: "#F1EEE9" } as const;
+export const lookColor = { dark: "#0F0E0D", light: "#FAF8F4", sand: "#F1EEE9", mocha: "#FBF6EE" } as const;

@@ -1,17 +1,20 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { FaqList } from "@/components/content/FaqList";
+import { CompareProducts } from "@/components/product/CompareProducts";
 import { ProductDetail } from "@/components/product/ProductDetail";
 import { ProductGrid } from "@/components/product/ProductGrid";
 import { DeliveryEstimate } from "@/components/product/DeliveryEstimate";
 import { ClockIcon, GiftIcon, ReturnIcon, TruckIcon } from "@/components/ui/icons";
 import { alternatesFor, hasLocale, localizePath, ogLocale } from "@/i18n/config";
+import { getFaqGroups } from "@/content/faq";
 import { getDictionary } from "@/i18n/dictionaries";
 import { fmt } from "@/i18n/format";
 import { getProduct, getProductHandles, getProducts } from "@/lib/commerce";
 import { BeforeAfter } from "@/components/media/BeforeAfter";
 import { ProductVideos } from "@/components/media/ProductVideos";
-import { beforeAfterImages, pairsWith } from "@/lib/commerce/presentation";
+import { beforeAfterImages, kindOf, pairsWith } from "@/lib/commerce/presentation";
 import { siteConfig } from "@/lib/config";
 import { policySettings } from "@/lib/content/policy-settings";
 import { offerMoney, offers } from "@/lib/content/offers";
@@ -20,6 +23,12 @@ import { formatMoney } from "@/lib/format";
 import styles from "./product.module.css";
 
 export const revalidate = 3600;
+
+/** FAQ questions (ids from src/content/faq) shown on a product page, by kind of product. */
+const QUESTIONS: Record<"care" | "comfort", string[]> = {
+  care: ["paw-washer-use", "paw-washer-sizes", "cats-or-dogs", "delivery-time", "return-item"],
+  comfort: ["delivery-time", "shipping-cost", "return-item"],
+};
 
 export async function generateStaticParams() {
   const handles = await getProductHandles();
@@ -64,7 +73,17 @@ export default async function ProductPage(props: PageProps<"/[lang]/products/[ha
   const rate = formatMoney(offerMoney(offers.shipping.standardRate), lang);
 
   const compare = beforeAfterImages(product.images);
-  const related = pairsWith(await getProducts(lang, { sort: "best-selling", limit: 8 }), [product], 3);
+  const catalogue = await getProducts(lang, { sort: "best-selling", limit: 8 });
+  const related = pairsWith(catalogue, [product], 3);
+  // Similar products (the other paw washer, the other bed) to compare with this one.
+  const kind = kindOf(product.illustration);
+  const alike = [product, ...catalogue.filter((p) => p.handle !== product.handle && kindOf(p.illustration) === kind)].slice(0, 3);
+  // The FAQ's answers that matter on this page.
+  const questionIds = QUESTIONS[kind];
+  const questions = getFaqGroups(lang)
+    .flatMap((g) => g.items)
+    .filter((q) => questionIds.includes(q.id))
+    .sort((a, b) => questionIds.indexOf(a.id) - questionIds.indexOf(b.id));
 
   const { minVariantPrice, maxVariantPrice } = product.priceRange;
   const jsonLd = {
@@ -204,6 +223,30 @@ export default async function ProductPage(props: PageProps<"/[lang]/products/[ha
             {t.beforeAfterTitle}
           </h2>
           <BeforeAfter before={compare.before} after={compare.after} />
+        </section>
+      ) : null}
+
+      {alike.length > 1 ? (
+        <section className={styles.media} aria-labelledby="alike-title">
+          <p className="eyebrow">{t.compareEyebrow}</p>
+          <h2 id="alike-title" className={styles.h2}>
+            {t.compareTitle}
+          </h2>
+          <CompareProducts products={alike} currentHandle={product.handle} />
+        </section>
+      ) : null}
+
+      {questions.length ? (
+        <section className={styles.media} aria-labelledby="questions-title">
+          <h2 id="questions-title" className={styles.h2}>
+            {t.questionsTitle}
+          </h2>
+          <FaqList items={questions} />
+          <p className="small" style={{ marginTop: 16 }}>
+            <Link href={href("/faq")} className="text-link">
+              {t.questionsAll} →
+            </Link>
+          </p>
         </section>
       ) : null}
 

@@ -172,7 +172,7 @@
   font-size: 1.6rem;
 }
 .dropItem:hover .dropPic {
-  outline-color: var(--gold);
+  outline-color: var(--accent);
 }
 .dropItem:hover .dropPic img {
   transform: scale(1.08);

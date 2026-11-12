@@ -62,6 +62,7 @@
 }
 .facts {
   border: 1px solid var(--line);
+  border-radius: var(--card-radius);
   background: var(--surface);
   padding: 26px 28px;
   margin-top: 6px;

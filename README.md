@@ -79,32 +79,39 @@ Other scripts: `npm run build`, `npm start`, `npm run lint`, `npm run typecheck`
 
 ## Going live on mimipets.shop
 
-The site is hosted on **Vercel**, from the makers of Next.js. The domain stays registered at
-**GoDaddy**, where only two DNS records change.
+The site is hosted on **Railway**, which runs it as a Node.js server (`npm run build`, then
+`npm start` on the port Railway gives it). The domain stays registered at **GoDaddy**; its DNS
+runs on **Cloudflare** (free), because GoDaddy can't point the bare domain (`mimipets.shop`)
+at a Railway address.
 
-1. **Deploy.** Sign in at vercel.com with GitHub, choose *Add New → Project* and import
-   `souriztour-byte/memopet`. Let Vercel's GitHub app see the repository. Keep the detected
-   settings (Next.js), add any variables from `.env.example` you have values for, then click
-   *Deploy*. Vercel builds `main` and deploys again on every push.
-2. **Add the domain.** In the project, open *Settings → Domains* and add `mimipets.shop`. Keep
-   `mimipets.shop` as the main address, and set `www.mimipets.shop` to **redirect to it**.
-   Vercel then lists the DNS records to create.
-3. **Point GoDaddy at Vercel.** In GoDaddy, go to *My Products → mimipets.shop → DNS*:
-   - **A** record, name `@`: change the value (*Parked* on a new domain) to the IP Vercel
-     shows, usually `76.76.21.21`. Delete any other `@` A records.
-   - **CNAME** record, name `www`: change the value to the one Vercel shows, usually
-     `cname.vercel-dns.com`.
-   - If Vercel asks for a **TXT** record named `_vercel`, add it exactly as shown.
-   - Turn off GoDaddy *Forwarding* for the domain if it is on. Leave MX records alone;
-     they handle email.
-4. **Wait.** When DNS has updated, Vercel's Domains page shows *Valid Configuration*. This
-   usually takes minutes but can take up to 48 hours. Vercel then sets up HTTPS on its own.
-5. **Redeploy once** (*Deployments → ⋯ → Redeploy*). The sitemap, robots.txt and canonical
-   links then use `https://mimipets.shop`. On Vercel they follow the project's production
-   domain; set `NEXT_PUBLIC_SITE_URL` to choose the address yourself.
+1. **Deploy.** Sign in at railway.com with GitHub. Choose *New Project → Deploy from GitHub
+   repo → souriztour-byte/memopet*. Railway detects Next.js, builds `main` and deploys again
+   on every push.
+2. **Variables.** In the service, open *Variables* and add the ones from `.env.example` you use
+   (the Shopify domain and token, the webhook secret, the `NEXT_PUBLIC_…` details), plus
+   `NEXT_PUBLIC_SITE_URL=https://mimipets.shop`. `NEXT_PUBLIC_…` values are built into the
+   pages, so redeploy after changing one.
+3. **Try it.** *Settings → Networking → Generate Domain* gives a `….up.railway.app` address.
+   Check the shop there: products, cart and checkout.
+4. **Move DNS to Cloudflare.** Add `mimipets.shop` to a free Cloudflare account; it copies the
+   existing records. At GoDaddy (*My Products → mimipets.shop → DNS → Nameservers → Change*),
+   enter the two Cloudflare nameservers. Leave any MX records alone; they handle email.
+5. **Add the domain on Railway.** *Settings → Networking → Custom Domain*: add `mimipets.shop`,
+   then `www.mimipets.shop`. For each, Railway shows a **CNAME** and a **TXT** record. Add them in
+   Cloudflare (*DNS → Records*), with the proxy (orange cloud) turned **off** (*DNS only*).
+   Delete the old records that pointed at Vercel (the `@` A records and the `www` CNAME).
+6. **Wait.** Railway marks each domain as verified and sets up HTTPS on its own, usually within
+   minutes, at most 48 hours. Pages asked for on `www.` redirect to `mimipets.shop`
+   (`src/proxy.ts`).
+7. **Retire Vercel** once `https://mimipets.shop` works from Railway: remove the domain from the
+   Vercel project, then delete or pause the project.
 
-**Plan:** Vercel's free *Hobby* plan is for non-commercial use only. A store that sells needs
-the *Pro* plan.
+The site works behind any proxy: redirects use the address the visitor asked for
+(`X-Forwarded-Host`/`-Proto`), and `NEXT_PUBLIC_SITE_URL` sets the address used in the
+sitemap, robots.txt and canonical links. Without it, the site falls back to the host's own
+domain (Railway's public domain, or Vercel's production domain).
+
+**Plan:** Railway charges for usage; its *Hobby* plan includes a monthly amount of usage.
 
 **Checkout domain (once Shopify is connected):** Shopify's hosted checkout opens on
 `*.myshopify.com` by default. To run it on your own domain:
@@ -113,7 +120,7 @@ the *Pro* plan.
 2. At GoDaddy, add the CNAME record Shopify shows.
 3. Back in Shopify, set that domain's *Target* to *Online Store* and its type to *Primary*.
 
-Only that subdomain points to Shopify. `mimipets.shop` itself stays on Vercel.
+Only that subdomain points to Shopify. `mimipets.shop` itself stays on Railway.
 
 ## Connecting Shopify
 

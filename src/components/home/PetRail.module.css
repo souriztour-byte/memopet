@@ -114,7 +114,7 @@
   position: absolute;
   top: -0.5px;
   height: 2px;
-  background: var(--gold);
+  background: var(--accent);
   transition:
     left 0.15s linear,
     width var(--dur-base) var(--ease-out);

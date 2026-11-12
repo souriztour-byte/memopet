@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useState, useTransition } from "react";
 import { subscribeAction } from "@/app/actions/welcome";
+import { Wordmark } from "@/components/brand/Wordmark";
 import { useCart } from "@/components/cart/CartProvider";
 import { CheckIcon, MailIcon } from "@/components/ui/icons";
 import { localizePath } from "@/i18n/config";
@@ -61,6 +62,9 @@ export function WelcomeSignup() {
       </span>
       <div className={`wrap ${styles.inner}`}>
         <div className={styles.copy}>
+          <span aria-hidden="true">
+            <Wordmark className={styles.logo} />
+          </span>
           <p className="eyebrow">{fmt(t.eyebrow, { name })}</p>
           <h2 id="welcome-title" className={styles.title}>
             {code ? fmt(t.successTitle, { name }) : fmt(t.title, { name })}

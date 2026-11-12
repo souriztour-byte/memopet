@@ -28,6 +28,17 @@ export const offers = {
   welcome: { code: string; percent: number };
 };
 
+/**
+ * What `quantity` of an item at `unitPrice` costs with the buy-two discount,
+ * as Shopify takes it off in the cart. Below the minimum, nothing comes off.
+ */
+export function bundlePrice(unitPrice: number, quantity: number) {
+  const full = Math.round(unitPrice * quantity * 100) / 100;
+  const percent = quantity >= offers.bundle.minItems ? offers.bundle.percent : 0;
+  const total = Math.round(full * (100 - percent)) / 100;
+  return { full, total, freeShipping: total >= offers.shipping.freeFrom };
+}
+
 export const offerMoney = (amount: number): Money => ({
   amount: amount.toFixed(2),
   currencyCode: offers.currencyCode,

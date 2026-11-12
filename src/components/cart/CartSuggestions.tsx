@@ -10,20 +10,24 @@ import type { Cart } from "@/lib/commerce/types";
 import { useCart } from "./CartProvider";
 import styles from "./Cart.module.css";
 
-/** Two products that go with what's in the cart. */
-export function CartSuggestions({ cart, onNavigate }: { cart: Cart; onNavigate?: () => void }) {
+/**
+ * Two products that go with what's in the cart. With an empty cart (`cart`
+ * null), two from the collection, so the cart is never a dead end.
+ */
+export function CartSuggestions({ cart, onNavigate }: { cart: Cart | null; onNavigate?: () => void }) {
   const { lang, dict } = useI18n();
   const { suggestions } = useCart();
+  const lines = cart?.lines ?? [];
   const picks = pairsWith(
     suggestions,
-    cart.lines.map((l) => l.merchandise.product),
+    lines.map((l) => l.merchandise.product),
     2,
   );
   if (!picks.length) return null;
   return (
     <section className={styles.suggest} aria-labelledby="suggest-title">
       <h3 id="suggest-title" className={styles.suggestTitle}>
-        {dict.product.relatedEyebrow}
+        {lines.length ? dict.product.relatedEyebrow : dict.header.searchPopular}
       </h3>
       <ul>
         {picks.map((p) => (

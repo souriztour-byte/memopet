@@ -2,8 +2,12 @@
 
 How the site moves, and why. One system for every page: CSS for small
 interactions, GSAP + ScrollTrigger only where motion is tied to scrolling
-(loaded on demand, home page only). Native scrolling throughout — nothing
-hijacks the wheel or delays the page. Everything below is switched off for
+(loaded on demand, home page only). On computers the page glides to where
+the wheel sends it (Lenis, `SmoothScroll.tsx`, at the shop owner's request);
+it still moves the browser's own scroll position, so sticky sections, anchors
+and scroll animations behave as before, and nothing delays the page. Phones
+keep their own touch scrolling. Back, Forward and reload return to where the
+reader was (`ScrollMemory.tsx`). Everything below is switched off for
 visitors who ask their device for reduced motion.
 
 ## Reference study (bbrose.com, inspected in a browser)

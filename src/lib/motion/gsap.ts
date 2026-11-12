@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, type RefObject } from "react";
+import { onSmoothScroll } from "./smooth-scroll";
 
 type Gsap = typeof import("gsap").gsap;
 type ScrollTriggerType = typeof import("gsap/ScrollTrigger").ScrollTrigger;
@@ -14,6 +15,12 @@ let loading: Promise<{ gsap: Gsap; ScrollTrigger: ScrollTriggerType }> | null = 
 function loadGsap() {
   loading ??= Promise.all([import("gsap"), import("gsap/ScrollTrigger")]).then(([g, st]) => {
     g.gsap.registerPlugin(st.ScrollTrigger);
+    // With gliding scroll on, scroll scenes follow each glided frame.
+    let off: (() => void) | undefined;
+    onSmoothScroll((lenis) => {
+      off?.();
+      off = lenis?.on("scroll", st.ScrollTrigger.update);
+    });
     return { gsap: g.gsap, ScrollTrigger: st.ScrollTrigger };
   });
   return loading;

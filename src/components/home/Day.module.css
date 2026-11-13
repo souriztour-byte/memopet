@@ -109,6 +109,29 @@
     }
   }
 }
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    .steps svg {
+      animation: paw-land linear both;
+      animation-timeline: view();
+    }
+    .steps svg:nth-child(1) {
+      animation-range: cover 6% cover 13%;
+    }
+    .steps svg:nth-child(2) {
+      animation-range: cover 10% cover 17%;
+    }
+    .steps svg:nth-child(3) {
+      animation-range: cover 14% cover 21%;
+    }
+    .steps svg:nth-child(4) {
+      animation-range: cover 18% cover 25%;
+    }
+    .steps svg:nth-child(5) {
+      animation-range: cover 22% cover 29%;
+    }
+  }
+}
 @keyframes paw-land {
   from {
     opacity: 0;
@@ -809,6 +832,192 @@
   translate: 6px 0;
 }
 
+/* ── The day dial ────────────────────────────────────────────────────── */
+/* Computers: a line on the right edge. A sun travels down it as the page
+   scrolls (HomeMotion sets --day, 0 to 1) and each dot jumps to a chapter. */
+.dial {
+  --day: 0;
+  position: fixed;
+  right: 20px;
+  top: 50%;
+  z-index: 15;
+  width: 14px;
+  height: min(280px, 42vh);
+  translate: 0 -50%;
+  color: #2a1f1a;
+  transition: color 0.7s var(--ease-out);
+}
+:global(html[data-moment="night"]) .dial,
+:global(html[data-moment="end"]) .dial {
+  color: #f3ebdd;
+}
+.dialTrack,
+.dialFill {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+}
+.dialTrack {
+  width: 1px;
+  margin-left: -0.5px;
+  background: currentColor;
+  opacity: 0.22;
+}
+.dialFill {
+  width: 2px;
+  margin-left: -1px;
+  border-radius: 2px;
+  background: linear-gradient(180deg, #f0a03c, #f6c66a);
+  transform-origin: top;
+  transform: scaleY(var(--day));
+}
+.dialSunWrap {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  transform: translateY(calc(var(--day) * 100%));
+}
+.dialSun {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: 14px;
+  height: 14px;
+  margin: -7px 0 0 -7px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #ffd58a, #f0a03c);
+  box-shadow: 0 0 14px 2px rgba(240, 160, 60, 0.6);
+  transition:
+    background-color 0.7s,
+    box-shadow 0.7s;
+}
+:global(html[data-moment="night"]) .dialSun,
+:global(html[data-moment="end"]) .dialSun {
+  background: #f3ebdd;
+  box-shadow:
+    inset -4px -1px 0 0 #141b33,
+    0 0 14px 2px rgba(243, 235, 221, 0.35);
+}
+.dial a {
+  position: absolute;
+  left: 50%;
+  top: calc(var(--at) * 100%);
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  margin: -14px 0 0 -14px;
+  color: inherit;
+  text-decoration: none;
+}
+.dial a::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+  opacity: 0.45;
+  transition:
+    opacity var(--dur-fast),
+    scale var(--dur-fast) var(--ease-out);
+}
+.dial a:hover::before,
+.dial a[aria-current]::before {
+  opacity: 1;
+  scale: 1.5;
+}
+/* The times slide out when the dial is pointed at, or reached with the keyboard. */
+.dial a span {
+  position: absolute;
+  right: 30px;
+  padding: 6px 11px;
+  border-radius: 999px;
+  background: #2a1f1a;
+  color: #fdf1e4;
+  font-size: 0.68rem;
+  white-space: nowrap;
+  opacity: 0;
+  translate: 8px 0;
+  pointer-events: none;
+  transition:
+    opacity var(--dur-fast),
+    translate var(--dur-base) var(--ease-out);
+}
+:global(html[data-moment="night"]) .dial a span,
+:global(html[data-moment="end"]) .dial a span {
+  background: #f3ebdd;
+  color: #141b33;
+}
+.dial:hover a span,
+.dial a:focus-visible span {
+  opacity: 0.55;
+  translate: 0 0;
+}
+.dial a:hover span,
+.dial a:focus-visible span,
+.dial:hover a[aria-current] span {
+  opacity: 1;
+}
+
+/* The paw steps between chapters are for phones only. */
+.steps {
+  display: none;
+}
+
+.endLinks {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 4px 40px;
+  margin-top: 64px;
+}
+.endLinks .quiz {
+  margin-top: 0;
+}
+.again {
+  color: #f3ebdd;
+  opacity: 0.8;
+}
+.again:hover span {
+  translate: 0 -5px;
+}
+
+/* Smaller screens: the dial becomes a thin line across the top of the screen. */
+@media (max-width: 1100px) {
+  .dial {
+    inset: env(safe-area-inset-top, 0px) 0 auto 0;
+    z-index: 21;
+    width: auto;
+    height: 3px;
+    translate: none;
+    pointer-events: none;
+  }
+  .dialTrack,
+  .dial a {
+    display: none;
+  }
+  .dialFill {
+    inset: 0;
+    width: auto;
+    margin: 0;
+    border-radius: 0 3px 3px 0;
+    background: linear-gradient(90deg, #f0a03c, #f6c66a);
+    transform-origin: left;
+    transform: scaleX(var(--day));
+  }
+  .dialSunWrap {
+    transform: translateX(calc(var(--day) * 100%));
+  }
+  .dialSun {
+    left: 0;
+    top: 50%;
+    width: 9px;
+    height: 9px;
+    margin: -4.5px 0 0 -6px;
+  }
+}
+
 /* ── Tablets ─────────────────────────────────────────────────────────── */
 @media (max-width: 1100px) {
   .ch {
@@ -1057,6 +1266,35 @@
   .end .content {
     padding-top: 20px;
     padding-bottom: 56px;
+  }
+  .endLinks {
+    display: grid;
+    margin-top: 28px;
+  }
+  /* The trail on phones: five prints walk across at the end of a chapter,
+     each landing as it scrolls into view. */
+  .steps {
+    display: flex;
+    justify-content: center;
+    gap: 26px;
+    margin-top: 52px;
+  }
+  .steps svg {
+    flex: none;
+    width: 22px;
+    height: 24px;
+  }
+  .steps svg:nth-child(odd) {
+    rotate: 78deg;
+    translate: 0 -9px;
+  }
+  .steps svg:nth-child(even) {
+    rotate: 102deg;
+    translate: 0 9px;
+  }
+  .dawn .steps {
+    margin-top: 36px;
+    padding-bottom: 28px;
   }
   .three {
     grid-template-columns: 1fr;

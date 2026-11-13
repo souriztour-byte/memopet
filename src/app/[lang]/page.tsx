@@ -14,7 +14,7 @@ import { rich } from "@/i18n/rich";
 import { getProduct, getProducts } from "@/lib/commerce";
 import { beforeAfterImages, sizeChartImage } from "@/lib/commerce/presentation";
 import type { Product } from "@/lib/commerce/types";
-import { dayLineup, opening, type DayEntry } from "@/lib/content/day";
+import { DAY_TIMES, dayLineup, opening, type DayEntry } from "@/lib/content/day";
 import { offerMoney, offers } from "@/lib/content/offers";
 import { policySettings } from "@/lib/content/policy-settings";
 import { formatMoney } from "@/lib/format";
@@ -121,8 +121,38 @@ export default async function HomePage(props: PageProps<"/[lang]">) {
     },
   ];
 
+  // The chapters the day dial can jump to.
+  const stops = [
+    { id: "dawn", label: t.dawnEyebrow, show: true },
+    { id: "walk", label: t.walkEyebrow, show: true },
+    { id: "clean", label: t.cleanEyebrow, show: clean.length > 0 },
+    { id: "nap", label: t.napEyebrow, show: nap.length > 0 },
+    { id: "night", label: t.nightEyebrow, show: night.length > 0 },
+  ].filter((s) => s.show) as { id: keyof typeof DAY_TIMES; label: string }[];
+
   return (
     <HomeMotion>
+      {/* The day dial: a sun that travels as the page scrolls, with a stop for each chapter. */}
+      <nav className={styles.dial} aria-label={t.dialLabel} data-day-dial>
+        <span className={styles.dialTrack} aria-hidden="true" />
+        <span className={styles.dialFill} aria-hidden="true" />
+        <span className={styles.dialSunWrap} aria-hidden="true">
+          <span className={styles.dialSun} />
+        </span>
+        {stops.map((s, i) => (
+          <a
+            key={s.id}
+            href={`#${s.id}`}
+            data-day-link={s.id}
+            style={{ "--at": i / stops.length } as React.CSSProperties}
+          >
+            <span className="mono">
+              {DAY_TIMES[s.id]} · {s.label}
+            </span>
+          </a>
+        ))}
+      </nav>
+
       {/* 07:30 */}
       <DayChapter moment="dawn" paws={6} labelledBy="dawn-title">
         <div className={styles.hero}>
@@ -144,7 +174,7 @@ export default async function HomePage(props: PageProps<"/[lang]">) {
           </div>
           {first && firstScene ? (
             <div className={styles.window}>
-              <span className={styles.sunrise} aria-hidden="true" />
+              <span className={styles.sunrise} aria-hidden="true" data-sun />
               <Link href={href(`/products/${first.product.handle}`)} className={styles.arch} tabIndex={-1} aria-hidden="true">
                 <SoftImage
                   src={firstScene.url}
@@ -193,7 +223,7 @@ export default async function HomePage(props: PageProps<"/[lang]">) {
             </h2>
             <p className={styles.text}>{t.walkText}</p>
           </div>
-          <svg className={styles.splat} viewBox="0 0 340 300" aria-hidden="true">
+          <svg className={styles.splat} viewBox="0 0 340 300" aria-hidden="true" data-splat>
           <g transform="translate(20 150) rotate(-18 46 48) scale(0.46)">
             <PawShape />
           </g>
@@ -290,9 +320,14 @@ export default async function HomePage(props: PageProps<"/[lang]">) {
             </li>
           ))}
         </ul>
-        <Link href={href("/quiz")} className={`mono ${styles.quiz}`}>
-          {t.quiz} <span aria-hidden="true">→</span>
-        </Link>
+        <div className={styles.endLinks}>
+          <Link href={href("/quiz")} className={`mono ${styles.quiz}`}>
+            {t.quiz} <span aria-hidden="true">→</span>
+          </Link>
+          <a href="#dawn" className={`mono ${styles.quiz} ${styles.again}`}>
+            {t.backToMorning} <span aria-hidden="true">↑</span>
+          </a>
+        </div>
       </DayChapter>
     </HomeMotion>
   );

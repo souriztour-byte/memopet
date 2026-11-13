@@ -108,6 +108,8 @@ export const es: Dictionary = {
     returnsText: "Desde el día en que llega.",
     factsLabel: "Bueno saberlo",
     quiz: "¿No sabes cuál elegir? Haz el test de 3 preguntas",
+    backToMorning: "Volver a la mañana",
+    dialLabel: "El día, hora a hora",
     moments: { clean: "Patas limpias", nap: "La siesta", night: "A dormir" },
     specFor: "Para",
     details: "Ver detalles",

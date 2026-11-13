@@ -50,10 +50,10 @@ price; see `opengraph-image.tsx` and `src/lib/og/`. There is also an iPhone home
 
 ## Languages
 
-- **URLs**: `en` and `es` prefixes. A visit without one — `/`, or an old link such as `/shop` —
-  is redirected to the same page in the browser’s preferred language (Spanish for Spanish
-  browsers, English otherwise). That redirect lives in `src/proxy.ts`. No language cookie is set.
-- **Switching**: the EN | ES switch (header, or the Menu on phones) opens the same page in the
+- **URLs**: `es` and `en` prefixes. Spanish is the main language: a visit without a prefix
+  (`/`, or an old link such as `/shop`) is redirected to the same page in Spanish, on every
+  device. That redirect lives in `src/proxy.ts`. No language cookie is set.
+- **Switching**: the ES | EN switch (header, or the Menu on phones) opens the same page in the
   other language and keeps any search. The cart stays the same; product names in it follow the
   language.
 - **Interface text**: `src/i18n/dictionaries/en.ts` and `es.ts`. TypeScript checks that both

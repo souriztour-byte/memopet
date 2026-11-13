@@ -1,11 +1,11 @@
 import { NextResponse, type NextRequest } from "next/server";
-import { negotiateLocale, splitLocale } from "@/i18n/config";
+import { defaultLocale, splitLocale } from "@/i18n/config";
 
 /**
- * Pages live under a language prefix (`/en/…`, `/es/…`). A request without one
+ * Pages live under a language prefix (`/es/…`, `/en/…`). A request without one
  * — including old links such as `/shop` — is redirected to the same path in
- * the visitor's preferred language (from the browser's Accept-Language
- * header), falling back to English.
+ * Spanish, the shop's main language, on every device. English is one tap
+ * away with the language switch, and its pages keep their own addresses.
  *
  * Pages asked for on www.… are sent to the same page without "www.", so the
  * shop has one address on any host.
@@ -21,11 +21,8 @@ export function proxy(request: NextRequest) {
   }
   if (splitLocale(pathname).lang) return;
 
-  const lang = negotiateLocale(request.headers.get("accept-language"));
-  const path = pathname === "/" ? `/${lang}` : `/${lang}${pathname}`;
-  const response = NextResponse.redirect(`${proto}://${host}${path}${search}`);
-  response.headers.set("Vary", "Accept-Language");
-  return response;
+  const path = pathname === "/" ? `/${defaultLocale}` : `/${defaultLocale}${pathname}`;
+  return NextResponse.redirect(`${proto}://${host}${path}${search}`);
 }
 
 export const config = {

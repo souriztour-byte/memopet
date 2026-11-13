@@ -23,9 +23,9 @@
   border: 0;
   background: none;
   color: var(--muted);
-  font-family: var(--body);
-  font-size: 0.66rem;
-  letter-spacing: 0.08em;
+  font-family: var(--mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   text-decoration: none;
   cursor: pointer;

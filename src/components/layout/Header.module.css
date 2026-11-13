@@ -466,3 +466,47 @@
     white-space: nowrap;
   }
 }
+
+/* The phone menu: large serif links, numbered like the day's products. */
+@media (max-width: 1000px) {
+  .nav > ul.isOpen {
+    counter-reset: menu;
+    gap: 0;
+    padding-inline: 26px;
+    font-family: var(--display);
+    font-size: 1.75rem;
+    font-weight: 300;
+    letter-spacing: -0.02em;
+  }
+  .nav > ul.isOpen > li:not(.menuHead, .langMenu) {
+    counter-increment: menu;
+  }
+  .nav > ul.isOpen > li:not(.menuHead, .langMenu) > a {
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    padding-block: 15px;
+  }
+  .nav > ul.isOpen > li:not(.menuHead, .langMenu) > a::before {
+    content: "0" counter(menu);
+    position: static;
+    width: auto;
+    height: auto;
+    background: none;
+    transform: none;
+    font-family: var(--mono);
+    font-size: 0.68rem;
+    font-weight: 400;
+    letter-spacing: 0.14em;
+    opacity: 0.55;
+  }
+  .nav > ul.isOpen > li > a::after {
+    display: none;
+  }
+  .nav > ul.isOpen .langMenu {
+    margin-top: 22px;
+    font-family: var(--body);
+    font-size: 0.9rem;
+    letter-spacing: 0;
+  }
+}

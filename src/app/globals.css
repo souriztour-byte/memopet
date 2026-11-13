@@ -1231,6 +1231,10 @@ html.motion img.soft-img:not([data-loaded]) {
 :root[data-theme="day"] .text-link:hover {
   color: var(--gold-ink);
 }
+/* Buttons give a little under the finger. */
+:root[data-theme="day"] .btn:active:not(:disabled) {
+  transform: scale(0.97);
+}
 /* The mono label used across the day pages: times, numbers, spec names. */
 .mono {
   font-family: var(--mono);

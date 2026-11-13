@@ -98,6 +98,7 @@ export function DayProduct({ product, layout, flip, number, scene, measurements,
       ref={pic}
       className={layout === "plate" ? styles.platePic : `${styles.big}${flip ? ` ${styles.bigFlip}` : ""}`}
       data-drift
+      data-open={layout === "feature" || undefined}
     >
       {/* Stays put while the photo inside changes, so the scroll drift carries on. */}
       <div className={styles.layer} data-drift-layer>

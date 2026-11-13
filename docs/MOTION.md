@@ -88,6 +88,17 @@ take on the colour of the chapter under them (`html[data-moment]`, set by
   prints of the walk appear one after another.
 - On phones, five paw prints walk across at the end of each chapter.
 - "Back to the morning" at the end glides to the top.
+- The time stamp is a button: it opens the day's list (a sheet that slides
+  up on phones), to jump to any moment and see which products are there.
+- Sunset: at the top of the night chapter the last of the sun sinks into the
+  dusk as the chapter scrolls in. The large photos grow into place as they
+  arrive, and the opening words rise as the page loads.
+
+On phones the day is made for the thumb: the line-up is a row of cards to
+swipe (each with its photo), the paw washers are cards to swipe through with
+the next one peeking in, colour dots and sizes are full-size touch targets,
+buttons give a little when pressed, and the menu opens with large numbered
+links.
 
 Products are placed by `dayLineup` in
 `src/lib/content/day.ts`; the same number and moment show on each product

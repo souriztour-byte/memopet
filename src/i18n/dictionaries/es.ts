@@ -110,6 +110,8 @@ export const es: Dictionary = {
     quiz: "¿No sabes cuál elegir? Haz el test de 3 preguntas",
     backToMorning: "Volver a la mañana",
     dialLabel: "El día, hora a hora",
+    sheetClose: "Cerrar",
+    swipe: "Desliza",
     moments: { clean: "Patas limpias", nap: "La siesta", night: "A dormir" },
     specFor: "Para",
     details: "Ver detalles",

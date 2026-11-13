@@ -23,6 +23,8 @@ export function HomeMotion({ children }: { children: ReactNode }) {
     const chapters = [...el.querySelectorAll<HTMLElement>("[data-moment]")];
     const dial = el.querySelector<HTMLElement>("[data-day-dial]");
     const links = [...el.querySelectorAll<HTMLElement>("[data-day-link]")];
+    const jumps = [...el.querySelectorAll<HTMLElement>("[data-day-jump]")];
+    const sheet = el.querySelector<HTMLDialogElement>("[data-day-sheet]");
     const html = document.documentElement;
     let shown = "";
     let frame = 0;
@@ -45,8 +47,8 @@ export function HomeMotion({ children }: { children: ReactNode }) {
       }
       if (moment !== shown) {
         shown = moment;
-        for (const link of links) {
-          if (link.dataset.dayLink === moment) link.setAttribute("aria-current", "true");
+        for (const link of [...links, ...jumps]) {
+          if ((link.dataset.dayLink ?? link.dataset.dayJump) === moment) link.setAttribute("aria-current", "true");
           else link.removeAttribute("aria-current");
         }
       }
@@ -54,6 +56,14 @@ export function HomeMotion({ children }: { children: ReactNode }) {
     const onScroll = () => {
       frame ||= requestAnimationFrame(update);
     };
+    // The time stamp opens the day's list; choosing a moment (or tapping outside) closes it.
+    const onClick = (e: MouseEvent) => {
+      const target = e.target as Element;
+      if (!sheet) return;
+      if (target.closest("[data-day-chip]")) sheet.showModal();
+      else if (sheet.open && (target === sheet || target.closest("[data-day-close], [data-day-jump]"))) sheet.close();
+    };
+    document.addEventListener("click", onClick);
     update();
     window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("resize", onScroll);
@@ -61,6 +71,7 @@ export function HomeMotion({ children }: { children: ReactNode }) {
       cancelAnimationFrame(frame);
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", onScroll);
+      document.removeEventListener("click", onClick);
       delete html.dataset.moment;
     };
   }, []);
@@ -90,6 +101,39 @@ export function HomeMotion({ children }: { children: ReactNode }) {
         ease: "none",
         scrollTrigger: { trigger: splat, start: "top 88%", end: "top 40%", scrub: true },
       });
+    }
+
+    // The large photos grow into place as they arrive.
+    for (const frame of root.querySelectorAll<HTMLElement>("[data-open]")) {
+      gsap.fromTo(
+        frame,
+        { scale: 0.86, y: 60 },
+        {
+          scale: 1,
+          y: 0,
+          ease: "none",
+          scrollTrigger: { trigger: frame.parentElement, start: "top 100%", end: "top 55%", scrub: true },
+        },
+      );
+    }
+
+    // Sunset: the last of the sun sinks out of the dusk as the night scrolls in.
+    for (const sun of root.querySelectorAll<HTMLElement>("[data-sunset]")) {
+      gsap.fromTo(
+        sun,
+        { y: -24 },
+        {
+          y: () => (sun.parentElement?.offsetHeight ?? 260) * 0.8,
+          ease: "none",
+          scrollTrigger: {
+            trigger: sun.closest("section"),
+            start: "top 95%",
+            end: "top 15%",
+            scrub: true,
+            invalidateOnRefresh: true,
+          },
+        },
+      );
     }
 
     // Photos move a little inside their frames: more on phones, gently on computers.

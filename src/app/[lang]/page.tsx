@@ -128,7 +128,14 @@ export default async function HomePage(props: PageProps<"/[lang]">) {
     { id: "clean", label: t.cleanEyebrow, show: clean.length > 0 },
     { id: "nap", label: t.napEyebrow, show: nap.length > 0 },
     { id: "night", label: t.nightEyebrow, show: night.length > 0 },
-  ].filter((s) => s.show) as { id: keyof typeof DAY_TIMES; label: string }[];
+  ]
+    .filter((s) => s.show)
+    .map((s) => ({
+      id: s.id as keyof typeof DAY_TIMES,
+      label: s.label,
+      // The products met at that moment.
+      products: lineup.filter((e) => e.moment === s.id).map((e) => e.product.title),
+    }));
 
   return (
     <HomeMotion>
@@ -153,8 +160,31 @@ export default async function HomePage(props: PageProps<"/[lang]">) {
         ))}
       </nav>
 
+      {/* The day's list: opens from the time stamp, to jump to another moment. */}
+      <dialog className={styles.sheet} aria-label={t.dialLabel} data-day-sheet>
+        <div className={styles.sheetBody}>
+          <div className={styles.sheetHead}>
+            <span className="mono">{t.dialLabel}</span>
+            <button type="button" className="x" aria-label={t.sheetClose} data-day-close>
+              ×
+            </button>
+          </div>
+          <ol>
+            {stops.map((s) => (
+              <li key={s.id}>
+                <a href={`#${s.id}`} data-day-jump={s.id}>
+                  <span className="mono">{DAY_TIMES[s.id]}</span>
+                  <b>{s.label}</b>
+                  {s.products.length ? <span>{s.products.join(" · ")}</span> : null}
+                </a>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </dialog>
+
       {/* 07:30 */}
-      <DayChapter moment="dawn" paws={6} labelledBy="dawn-title">
+      <DayChapter moment="dawn" paws={6} labelledBy="dawn-title" dayLabel={t.dialLabel}>
         <div className={styles.hero}>
           <div className={styles.heroText}>
             <p className="mono">{t.dawnEyebrow}</p>
@@ -175,7 +205,13 @@ export default async function HomePage(props: PageProps<"/[lang]">) {
           {first && firstScene ? (
             <div className={styles.window}>
               <span className={styles.sunrise} aria-hidden="true" data-sun />
-              <Link href={href(`/products/${first.product.handle}`)} className={styles.arch} tabIndex={-1} aria-hidden="true">
+              <Link
+                href={href(`/products/${first.product.handle}`)}
+                className={styles.arch}
+                tabIndex={-1}
+                aria-hidden="true"
+                data-drift
+              >
                 <SoftImage
                   src={firstScene.url}
                   alt=""
@@ -201,6 +237,18 @@ export default async function HomePage(props: PageProps<"/[lang]">) {
             {lineup.map((e) => (
               <li key={e.product.handle}>
                 <a href={`#no-${e.number}`}>
+                  {/* Phones: the line-up is a row of cards to swipe, each with its photo. */}
+                  <span className={styles.thumb}>
+                    {e.product.featuredImage ? (
+                      <SoftImage
+                        src={e.product.featuredImage.url}
+                        alt=""
+                        fill
+                        sizes="72px"
+                        className={styles.cover}
+                      />
+                    ) : null}
+                  </span>
                   <span className="mono">
                     {numberOf(e)} · {e.time}
                   </span>
@@ -214,7 +262,7 @@ export default async function HomePage(props: PageProps<"/[lang]">) {
       </DayChapter>
 
       {/* 08:15 */}
-      <DayChapter moment="walk" paws={3} labelledBy="walk-title">
+      <DayChapter moment="walk" paws={3} labelledBy="walk-title" dayLabel={t.dialLabel}>
         <div className={styles.walkGrid}>
           <div>
             <p className="mono">{t.walkEyebrow}</p>
@@ -244,7 +292,7 @@ export default async function HomePage(props: PageProps<"/[lang]">) {
 
       {/* 08:45 */}
       {clean.length ? (
-        <DayChapter moment="clean" paws={6} labelledBy="clean-title">
+        <DayChapter moment="clean" paws={6} labelledBy="clean-title" dayLabel={t.dialLabel}>
           <div className={styles.chead}>
             <div>
               <p className="mono">{t.cleanEyebrow}</p>
@@ -260,7 +308,12 @@ export default async function HomePage(props: PageProps<"/[lang]">) {
               ))}
             </ol>
           </div>
-          <div className={styles.plates}>
+          {clean.length > 1 ? (
+            <p className={`mono ${styles.swipe}`} aria-hidden="true">
+              {t.swipe} <span>→</span>
+            </p>
+          ) : null}
+          <div className={styles.plates} data-reveal>
             {clean.map((e) => (
               <DayProduct
                 key={e.product.handle}
@@ -289,8 +342,8 @@ export default async function HomePage(props: PageProps<"/[lang]">) {
 
       {/* 14:00 */}
       {nap.length ? (
-        <DayChapter moment="nap" paws={4} labelledBy="nap-title">
-          <div className={styles.features}>
+        <DayChapter moment="nap" paws={4} labelledBy="nap-title" dayLabel={t.dialLabel}>
+          <div className={styles.features} data-reveal>
             {nap.map((e, i) => feature(e, i, t.napEyebrow, t.napTitle, t.napTitleEm, "nap-title"))}
           </div>
         </DayChapter>
@@ -298,15 +351,15 @@ export default async function HomePage(props: PageProps<"/[lang]">) {
 
       {/* 22:30 */}
       {night.length ? (
-        <DayChapter moment="night" paws={4} labelledBy="night-title">
-          <div className={styles.features}>
+        <DayChapter moment="night" paws={4} labelledBy="night-title" dayLabel={t.dialLabel}>
+          <div className={styles.features} data-reveal>
             {night.map((e, i) => feature(e, i, t.nightEyebrow, t.nightTitle, t.nightTitleEm, "night-title"))}
           </div>
         </DayChapter>
       ) : null}
 
       {/* And then */}
-      <DayChapter moment="end" labelledBy="end-title">
+      <DayChapter moment="end" labelledBy="end-title" dayLabel={t.dialLabel}>
         <p className="mono">{t.endEyebrow}</p>
         <h2 id="end-title" className={styles.endTitle} data-rise>
           {rich(t.endTitle, { em: em(t.endTitleEm) })}

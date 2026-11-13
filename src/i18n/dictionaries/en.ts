@@ -114,6 +114,8 @@ export const en = {
     quiz: "Not sure which one? Take the 3-question quiz",
     backToMorning: "Back to the morning",
     dialLabel: "The day, hour by hour",
+    sheetClose: "Close",
+    swipe: "Swipe",
     // A product's moment of the day, shown above its name on its own page.
     moments: { clean: "Clean paws", nap: "The nap", night: "Lights out" },
     specFor: "For",

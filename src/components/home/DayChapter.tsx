@@ -25,6 +25,8 @@ type Props = {
   /** How many paw prints run down the side. */
   paws?: number;
   labelledBy: string;
+  /** What the time stamp opens when tapped: "The day, hour by hour". */
+  dayLabel: string;
   children: ReactNode;
 };
 
@@ -33,7 +35,7 @@ type Props = {
  * the time, which stays in view while the chapter scrolls, and the paw
  * prints: muddy until the wash, clean after it.
  */
-export function DayChapter({ moment, paws = 0, labelledBy, children }: Props) {
+export function DayChapter({ moment, paws = 0, labelledBy, dayLabel, children }: Props) {
   const clean = moment !== "dawn" && moment !== "walk";
   return (
     <section
@@ -42,17 +44,32 @@ export function DayChapter({ moment, paws = 0, labelledBy, children }: Props) {
       data-moment={moment}
       aria-labelledby={labelledBy}
     >
-      {moment === "night" ? <span className={styles.stars} aria-hidden="true" /> : null}
+      {moment === "night" ? (
+        <>
+          {/* The last of the sun, sinking as the night chapter scrolls in. */}
+          <span className={styles.dusk} aria-hidden="true">
+            <span className={styles.sunset} data-sunset />
+          </span>
+          <span className={styles.stars} aria-hidden="true" />
+        </>
+      ) : null}
       <div className={styles.inner}>
-        <div className={styles.rail} aria-hidden="true">
+        <div className={styles.rail}>
           {moment !== "end" ? (
-            <div className={styles.stamp}>
-              <span className={moment === "night" ? `${styles.orb} ${styles.moon}` : styles.orb} />
+            // Tapping the time opens the day's list, to jump to another moment.
+            <button
+              type="button"
+              className={styles.stamp}
+              data-day-chip
+              aria-haspopup="dialog"
+              aria-label={`${DAY_TIMES[moment]} · ${dayLabel}`}
+            >
+              <span className={moment === "night" ? `${styles.orb} ${styles.moon}` : styles.orb} aria-hidden="true" />
               <span className={`mono ${styles.time}`}>{DAY_TIMES[moment]}</span>
-            </div>
+            </button>
           ) : null}
           {paws ? (
-            <div className={styles.trail}>
+            <div className={styles.trail} aria-hidden="true">
               {Array.from({ length: paws }, (_, i) => (
                 <PawPrint key={i} clean={clean} />
               ))}

@@ -50,8 +50,7 @@ export async function Header() {
       </div>
       <header className={styles.top}>
         <div className={`wrap ${styles.bar}`}>
-          {/* Grid: logo centred with the cart on the right; the menu runs
-              underneath on computers and drops down from the Menu button on phones. */}
+          {/* One row: logo, then the menu (a Menu button on phones), then the cart. */}
           <MainNav categories={categories} />
           <Link
             href={localizePath(lang, "/")}

@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Inter, Playfair_Display } from "next/font/google";
+import { DM_Mono, Fraunces, Instrument_Sans } from "next/font/google";
 import { notFound } from "next/navigation";
 import { CartDrawer } from "@/components/cart/CartDrawer";
 import { CartProvider } from "@/components/cart/CartProvider";
@@ -20,18 +20,27 @@ import { getProducts, isDemoMode } from "@/lib/commerce";
 import { look, lookColor, siteConfig } from "@/lib/config";
 import "../globals.css";
 
-// Playfair Display for headings and the wordmark, Inter for text. Both are
-// variable fonts: loading them without a `weight` list fetches each file once
-// (listing weights makes Google repeat the files, which breaks the Turbopack build).
-const playfair = Playfair_Display({
+// Fraunces (light, with its optical-size axis) for headings and the wordmark,
+// Instrument Sans for text, DM Mono for the small labels and times of day.
+// The first two are variable fonts: loading them without a `weight` list
+// fetches each file once (listing weights makes Google repeat the files, which
+// breaks the Turbopack build). DM Mono has no variable version.
+const fraunces = Fraunces({
   subsets: ["latin"],
   style: ["normal", "italic"],
-  variable: "--font-playfair",
+  axes: ["opsz"],
+  variable: "--font-display",
   display: "swap",
 });
-const inter = Inter({
+const instrument = Instrument_Sans({
   subsets: ["latin"],
-  variable: "--font-inter",
+  variable: "--font-body",
+  display: "swap",
+});
+const mono = DM_Mono({
+  subsets: ["latin"],
+  weight: ["400", "500"],
+  variable: "--font-mono",
   display: "swap",
 });
 
@@ -81,7 +90,7 @@ export default async function RootLayout({ children, params }: LayoutProps<"/[la
       lang={lang}
       data-theme={look}
       data-scroll-behavior="smooth"
-      className={`${playfair.variable} ${inter.variable}`}
+      className={`${fraunces.variable} ${instrument.variable} ${mono.variable}`}
     >
       <body>
         <a className="skip" href="#main">

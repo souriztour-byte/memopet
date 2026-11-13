@@ -16,6 +16,7 @@ import { BeforeAfter } from "@/components/media/BeforeAfter";
 import { ProductVideos } from "@/components/media/ProductVideos";
 import { beforeAfterImages, kindOf, pairsWith } from "@/lib/commerce/presentation";
 import { siteConfig } from "@/lib/config";
+import { dayLineup } from "@/lib/content/day";
 import { policySettings } from "@/lib/content/policy-settings";
 import { offerMoney, offers } from "@/lib/content/offers";
 import { getShipping } from "@/lib/content/shipping";
@@ -75,6 +76,11 @@ export default async function ProductPage(props: PageProps<"/[lang]/products/[ha
   const compare = beforeAfterImages(product.images);
   const catalogue = await getProducts(lang, { sort: "best-selling", limit: 8 });
   const related = pairsWith(catalogue, [product], 3);
+  // The product's number and moment in the day (see the home page).
+  const entry = dayLineup(catalogue).find((e) => e.product.handle === product.handle);
+  const moment = entry
+    ? `${fmt(dict.home.number, { n: entry.number })} · ${entry.time} · ${dict.home.moments[entry.moment]}`
+    : null;
   // Similar products (the other paw washer, the other bed) to compare with this one.
   const kind = kindOf(product.illustration);
   const alike = [product, ...catalogue.filter((p) => p.handle !== product.handle && kindOf(p.illustration) === kind)].slice(0, 3);
@@ -127,6 +133,7 @@ export default async function ProductPage(props: PageProps<"/[lang]/products/[ha
 
       <ProductDetail
         product={product}
+        moment={moment}
         perks={
           // Elements passed from a Server Component in a prop other than `children` need a key.
           <ul key="perks" className={styles.perks} aria-label={t.perksLabel}>

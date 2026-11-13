@@ -8,7 +8,7 @@ import { fmt } from "@/i18n/format";
 import { useI18n } from "@/i18n/I18nProvider";
 import styles from "./LanguageSwitcher.module.css";
 
-/** "EN | ES" — links to the same page in the other language, keeping any search. */
+/** "ES | EN": links to the same page in the other language, keeping any search. */
 export function LanguageSwitcher({ className }: { className?: string }) {
   return (
     <Suspense fallback={<Switcher className={className} search="" />}>

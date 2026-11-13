@@ -1,12 +1,13 @@
 /**
- * Languages the storefront is published in. Every page lives under a
- * language prefix (`/en/…`, `/es/…`); `src/proxy.ts` sends visitors without
- * one to the language their browser prefers.
+ * Languages the storefront is published in, the main one first. Every page
+ * lives under a language prefix (`/es/…`, `/en/…`); `src/proxy.ts` sends
+ * visitors without one to the main language, Spanish.
  */
 
-export const locales = ["en", "es"] as const;
+export const locales = ["es", "en"] as const;
 export type Locale = (typeof locales)[number];
-export const defaultLocale: Locale = "en";
+export const defaultLocale: Locale = "es";
+
 
 export const hasLocale = (value: string | undefined | null): value is Locale =>
   (locales as readonly string[]).includes(value ?? "");
@@ -53,23 +54,4 @@ export function alternatesFor(lang: Locale, path: string) {
       "x-default": localizePath(defaultLocale, path),
     },
   };
-}
-
-/** Picks the best supported language from an `Accept-Language` header. */
-export function negotiateLocale(acceptLanguage: string | null): Locale {
-  if (!acceptLanguage) return defaultLocale;
-  const ranked = acceptLanguage
-    .split(",")
-    .map((part) => {
-      const [tag, ...params] = part.trim().split(";");
-      const q = params.map((p) => p.trim()).find((p) => p.startsWith("q="));
-      return { tag: tag.toLowerCase(), q: q ? Number(q.slice(2)) : 1 };
-    })
-    .filter((entry) => entry.tag && Number.isFinite(entry.q) && entry.q > 0)
-    .sort((a, b) => b.q - a.q);
-  for (const { tag } of ranked) {
-    const base = tag.split("-")[0];
-    if (hasLocale(base)) return base;
-  }
-  return defaultLocale;
 }

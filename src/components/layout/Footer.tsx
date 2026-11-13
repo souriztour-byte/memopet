@@ -23,7 +23,7 @@ export async function Footer() {
   const year = new Date().getFullYear();
 
   return (
-    <footer className={styles.footer}>
+    <footer className={`night ${styles.footer}`}>
       <div className={`wrap ${styles.grid}`}>
         <div className={styles.brand}>
           <Wordmark className={styles.logo} />

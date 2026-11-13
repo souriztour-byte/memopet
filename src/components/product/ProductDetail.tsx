@@ -34,10 +34,13 @@ function initialSelection(product: Product): Selection {
  */
 export function ProductDetail({
   product,
+  moment,
   perks,
   children,
 }: {
   product: Product;
+  /** "No. 03 · 14:00 · The nap": the product's place in the day. */
+  moment?: string | null;
   perks?: React.ReactNode;
   children?: React.ReactNode;
 }) {
@@ -254,7 +257,9 @@ export function ProductDetail({
       </div>
 
       <div className={styles.info}>
-        {product.petType ? <p className="eyebrow">{product.petType}</p> : null}
+        {moment || product.petType ? (
+          <p className="eyebrow">{[moment, product.petType].filter(Boolean).join(" · ")}</p>
+        ) : null}
         <h1 className={styles.title}>{product.title}</h1>
         <p className={styles.price}>{price}</p>
         {perks}

@@ -1,8 +1,8 @@
 /* ──────────────────────────────────────────────────────────────────────────
-   MimiPets design tokens. Four looks share every rule: black & gold (the
-   default), white & gold (<html data-theme="light">), sand
-   (<html data-theme="sand">) and mocha (<html data-theme="mocha">), picked
-   with `look` in src/lib/config.ts.
+   MimiPets design tokens. The site's look is "day" (<html data-theme="day">,
+   "One good day"). The earlier palettes are still here: black & gold (the
+   default tokens), white & gold ("light"), sand and mocha, picked with `look`
+   in src/lib/config.ts; they were drawn for other fonts and the old header.
    Change colours here and every page follows.
    ────────────────────────────────────────────────────────────────────────── */
 :root {
@@ -34,8 +34,9 @@
   --on-photo: #f4efe6;
   --on-photo-soft: #e2dacd;
   --gold-photo: #c9a96e;
-  --display: var(--font-playfair), "Playfair Display", Georgia, "Times New Roman", serif;
-  --body: var(--font-inter), "Inter", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --display: var(--font-display), "Fraunces", Georgia, "Times New Roman", serif;
+  --body: var(--font-body), "Instrument Sans", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --mono: var(--font-mono), "DM Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
   /* Corners: controls (buttons, pills, fields) and cards (boxes, FAQ rows). */
   --radius: 10px;
   --card-radius: 14px;
@@ -126,6 +127,69 @@
   --logo-paw: #d9b26a;
   --logo-heart: #b07a3a;
   --logo-name: #5b4632;
+}
+/* Day ("One good day"): the site's look. A warm morning page, near-black
+   brown ink for text and buttons, a sun-orange accent, and a night zone
+   (.night) for the Club band and footer. The home page moves through the
+   colours of a day by itself (home.module.css). */
+:root[data-theme="day"] {
+  color-scheme: light;
+  --bg: #fdf1e4;
+  --surface: #fffaf3;
+  --panel: #f7e3cd;
+  --panel-2: #e7cfb4;
+  --tile-2: #f9ead8;
+  --tile-3: #fbefe0;
+  --ink: #2a1f1a;
+  --ink-soft: #5a463b;
+  --muted: #6b574b;
+  --line: #eedcc7;
+  --gold: #2a1f1a; /* fills: buttons, badges, the chosen switch */
+  --gold-text: #96560f; /* small accent text on the morning page */
+  --gold-ink: #7a440a;
+  --gold-hover: #46352c;
+  --on-gold: #fdf1e4;
+  --gold-line: rgba(240, 160, 60, 0.55);
+  --ghost-line: rgba(42, 31, 26, 0.5);
+  --danger: #b3412c;
+  --shadow: 0 30px 60px -36px rgba(42, 31, 26, 0.45);
+  --gold-photo: #f6c66a;
+  --photo-tint: #fdf4e8;
+  --accent: #f0a03c; /* the sun */
+  --band: #141b33; /* night */
+  --sheen-a: #ffd58a;
+  --sheen-b: #f0a03c;
+  --sheen-c: #fff3da;
+  --logo-paw: #f0a03c;
+  --logo-heart: #2a1f1a;
+  --logo-name: #2a1f1a;
+  --radius: 14px;
+  --card-radius: 22px;
+  --photo-radius: 18px;
+}
+/* Night: the same tokens for a deep indigo ground. Wrap a section in .night
+   and everything inside reads cream on indigo. */
+:root[data-theme="day"] .night {
+  --bg: #141b33;
+  --surface: #1b2444;
+  --panel: #1f294d;
+  --panel-2: rgba(243, 235, 221, 0.3);
+  --ink: #f3ebdd;
+  --ink-soft: #d9d0c0;
+  --muted: #b9b1a3;
+  --line: rgba(243, 235, 221, 0.16);
+  --gold: #f3ebdd;
+  --gold-text: #f6c66a;
+  --gold-ink: #f9d58c;
+  --gold-hover: #ffffff;
+  --on-gold: #141b33;
+  --ghost-line: rgba(243, 235, 221, 0.55);
+  --danger: #f09a86;
+  --logo-paw: #f6c66a;
+  --logo-heart: #f3ebdd;
+  --logo-name: #f3ebdd;
+  background-color: var(--bg);
+  color: var(--ink);
 }
 /* Sand: warm greige page, pale stone tiles behind products, deep taupe accents. */
 :root[data-theme="sand"] {
@@ -1096,4 +1160,88 @@ html.motion img.soft-img:not([data-loaded]) {
   :is(.btn, .pill, .qty button):active:not(:disabled) {
     transform: scale(0.97);
   }
+}
+
+/* The day look's header is a single row on every screen. */
+:root[data-theme="day"] {
+  --header-h: 72px;
+}
+/* ─── Day look: type and controls ────────────────────────────────────────
+   Light Fraunces headings, sentence-case pill buttons, and DM Mono for the
+   small labels. */
+:root[data-theme="day"] :is(h1, h2, h3, h4) {
+  font-weight: 300;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  font-optical-sizing: auto;
+}
+:root[data-theme="day"] :is(h1, h2, h3, h4) :is(em, i) {
+  font-weight: 300;
+}
+:root[data-theme="day"] h3 {
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+}
+:root[data-theme="day"] .eyebrow {
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.14em;
+  color: var(--ink);
+}
+:root[data-theme="day"] .btn {
+  min-height: 54px;
+  padding: 14px 28px;
+  border-radius: 999px;
+  font-size: 0.98rem;
+  font-weight: 600;
+  letter-spacing: 0;
+  text-transform: none;
+}
+:root[data-theme="day"] .btn-sm {
+  min-height: 44px;
+  padding: 10px 20px;
+  font-size: 0.9rem;
+}
+:root[data-theme="day"] .btn-ghost {
+  box-shadow: inset 0 0 0 1px var(--ink);
+}
+:root[data-theme="day"] .btn-ghost:hover {
+  color: var(--on-gold);
+  background: var(--gold);
+  box-shadow: inset 0 0 0 1px var(--gold);
+}
+:root[data-theme="day"] .pill {
+  border-radius: 999px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--ink);
+}
+:root[data-theme="day"] .pill:is([aria-pressed="true"], [aria-current="page"], [aria-checked="true"]) {
+  border-color: var(--ink);
+  background: var(--ink);
+  color: var(--bg);
+}
+:root[data-theme="day"] .text-link {
+  color: var(--ink);
+  text-decoration-color: var(--accent);
+  text-decoration-thickness: 2px;
+}
+:root[data-theme="day"] .text-link:hover {
+  color: var(--gold-ink);
+}
+/* Buttons give a little under the finger. */
+:root[data-theme="day"] .btn:active:not(:disabled) {
+  transform: scale(0.97);
+}
+/* The mono label used across the day pages: times, numbers, spec names. */
+.mono {
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+:root[data-theme="day"] .btn-gold::after {
+  background: linear-gradient(105deg, transparent 30%, rgba(255, 244, 222, 0.2) 50%, transparent 70%);
 }

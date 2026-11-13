@@ -23,9 +23,9 @@
   border: 0;
   background: none;
   color: var(--muted);
-  font-family: var(--body);
-  font-size: 0.66rem;
-  letter-spacing: 0.08em;
+  font-family: var(--mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   text-decoration: none;
   cursor: pointer;
@@ -104,4 +104,27 @@
   40% {
     transform: scale(1.45);
   }
+}
+
+/* On the home page the bar follows the time of day, like the header. */
+.bar {
+  transition: background-color 0.7s var(--ease-out);
+}
+:global(html[data-moment="clean"]) .bar {
+  --surface: #f6faf8;
+}
+:global(html[data-moment="nap"]) .bar {
+  --surface: #f9e2bb;
+  --muted: #6b4d22;
+  --ink: #3a2408;
+}
+:global(html[data-moment="night"]) .bar,
+:global(html[data-moment="end"]) .bar {
+  --surface: #141b33;
+  --line: rgba(243, 235, 221, 0.16);
+  --muted: #b9b1a3;
+  --ink: #f3ebdd;
+  --gold: #f6c66a;
+  --gold-text: #f6c66a;
+  --gold-ink: #f9d58c;
 }

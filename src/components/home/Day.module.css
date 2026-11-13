@@ -1,0 +1,1654 @@
+/* "One good day": the home page, told as a pet's day. Every chapter is a
+   moment with its own light; down the side runs the trail (time + paw prints). */
+
+.ch {
+  --rail: 132px;
+  --mud: #8a5a35;
+  position: relative;
+  /* clip, not hidden: the time stamp inside must still be able to stick. */
+  overflow: clip;
+  color: var(--ink);
+}
+/* "Start the day" lands with the chapter right under the header. */
+.ch.ch {
+  scroll-margin-top: calc(var(--header-h) - 16px);
+}
+.inner {
+  position: relative;
+  display: grid;
+  grid-template-columns: var(--rail) minmax(0, 1fr);
+  width: 100%;
+  max-width: calc(1280px + 2 * var(--gutter));
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+.content {
+  min-width: 0;
+  padding-left: 24px;
+}
+
+/* ── The trail down the side ─────────────────────────────────────────── */
+.rail {
+  position: relative;
+}
+.rail::before {
+  content: "";
+  position: absolute;
+  left: 23px;
+  top: 0;
+  bottom: 0;
+  border-left: 1px dashed var(--trail-line);
+}
+.stamp {
+  position: sticky;
+  top: calc(var(--header-h) + 18px);
+  z-index: 2;
+  display: grid;
+  gap: 10px;
+  justify-items: start;
+  padding: 40px 0 24px;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.stamp .orb {
+  transition: scale var(--dur-base) var(--ease-out);
+}
+.stamp:hover .orb {
+  scale: 1.08;
+}
+.stamp:active .orb {
+  scale: 0.94;
+}
+.orb {
+  width: 47px;
+  height: 47px;
+  border-radius: 50%;
+  background: var(--orb);
+  box-shadow: 0 0 40px 6px var(--glow);
+}
+.moon {
+  background: #f3ebdd;
+  box-shadow:
+    inset -12px -4px 0 0 #141b33,
+    0 0 40px 2px rgba(243, 235, 221, 0.25);
+}
+.time {
+  margin-left: -6px;
+  padding: 5px 9px;
+  border-radius: 999px;
+  background: var(--chip);
+  font-size: 0.8rem;
+}
+.trail {
+  position: absolute;
+  left: 0;
+  top: 210px;
+  bottom: 48px;
+  width: 47px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+}
+.trail svg {
+  width: 26px;
+  height: 28px;
+  flex: none;
+}
+.trail svg:nth-child(odd) {
+  transform: translateX(-19px) rotate(-14deg);
+}
+.trail svg:nth-child(even) {
+  transform: translateX(19px) rotate(12deg);
+}
+.pawMuddy {
+  fill: var(--mud);
+}
+.pawClean {
+  fill: none;
+  stroke: var(--ink);
+  stroke-width: 7;
+  opacity: 0.5;
+}
+/* Each print lands as it scrolls into view. */
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    .trail svg {
+      animation: paw-land linear both;
+      animation-timeline: view();
+      animation-range: entry 10% entry 90%;
+    }
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    .steps svg {
+      animation: paw-land linear both;
+      animation-timeline: view();
+    }
+    .steps svg:nth-child(1) {
+      animation-range: cover 6% cover 13%;
+    }
+    .steps svg:nth-child(2) {
+      animation-range: cover 10% cover 17%;
+    }
+    .steps svg:nth-child(3) {
+      animation-range: cover 14% cover 21%;
+    }
+    .steps svg:nth-child(4) {
+      animation-range: cover 18% cover 25%;
+    }
+    .steps svg:nth-child(5) {
+      animation-range: cover 22% cover 29%;
+    }
+  }
+}
+@keyframes paw-land {
+  from {
+    opacity: 0;
+    scale: 0.4;
+  }
+}
+
+/* ── Light for each moment ───────────────────────────────────────────── */
+.dawn {
+  --trail-line: rgba(42, 31, 26, 0.28);
+  --chip: #fbe6d3;
+  --orb: radial-gradient(circle at 35% 30%, #ffd58a, #f0a03c);
+  --glow: rgba(240, 160, 60, 0.45);
+  background: linear-gradient(180deg, #fdf1e4 0%, #fbe4cf 46%, #f8e3cd 100%);
+}
+.walk {
+  --ink: #33261a;
+  --ink-soft: #5d4a36;
+  --trail-line: rgba(51, 38, 26, 0.3);
+  --chip: #e6d8c0;
+  --orb: radial-gradient(circle at 35% 30%, #ffe19a, #f3b24a);
+  --glow: rgba(243, 178, 74, 0.45);
+  background: linear-gradient(180deg, #f8e3cd 0%, #e9dcc6 30%, #e3d4ba 100%);
+}
+.clean {
+  --ink: #14231d;
+  --ink-soft: #3d4f47;
+  --muted: #55665e;
+  --line: rgba(20, 35, 29, 0.14);
+  --gold: #14231d;
+  --gold-hover: #2b4037;
+  --on-gold: #eef4f1;
+  --ghost-line: rgba(20, 35, 29, 0.5);
+  --trail-line: rgba(20, 35, 29, 0.28);
+  --chip: #eef4f1;
+  --orb: radial-gradient(circle at 35% 30%, #fff3c4, #ffd45e);
+  --glow: rgba(255, 212, 94, 0.6);
+  background: linear-gradient(180deg, #e3d4ba 0, #eef4f1 220px, #eef4f1 100%);
+}
+.nap {
+  --ink: #3a2408;
+  --ink-soft: #5c401a;
+  --muted: #6b4d22;
+  --line: rgba(58, 36, 8, 0.2);
+  --gold: #3a2408;
+  --gold-hover: #573912;
+  --on-gold: #f9e6c4;
+  --gold-text: #7a440a;
+  --ghost-line: rgba(58, 36, 8, 0.5);
+  --trail-line: rgba(58, 36, 8, 0.32);
+  --chip: #f3cf96;
+  --orb: radial-gradient(circle at 35% 30%, #fff0bf, #f6b545);
+  --glow: rgba(255, 236, 170, 0.9);
+  background: linear-gradient(180deg, #eef4f1 0, #f6dcae 240px, #f1c283 100%);
+}
+.night {
+  --trail-line: rgba(243, 235, 221, 0.3);
+  --chip: #141b33;
+  --dusk: 230px;
+  background-image: linear-gradient(
+    180deg,
+    #f1c283 0,
+    #c9856a 90px,
+    #4b3a5e 200px,
+    #141b33 350px,
+    #141b33 100%
+  );
+}
+.end {
+  --trail-line: rgba(243, 235, 221, 0.3);
+}
+/* The dusk band at the top of the night: the sun sinks in it and dissolves
+   towards its lower edge, as behind a horizon. */
+.dusk {
+  position: absolute;
+  inset: 0 0 auto;
+  height: calc(var(--dusk) + 70px);
+  overflow: hidden;
+  pointer-events: none;
+  mask-image: linear-gradient(180deg, #000 0, #000 42%, transparent 88%);
+}
+.sunset {
+  position: absolute;
+  left: 64%;
+  top: 34px;
+  width: 150px;
+  height: 150px;
+  margin-left: -75px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 50% 40%, #fff0bf 0%, #ffd27a 38%, #f5a04a 72%);
+  box-shadow:
+    0 0 70px 26px rgba(255, 190, 110, 0.55),
+    0 0 180px 70px rgba(245, 150, 80, 0.3);
+  pointer-events: none;
+}
+.stars {
+  position: absolute;
+  inset: 230px 0 0;
+  pointer-events: none;
+  opacity: 0.55;
+  background-image:
+    radial-gradient(circle at 12% 24%, #fff 0 1px, transparent 1.6px),
+    radial-gradient(circle at 31% 42%, #fff 0 1px, transparent 1.6px),
+    radial-gradient(circle at 78% 18%, #fff 0 1.2px, transparent 1.8px),
+    radial-gradient(circle at 64% 34%, #fff 0 1px, transparent 1.6px),
+    radial-gradient(circle at 90% 56%, #fff 0 1px, transparent 1.6px),
+    radial-gradient(circle at 46% 12%, #fff 0 0.8px, transparent 1.4px),
+    radial-gradient(circle at 22% 74%, #fff 0 1px, transparent 1.6px),
+    radial-gradient(circle at 57% 84%, #fff 0 1px, transparent 1.6px),
+    radial-gradient(circle at 84% 90%, #fff 0 0.8px, transparent 1.4px),
+    radial-gradient(circle at 6% 58%, #fff 0 0.8px, transparent 1.4px),
+    radial-gradient(circle at 38% 66%, #fff 0 0.8px, transparent 1.4px);
+  mask-image: linear-gradient(180deg, transparent 0, #000 160px);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .stars {
+    animation: twinkle 5s ease-in-out infinite alternate;
+  }
+}
+@keyframes twinkle {
+  from {
+    opacity: 0.3;
+  }
+  to {
+    opacity: 0.7;
+  }
+}
+
+/* ── Shared type ─────────────────────────────────────────────────────── */
+.title {
+  margin: 20px 0 0;
+  font-size: clamp(2.9rem, 6.4vw, 5.75rem);
+  line-height: 0.96;
+  text-wrap: balance;
+}
+.title em,
+.heroTitle em {
+  font-style: italic;
+}
+.text {
+  max-width: 26em;
+  margin: 26px 0 0;
+  font-size: clamp(1.05rem, 1.4vw, 1.25rem);
+  color: var(--ink-soft);
+}
+
+/* ── 07:30 Good morning ──────────────────────────────────────────────── */
+.dawn .content {
+  padding-top: 34px;
+}
+.hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+  gap: 32px;
+  align-items: end;
+}
+.heroText {
+  padding-bottom: 12px;
+}
+.heroTitle {
+  margin: 22px 0 28px;
+  font-size: clamp(3.3rem, 7.4vw, 7rem);
+  line-height: 0.96;
+}
+.heroTitle span {
+  display: block;
+}
+.lead {
+  max-width: 25em;
+  margin: 0;
+  font-size: clamp(1.05rem, 1.45vw, 1.25rem);
+  color: var(--ink-soft);
+}
+.cta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 34px;
+}
+.window {
+  position: relative;
+  justify-self: end;
+  width: min(410px, 100%);
+  margin-top: 40px;
+}
+.sunrise {
+  position: absolute;
+  left: 50%;
+  top: -70px;
+  width: 520px;
+  height: 520px;
+  margin-left: -260px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(255, 205, 120, 0.95) 0%,
+    rgba(240, 160, 60, 0.5) 42%,
+    rgba(240, 160, 60, 0) 70%
+  );
+}
+.arch {
+  position: relative;
+  display: block;
+  aspect-ratio: 410 / 560;
+  border-radius: 220px 220px 0 0;
+  overflow: hidden;
+  background: var(--photo-tint);
+  box-shadow: 0 0 0 10px #fdf1e4;
+}
+.arch img,
+.cover {
+  object-fit: cover;
+}
+.caption {
+  text-decoration: none;
+  position: absolute;
+  left: -64px;
+  bottom: 40px;
+  display: grid;
+  gap: 2px;
+  padding: 12px 16px;
+  border-radius: 16px;
+  background: #fff;
+  color: #2a1f1a;
+  box-shadow: 0 18px 40px -18px rgba(42, 31, 26, 0.45);
+  transition: translate var(--dur-base) var(--ease-out);
+}
+.caption:hover {
+  translate: 0 -3px;
+}
+.caption .mono {
+  font-size: 0.64rem;
+}
+.caption b {
+  font-family: var(--display);
+  font-weight: 400;
+  font-size: 1.2rem;
+  letter-spacing: -0.01em;
+}
+.caption span:last-child {
+  font-size: 0.875rem;
+  color: #6b574b;
+}
+/* The sun comes up behind the window as the page opens, and the words rise. */
+@media (prefers-reduced-motion: no-preference) {
+  .heroTitle span {
+    animation: line-rise 1.1s var(--ease-out) both;
+  }
+  .heroTitle span:nth-child(2) {
+    animation-delay: 0.12s;
+  }
+  .heroText > :global(.mono),
+  .lead,
+  .cta {
+    animation: caption-in 0.9s var(--ease-out) both;
+  }
+  .lead {
+    animation-delay: 0.3s;
+  }
+  .cta {
+    animation-delay: 0.42s;
+  }
+  .sunrise,
+  .hero::before {
+    animation: sun-up 2.2s var(--ease-out) both;
+  }
+  .arch {
+    animation: window-open 1.4s var(--ease-out) both;
+  }
+  .caption {
+    animation: caption-in 0.9s var(--ease-out) 0.7s both;
+  }
+}
+@keyframes line-rise {
+  from {
+    opacity: 0;
+    translate: 0 0.5em;
+    clip-path: inset(0 0 100% 0);
+  }
+  to {
+    clip-path: inset(-10% 0 -30% 0);
+  }
+}
+@keyframes sun-up {
+  from {
+    opacity: 0;
+    translate: 0 160px;
+    scale: 0.7;
+  }
+}
+@keyframes window-open {
+  from {
+    clip-path: inset(100% 0 0 0 round 220px 220px 0 0);
+  }
+  to {
+    clip-path: inset(0 0 0 0 round 220px 220px 0 0);
+  }
+}
+@keyframes caption-in {
+  from {
+    opacity: 0;
+    translate: 0 16px;
+  }
+}
+
+.lineup {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(0, 1fr);
+  margin: 72px 0 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--ink);
+}
+.lineup li {
+  border-right: 1px solid rgba(42, 31, 26, 0.16);
+}
+.lineup li:last-child {
+  border-right: 0;
+}
+.lineup a {
+  text-decoration: none;
+  display: grid;
+  gap: 6px;
+  height: 100%;
+  align-content: start;
+  padding: 18px 20px 44px;
+  transition: background var(--dur-base);
+}
+.lineup li:first-child a {
+  padding-left: 0;
+}
+.lineup a:hover {
+  background: linear-gradient(180deg, rgba(240, 160, 60, 0.16), transparent);
+}
+.thumb,
+.swipe {
+  display: none;
+}
+.lineup b {
+  font-family: var(--display);
+  font-weight: 400;
+  font-size: 1.44rem;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+}
+.lineup span:last-child {
+  font-size: 0.94rem;
+  color: var(--muted);
+}
+
+/* ── 08:15 The walk ──────────────────────────────────────────────────── */
+.walk .content {
+  position: relative;
+  padding-top: 120px;
+  padding-bottom: 120px;
+}
+.walkGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 40px;
+  align-items: center;
+}
+.walk .title {
+  max-width: 10em;
+}
+.splat {
+  width: clamp(190px, 23vw, 320px);
+  fill: var(--mud);
+  opacity: 0.9;
+}
+
+/* ── 08:45 Clean paws ────────────────────────────────────────────────── */
+.clean .content,
+.nap .content {
+  padding-top: 110px;
+  padding-bottom: 120px;
+}
+.nap .content {
+  padding-bottom: 96px;
+}
+.chead {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  gap: 32px;
+  margin-bottom: 56px;
+}
+.how {
+  display: flex;
+  flex: none;
+  gap: 10px;
+  margin: 0;
+  padding: 0 0 14px;
+  list-style: none;
+}
+.how li {
+  padding: 9px 16px;
+  border: 1px solid var(--trail-line);
+  border-radius: 999px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  white-space: nowrap;
+}
+.plates {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 28px;
+}
+.plates:has(> :only-child) {
+  grid-template-columns: minmax(0, 620px);
+}
+.plate {
+  padding: 22px 22px 28px;
+  border-radius: 28px;
+  background: #fff;
+  box-shadow: 0 30px 60px -40px rgba(20, 35, 29, 0.35);
+  scroll-margin-top: calc(var(--header-h) + 24px);
+}
+.platePic {
+  position: relative;
+  aspect-ratio: 1 / 0.82;
+  border-radius: 16px;
+  overflow: hidden;
+  background: #f2f4f3;
+}
+.layer {
+  position: absolute;
+  inset: 0;
+}
+.media {
+  position: absolute;
+  inset: 0;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .media {
+    animation: media-in 0.6s var(--ease-out);
+  }
+}
+@keyframes media-in {
+  from {
+    opacity: 0;
+    scale: 1.04;
+  }
+}
+.no,
+.flag {
+  position: absolute;
+  top: 16px;
+  z-index: 1;
+  padding: 7px 13px;
+  border-radius: 999px;
+}
+.no {
+  left: 16px;
+  background: #fff;
+  color: #14231d;
+  box-shadow: 0 4px 12px -6px rgba(20, 35, 29, 0.35);
+}
+.flag {
+  right: 16px;
+  background: var(--ink);
+  color: #fff;
+}
+.plateTitle {
+  margin: 26px 6px 18px;
+  font-size: clamp(2rem, 3.3vw, 2.75rem);
+}
+.plateTitle a,
+.featureTitle a {
+  text-decoration: none;
+}
+.plateTitle a:hover,
+.featureTitle a:hover {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.14em;
+}
+.plate .specs,
+.plate .buy {
+  margin-inline: 6px;
+}
+
+/* Spec rows that double as the colour and size choice. */
+.specs {
+  margin: 0;
+  border-top: 1px solid var(--line);
+}
+.specRow {
+  display: grid;
+  grid-template-columns: 110px minmax(0, 1fr);
+  align-items: center;
+  min-height: 56px;
+  padding: 9px 0;
+  border-bottom: 1px solid var(--line);
+}
+.specs dt {
+  font-family: var(--mono);
+  font-size: 0.69rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  opacity: 0.72;
+}
+.specs dd {
+  margin: 0;
+  font-size: 0.94rem;
+}
+.choices {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+.dot {
+  position: relative;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: none;
+  cursor: pointer;
+}
+.dot::before {
+  content: "";
+  position: absolute;
+  inset: 8px;
+  border-radius: 50%;
+  background: var(--shade);
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.12);
+  transition: scale var(--dur-fast) var(--ease-out);
+}
+.dot::after {
+  content: "";
+  position: absolute;
+  inset: 2px;
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 1.5px var(--ink);
+  opacity: 0;
+  scale: 0.8;
+  transition:
+    opacity var(--dur-fast),
+    scale var(--dur-fast) var(--ease-out);
+}
+.dot:hover::before {
+  scale: 1.12;
+}
+.dot[aria-pressed="true"]::after {
+  opacity: 1;
+  scale: 1;
+}
+.chosen {
+  margin-left: 4px;
+}
+.size {
+  min-width: 44px;
+  height: 36px;
+  padding: 0 14px;
+  border: 1px solid var(--ghost-line);
+  border-radius: 999px;
+  background: none;
+  color: var(--ink);
+  font: inherit;
+  font-weight: 500;
+  cursor: pointer;
+  transition:
+    background var(--dur-fast),
+    color var(--dur-fast);
+}
+.size:hover {
+  border-color: var(--ink);
+}
+.size[aria-pressed="true"] {
+  border-color: var(--gold);
+  background: var(--gold);
+  color: var(--on-gold);
+}
+.dot:disabled,
+.size:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+.measure {
+  margin: 8px 0 0;
+  font-size: 0.82rem;
+  line-height: 1.45;
+  color: var(--muted);
+}
+.buy {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  margin-top: 22px;
+}
+.priceBox {
+  display: grid;
+  gap: 2px;
+}
+.price {
+  font-family: var(--display);
+  font-size: 2.1rem;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+}
+.details {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--ink-soft);
+  text-decoration: underline;
+  text-decoration-color: var(--trail-line);
+  text-underline-offset: 4px;
+}
+.details:hover {
+  color: var(--ink);
+  text-decoration-color: currentColor;
+}
+.proof {
+  margin-top: 72px;
+}
+.proofTwo {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 28px;
+}
+.proofTitle {
+  margin: 14px 0 28px;
+  font-size: clamp(2rem, 3.6vw, 3rem);
+}
+
+/* ── 14:00 The nap · 22:30 Lights out ────────────────────────────────── */
+.features {
+  display: grid;
+  gap: 96px;
+}
+.feature {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+  gap: 64px;
+  align-items: center;
+  scroll-margin-top: calc(var(--header-h) + 24px);
+}
+.flip > :first-child {
+  order: 2;
+}
+.big {
+  position: relative;
+  aspect-ratio: 1 / 1.04;
+  border-radius: 300px 300px 28px 28px;
+  overflow: hidden;
+  background: var(--photo-tint);
+  box-shadow: 0 40px 80px -40px rgba(58, 36, 8, 0.55);
+}
+.bigFlip {
+  border-radius: 28px 28px 300px 300px;
+}
+.night .big {
+  box-shadow: 0 40px 90px -40px rgba(0, 0, 0, 0.8);
+}
+.featureText .title {
+  margin-bottom: 14px;
+  font-size: clamp(2.9rem, 5.6vw, 5.4rem);
+}
+.featureText .text {
+  max-width: 24em;
+  margin-top: 0;
+  font-size: clamp(1.05rem, 1.35vw, 1.19rem);
+  color: var(--ink);
+  opacity: 0.85;
+}
+.featureTitle {
+  display: grid;
+  gap: 10px;
+  margin: 34px 0 16px;
+  font-size: clamp(1.9rem, 3vw, 2.5rem);
+}
+.featureNo {
+  opacity: 0.75;
+}
+.night .content {
+  padding-top: calc(var(--dusk) + 90px);
+  padding-bottom: 120px;
+}
+.night .stamp {
+  margin-top: var(--dusk);
+}
+.night .trail {
+  top: calc(var(--dusk) + 210px);
+}
+
+/* ── Tomorrow, again ─────────────────────────────────────────────────── */
+.end .content {
+  padding-top: 40px;
+  padding-bottom: 84px;
+}
+.endTitle {
+  margin: 18px 0 0;
+  font-size: clamp(3.6rem, 8.4vw, 7.5rem);
+  line-height: 0.96;
+}
+.endTitle em {
+  font-style: italic;
+  color: #f6c66a;
+}
+.three {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin: 64px 0 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid rgba(243, 235, 221, 0.3);
+}
+.three li {
+  padding: 26px 28px 6px;
+  border-right: 1px solid rgba(243, 235, 221, 0.16);
+}
+.three li:first-child {
+  padding-left: 0;
+}
+.three li:last-child {
+  border-right: 0;
+}
+.three b {
+  display: block;
+  margin: 12px 0 10px;
+  font-family: var(--display);
+  font-weight: 300;
+  font-size: clamp(2rem, 3.4vw, 2.9rem);
+  letter-spacing: -0.03em;
+  line-height: 1;
+}
+.three span:last-child {
+  font-size: 0.94rem;
+  opacity: 0.75;
+}
+.quiz {
+  display: inline-block;
+  text-decoration: none;
+  margin-top: 64px;
+  padding: 16px 0;
+  color: #f6c66a;
+  font-size: 0.8rem;
+}
+.quiz:hover {
+  color: #fff;
+}
+.quiz span {
+  display: inline-block;
+  margin-left: 6px;
+  transition: translate var(--dur-base) var(--ease-out);
+}
+.quiz:hover span {
+  translate: 6px 0;
+}
+
+/* ── The day's list (opens from the time stamp) ──────────────────────── */
+.sheet {
+  position: fixed;
+  inset: 50% auto auto 50%;
+  width: min(440px, calc(100vw - 32px));
+  max-width: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 26px;
+  background: #fffaf3;
+  color: #2a1f1a;
+  translate: -50% -50%;
+  box-shadow: 0 40px 90px -30px rgba(20, 27, 51, 0.6);
+}
+.sheet::backdrop {
+  background: rgba(20, 27, 51, 0.45);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+}
+.sheetBody {
+  padding: 18px 22px 22px;
+}
+.sheetHead {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 10px;
+}
+.sheetHead :global(.x) {
+  border-color: rgba(42, 31, 26, 0.18);
+  color: #2a1f1a;
+}
+.sheet ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.sheet li {
+  border-top: 1px solid rgba(42, 31, 26, 0.12);
+}
+.sheet a {
+  position: relative;
+  display: grid;
+  grid-template-columns: 62px minmax(0, 1fr);
+  column-gap: 12px;
+  align-items: baseline;
+  padding: 14px 6px 14px 22px;
+  color: inherit;
+  text-decoration: none;
+}
+.sheet a::before {
+  content: "";
+  position: absolute;
+  left: 2px;
+  top: 22px;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 1.5px rgba(42, 31, 26, 0.3);
+}
+.sheet a[aria-current]::before {
+  background: radial-gradient(circle at 35% 30%, #ffd58a, #f0a03c);
+  box-shadow: 0 0 10px 2px rgba(240, 160, 60, 0.55);
+}
+.sheet a b {
+  font-family: var(--display);
+  font-weight: 400;
+  font-size: 1.44rem;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+}
+.sheet a span:last-child:not(:global(.mono)) {
+  grid-column: 2;
+  margin-top: 3px;
+  font-size: 0.85rem;
+  color: #6b574b;
+}
+.sheet a:hover b {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.16em;
+}
+@media (prefers-reduced-motion: no-preference) and (max-width: 760px) {
+  .sheet.sheet[open] {
+    animation: sheet-up 0.45s var(--ease-out);
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .sheet[open] {
+    animation: sheet-in 0.4s var(--ease-out);
+  }
+  .sheet[open]::backdrop {
+    animation: scrim-fade 0.3s ease;
+  }
+}
+@keyframes sheet-in {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+}
+@keyframes sheet-up {
+  from {
+    transform: translateY(100%);
+  }
+}
+@keyframes scrim-fade {
+  from {
+    opacity: 0;
+  }
+}
+
+/* ── The day dial ────────────────────────────────────────────────────── */
+/* Computers: a line on the right edge. A sun travels down it as the page
+   scrolls (HomeMotion sets --day, 0 to 1) and each dot jumps to a chapter. */
+.dial {
+  --day: 0;
+  position: fixed;
+  right: 20px;
+  top: 50%;
+  z-index: 15;
+  width: 14px;
+  height: min(280px, 42vh);
+  translate: 0 -50%;
+  color: #2a1f1a;
+  transition: color 0.7s var(--ease-out);
+}
+:global(html[data-moment="night"]) .dial,
+:global(html[data-moment="end"]) .dial {
+  color: #f3ebdd;
+}
+.dialTrack,
+.dialFill {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+}
+.dialTrack {
+  width: 1px;
+  margin-left: -0.5px;
+  background: currentColor;
+  opacity: 0.22;
+}
+.dialFill {
+  width: 2px;
+  margin-left: -1px;
+  border-radius: 2px;
+  background: linear-gradient(180deg, #f0a03c, #f6c66a);
+  transform-origin: top;
+  transform: scaleY(var(--day));
+}
+.dialSunWrap {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  transform: translateY(calc(var(--day) * 100%));
+}
+.dialSun {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: 14px;
+  height: 14px;
+  margin: -7px 0 0 -7px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #ffd58a, #f0a03c);
+  box-shadow: 0 0 14px 2px rgba(240, 160, 60, 0.6);
+  transition:
+    background-color 0.7s,
+    box-shadow 0.7s;
+}
+:global(html[data-moment="night"]) .dialSun,
+:global(html[data-moment="end"]) .dialSun {
+  background: #f3ebdd;
+  box-shadow:
+    inset -4px -1px 0 0 #141b33,
+    0 0 14px 2px rgba(243, 235, 221, 0.35);
+}
+.dial a {
+  position: absolute;
+  left: 50%;
+  top: calc(var(--at) * 100%);
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  margin: -14px 0 0 -14px;
+  color: inherit;
+  text-decoration: none;
+}
+.dial a::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+  opacity: 0.45;
+  transition:
+    opacity var(--dur-fast),
+    scale var(--dur-fast) var(--ease-out);
+}
+.dial a:hover::before,
+.dial a[aria-current]::before {
+  opacity: 1;
+  scale: 1.5;
+}
+/* The times slide out when the dial is pointed at, or reached with the keyboard. */
+.dial a span {
+  position: absolute;
+  right: 30px;
+  padding: 6px 11px;
+  border-radius: 999px;
+  background: #2a1f1a;
+  color: #fdf1e4;
+  font-size: 0.68rem;
+  white-space: nowrap;
+  opacity: 0;
+  translate: 8px 0;
+  pointer-events: none;
+  transition:
+    opacity var(--dur-fast),
+    translate var(--dur-base) var(--ease-out);
+}
+:global(html[data-moment="night"]) .dial a span,
+:global(html[data-moment="end"]) .dial a span {
+  background: #f3ebdd;
+  color: #141b33;
+}
+.dial:hover a span,
+.dial a:focus-visible span {
+  opacity: 0.55;
+  translate: 0 0;
+}
+.dial a:hover span,
+.dial a:focus-visible span,
+.dial:hover a[aria-current] span {
+  opacity: 1;
+}
+
+/* The paw steps between chapters are for phones only. */
+.steps {
+  display: none;
+}
+
+.endLinks {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 4px 40px;
+  margin-top: 64px;
+}
+.endLinks .quiz {
+  margin-top: 0;
+}
+.again {
+  color: #f3ebdd;
+  opacity: 0.8;
+}
+.again:hover span {
+  translate: 0 -5px;
+}
+
+/* Smaller screens: the dial becomes a thin line across the top of the screen. */
+@media (max-width: 1100px) {
+  .dial {
+    inset: env(safe-area-inset-top, 0px) 0 auto 0;
+    z-index: 21;
+    width: auto;
+    height: 3px;
+    translate: none;
+    pointer-events: none;
+  }
+  .dialTrack,
+  .dial a {
+    display: none;
+  }
+  .dialFill {
+    inset: 0;
+    width: auto;
+    margin: 0;
+    border-radius: 0 3px 3px 0;
+    background: linear-gradient(90deg, #f0a03c, #f6c66a);
+    transform-origin: left;
+    transform: scaleX(var(--day));
+  }
+  .dialSunWrap {
+    transform: translateX(calc(var(--day) * 100%));
+  }
+  .dialSun {
+    left: 0;
+    top: 50%;
+    width: 9px;
+    height: 9px;
+    margin: -4.5px 0 0 -6px;
+  }
+}
+
+/* ── Tablets ─────────────────────────────────────────────────────────── */
+@media (max-width: 1100px) {
+  .ch {
+    --rail: 96px;
+  }
+  .caption {
+    left: -24px;
+  }
+  .chead {
+    flex-direction: column;
+    align-items: start;
+    gap: 20px;
+    margin-bottom: 40px;
+  }
+  .how {
+    flex-wrap: wrap;
+    padding-bottom: 0;
+  }
+  .feature {
+    gap: 40px;
+  }
+}
+
+/* ── Small tablets: the opening stacks, as on phones ─────────────────── */
+@media (max-width: 900px) {
+  .hero {
+    grid-template-columns: 1fr;
+    gap: 34px;
+  }
+  .window {
+    justify-self: center;
+    width: min(360px, 86%);
+    margin-top: 30px;
+  }
+  /* The line-up becomes a row of cards to swipe, each with its photo. */
+  .lineup {
+    display: flex;
+    gap: 12px;
+    margin: 30px calc(-1 * var(--gutter)) 0;
+    padding: 6px var(--gutter) 30px;
+    border-top: 0;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: var(--gutter);
+    scrollbar-width: none;
+  }
+  .lineup::-webkit-scrollbar {
+    display: none;
+  }
+  .lineup li {
+    flex: 0 0 min(250px, 68%);
+    border: 0;
+    scroll-snap-align: start;
+  }
+  .lineup a,
+  .lineup li:first-child a {
+    grid-template-columns: 62px minmax(0, 1fr);
+    column-gap: 14px;
+    row-gap: 3px;
+    align-content: center;
+    padding: 12px 14px 12px 12px;
+    border-radius: 22px;
+    background: rgba(255, 252, 247, 0.72);
+    box-shadow: 0 16px 30px -22px rgba(42, 31, 26, 0.5);
+  }
+  .lineup a:active {
+    scale: 0.97;
+  }
+  .lineup a > :not(.thumb) {
+    grid-column: 2;
+  }
+  .thumb {
+    position: relative;
+    display: block;
+    grid-row: 1 / span 3;
+    align-self: center;
+    width: 62px;
+    height: 76px;
+    border-radius: 31px 31px 12px 12px;
+    overflow: hidden;
+    background: var(--photo-tint);
+  }
+  .lineup b {
+    font-size: 1.12rem;
+  }
+  .lineup :global(.mono) {
+    font-size: 0.62rem;
+  }
+}
+
+/* ── Phones: the trail folds away; the time becomes a small floating chip ─ */
+@media (max-width: 760px) {
+  .inner {
+    display: block;
+  }
+  .content {
+    padding-left: 0;
+  }
+  /* Ends a little before the chapter does, so the time chip has left before the next one arrives. */
+  .rail {
+    position: absolute;
+    inset: 0 auto 70px var(--gutter);
+    z-index: 3;
+    pointer-events: none;
+  }
+  .rail::before,
+  .trail {
+    display: none;
+  }
+  .stamp {
+    top: 12px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 22px;
+    pointer-events: auto;
+    padding: 6px 12px 6px 7px;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--chip) 86%, transparent);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    box-shadow: 0 6px 18px -10px rgba(0, 0, 0, 0.35);
+    transition: top 0.3s var(--ease-out);
+  }
+  :global(html:not([data-scroll-down])) .stamp {
+    top: calc(var(--header-h) + 10px);
+  }
+  .orb {
+    width: 24px;
+    height: 24px;
+    box-shadow: 0 0 18px 3px var(--glow);
+  }
+  .moon {
+    box-shadow:
+      inset -7px -2px 0 0 #141b33,
+      0 0 18px 2px rgba(243, 235, 221, 0.25);
+  }
+  .time {
+    margin: 0;
+    padding: 0;
+    background: none;
+    font-size: 0.75rem;
+  }
+  /* A small arrow says the time can be tapped. */
+  .stamp::after {
+    content: "";
+    width: 6px;
+    height: 6px;
+    margin: -3px 2px 0 0;
+    border-right: 1.5px solid currentColor;
+    border-bottom: 1.5px solid currentColor;
+    rotate: 45deg;
+    opacity: 0.6;
+  }
+  .stamp:active {
+    scale: 0.96;
+  }
+  /* The day's list slides up from the bottom. */
+  .sheet {
+    inset: auto 0 0 0;
+    width: 100%;
+    border-radius: 26px 26px 0 0;
+    translate: none;
+  }
+  .sheetBody {
+    padding: 14px 20px calc(18px + env(safe-area-inset-bottom, 0px));
+  }
+  .sheetBody::before {
+    content: "";
+    display: block;
+    width: 40px;
+    height: 4px;
+    margin: 0 auto 10px;
+    border-radius: 4px;
+    background: rgba(42, 31, 26, 0.18);
+  }
+  /* Jumps land with the chapter at the very top: the header is tucked away. */
+  .ch.ch {
+    scroll-margin-top: 0px;
+  }
+  /* A warm glow rises behind the first words, so the first screen has its sun. */
+  .hero {
+    position: relative;
+    isolation: isolate;
+  }
+  .hero::before {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    right: -170px;
+    top: -70px;
+    width: 400px;
+    height: 400px;
+    border-radius: 50%;
+    background: radial-gradient(
+      circle,
+      rgba(255, 205, 120, 0.75) 0%,
+      rgba(240, 160, 60, 0.32) 40%,
+      rgba(240, 160, 60, 0) 70%
+    );
+    pointer-events: none;
+  }
+  .sunset {
+    left: 70%;
+    top: 22px;
+    width: 104px;
+    height: 104px;
+    margin-left: -52px;
+  }
+  .swipe {
+    display: flex;
+    justify-content: flex-end;
+    gap: 6px;
+    margin: -12px 0 10px;
+    font-size: 0.64rem;
+    opacity: 0.7;
+  }
+  .dot {
+    width: 44px;
+    height: 44px;
+  }
+  .dot::before {
+    inset: 11px;
+  }
+  .dot::after {
+    inset: 5px;
+  }
+  .size {
+    min-width: 48px;
+    height: 42px;
+  }
+  .choices {
+    gap: 4px;
+  }
+  .choices .size + .size {
+    margin-left: 4px;
+  }
+
+  .dawn .content {
+    padding-top: 76px;
+  }
+  .heroTitle {
+    margin: 14px 0 18px;
+    font-size: clamp(3rem, 15.4vw, 3.9rem);
+  }
+  .cta {
+    margin-top: 24px;
+  }
+  .cta :global(.btn) {
+    flex: 1 1 auto;
+    padding-inline: 18px;
+    white-space: nowrap;
+  }
+  .window {
+    justify-self: center;
+    width: min(330px, 86%);
+    margin-top: 30px;
+  }
+  .sunrise {
+    top: -50px;
+    width: 380px;
+    height: 380px;
+    margin-left: -190px;
+  }
+  .arch {
+    aspect-ratio: 330 / 400;
+    border-radius: 170px 170px 0 0;
+  }
+  .caption {
+    left: -22px;
+    bottom: 20px;
+  }
+  .lineup b {
+    font-size: 1.19rem;
+  }
+
+  .walk .content {
+    padding-top: 104px;
+    padding-bottom: 76px;
+  }
+  .walkGrid {
+    display: block;
+  }
+  .splat {
+    position: absolute;
+    right: -6px;
+    top: 20px;
+    width: 150px;
+  }
+  .clean .content,
+  .nap .content {
+    padding-top: 100px;
+    padding-bottom: 76px;
+  }
+  .chead {
+    margin-bottom: 28px;
+  }
+  .how li {
+    padding: 8px 13px;
+    font-size: 0.82rem;
+  }
+  .plates {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+  /* Two or more: cards to swipe through, with the next one peeking in. */
+  .plates:has(> :nth-child(2)) {
+    display: flex;
+    gap: 12px;
+    margin-inline: calc(-1 * var(--gutter));
+    padding: 6px var(--gutter) 34px;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: var(--gutter);
+    scrollbar-width: none;
+  }
+  .plates:has(> :nth-child(2))::-webkit-scrollbar {
+    display: none;
+  }
+  .plates:has(> :nth-child(2)) .plate {
+    flex: 0 0 88%;
+    scroll-snap-align: start;
+  }
+  .plate {
+    padding: 14px 14px 20px;
+    border-radius: 22px;
+  }
+  .plateTitle {
+    margin: 20px 4px 14px;
+  }
+  .plate .specs,
+  .plate .buy {
+    margin-inline: 4px;
+  }
+  .specRow {
+    grid-template-columns: 84px minmax(0, 1fr);
+  }
+  .buy {
+    margin-top: 18px;
+  }
+  .price {
+    font-size: 1.75rem;
+  }
+  .buy :global(.btn) {
+    padding-inline: 22px;
+  }
+  .proof {
+    margin-top: 48px;
+  }
+  .proofTwo {
+    grid-template-columns: 1fr;
+  }
+  .features {
+    gap: 64px;
+  }
+  /* The chapter's headline first, then the photo, then the product. */
+  .feature {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+  .featureText {
+    display: contents;
+  }
+  .featureHead {
+    order: -1;
+    margin-bottom: 28px;
+  }
+  .flip > :first-child {
+    order: 0;
+  }
+  .featureText .text {
+    margin-top: 28px;
+  }
+  .big {
+    border-radius: 200px 200px 22px 22px;
+  }
+  .bigFlip {
+    border-radius: 22px 22px 200px 200px;
+  }
+  .featureTitle {
+    margin-top: 24px;
+  }
+  .night {
+    --dusk: 210px;
+    background-image: linear-gradient(
+      180deg,
+      #f1c283 0,
+      #c9856a 80px,
+      #4b3a5e 180px,
+      #141b33 300px,
+      #141b33 100%
+    );
+  }
+  .stars {
+    inset: 210px 0 0;
+  }
+  .night .content {
+    padding-top: calc(var(--dusk) + 96px);
+    padding-bottom: 76px;
+  }
+  .end .content {
+    padding-top: 20px;
+    padding-bottom: 56px;
+  }
+  .endLinks {
+    display: grid;
+    margin-top: 28px;
+  }
+  /* The trail on phones: five prints walk across at the end of a chapter,
+     each landing as it scrolls into view. */
+  .steps {
+    display: flex;
+    justify-content: center;
+    gap: 26px;
+    margin-top: 52px;
+  }
+  .steps svg {
+    flex: none;
+    width: 22px;
+    height: 24px;
+  }
+  .steps svg:nth-child(odd) {
+    rotate: 78deg;
+    translate: 0 -9px;
+  }
+  .steps svg:nth-child(even) {
+    rotate: 102deg;
+    translate: 0 9px;
+  }
+  .dawn .steps {
+    margin-top: 36px;
+    padding-bottom: 28px;
+  }
+  .three {
+    grid-template-columns: 1fr;
+    margin-top: 36px;
+  }
+  .three li,
+  .three li:first-child {
+    padding: 20px 0 16px;
+    border-right: 0;
+    border-bottom: 1px solid rgba(243, 235, 221, 0.16);
+  }
+  .quiz {
+    margin-top: 28px;
+  }
+}

@@ -12,7 +12,7 @@ visitors who ask their device for reduced motion.
 
 ## Reference study (bbrose.com, inspected in a browser)
 
-What we adapted, in our own look (ivory, espresso, champagne gold):
+What we first adapted, in an earlier look (the home page has since been rebuilt as "One good day", see Home below):
 
 | bbrose | MimiPets |
 | --- | --- |
@@ -55,23 +55,54 @@ no reviews yet and don't invent any).
   free-shipping bar fills and celebrates at €40; slides out on close.
 - Scroll reveals: sections rise in; photos unveil top to bottom.
 
-## Home
+## Home: "One good day"
 
-1. Hero (full screen): photo sequence with slow zoom; headline lines rise
-   with a mask; gold underline draws; on scroll the photo scales and the
-   text drifts up and fades (parallax layers).
-2. The collection: Dogs / Cats / All switch (cards fade out and back in),
-   draggable rail with arrows and a progress line.
-3. Comfort story (pinned): three steps about the beds; the sticky photo
-   cross-fades and zooms as each step becomes active.
-4. After the walk (desktop: pinned horizontal scenes moved by scrolling;
-   phones: swipe): how the paw washers work, from the product listings.
-5. Featured product: the Silicone Paw Washer, colour dots swap the photo,
-   size choice and add to cart right there.
-6. See it in action: product video or before/after when uploaded in
-   Shopify; until then, the three real steps of using the washer.
-7. Brand story: words light up as you scroll past.
-8. Quiz invitation, promises ticker, MimiPets Club band.
+The home page is a pet's day, from sunrise to lights out. Each chapter has
+its own light, and each product sits in its moment, ready to buy.
+
+1. 07:30 Good morning: the sun comes up behind an arched window with the
+   first product; the headline counts the products ("four things for it");
+   the day's line-up links to each product's place in the story.
+2. 08:15 The walk: muddy paw prints.
+3. 08:45 Clean paws: the paw washers as white plates. Colour dots change the
+   photo, sizes are one tap, Add to cart works there. A video or
+   before/after appears when uploaded in Shopify.
+4. 14:00 The nap and 22:30 Lights out: the beds, each beside a large photo;
+   the sky turns from gold to dusk to night, with stars.
+5. "Tomorrow, again": the three offers and the quiz link, then the Club band
+   and footer, all in the night colours.
+
+Down the side runs the trail: the sun (a moon at night) with the time,
+which stays in view while its chapter scrolls, and paw prints that land as
+they scroll into view: muddy before the wash, clean outlines after. On
+phones the time is a small floating chip. The header and the phone tab bar
+take on the colour of the chapter under them (`html[data-moment]`, set by
+`HomeMotion.tsx`). Scrolling the day:
+
+- The day dial: a sun travels along a line as the page scrolls and becomes a
+  moon at night. On computers it is on the right edge, with a dot per
+  chapter to jump there (times slide out on hover or keyboard focus); on
+  smaller screens it is a thin line across the top.
+- Photos drift a little inside their frames (more on phones, gently on
+  computers), the sun behind the first photo keeps rising, and the muddy
+  prints of the walk appear one after another.
+- On phones, five paw prints walk across at the end of each chapter.
+- "Back to the morning" at the end glides to the top.
+- The time stamp is a button: it opens the day's list (a sheet that slides
+  up on phones), to jump to any moment and see which products are there.
+- Sunset: at the top of the night chapter the last of the sun sinks into the
+  dusk as the chapter scrolls in. The large photos grow into place as they
+  arrive, and the opening words rise as the page loads.
+
+On phones the day is made for the thumb: the line-up is a row of cards to
+swipe (each with its photo), the paw washers are cards to swipe through with
+the next one peeking in, colour dots and sizes are full-size touch targets,
+buttons give a little when pressed, and the menu opens with large numbered
+links.
+
+Products are placed by `dayLineup` in
+`src/lib/content/day.ts`; the same number and moment show on each product
+page. With reduced motion everything is simply in place.
 
 ## Shop and collections
 

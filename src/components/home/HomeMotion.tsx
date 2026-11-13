@@ -1,10 +1,12 @@
 "use client";
 
-import { useRef, type ReactNode } from "react";
+import { useEffect, useRef, type ReactNode } from "react";
 import { EASE, useScrollScene } from "@/lib/motion/gsap";
 
 /**
- * Scroll motion shared by the home page sections:
+ * Scroll behaviour shared by the home page chapters:
+ * - the chapter under the top of the screen is named on `html[data-moment]`,
+ *   so the header takes on that moment's light as the day goes by;
  * - `data-rise` titles rise into place the first time they scroll into view;
  * - on phones, photos in `data-drift` frames move a little inside their
  *   frame as the page scrolls, for a sense of depth.
@@ -12,6 +14,35 @@ import { EASE, useScrollScene } from "@/lib/motion/gsap";
  */
 export function HomeMotion({ children }: { children: ReactNode }) {
   const root = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const el = root.current;
+    if (!el) return;
+    const chapters = [...el.querySelectorAll<HTMLElement>("[data-moment]")];
+    const html = document.documentElement;
+    let frame = 0;
+    const update = () => {
+      frame = 0;
+      // The chapter the header is sitting on (on phones the header may be tucked away).
+      const header = document.querySelector("header");
+      const line = Math.max(header?.getBoundingClientRect().bottom ?? 0, 0) + 8;
+      const current =
+        chapters.findLast((c) => c.getBoundingClientRect().top <= line) ?? chapters[0];
+      if (current) html.dataset.moment = current.dataset.moment;
+    };
+    const onScroll = () => {
+      frame ||= requestAnimationFrame(update);
+    };
+    update();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    return () => {
+      cancelAnimationFrame(frame);
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+      delete html.dataset.moment;
+    };
+  }, []);
 
   useScrollScene(root, ({ gsap, root }) => {
     for (const title of root.querySelectorAll<HTMLElement>("[data-rise]")) {

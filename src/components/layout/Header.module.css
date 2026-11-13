@@ -4,8 +4,9 @@
   color: var(--gold-text);
   border-bottom: 1px solid var(--gold-line);
   padding: 9px 16px;
+  font-family: var(--mono);
   font-size: 0.7rem;
-  letter-spacing: 0.22em;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
 }
 .announcementLink {
@@ -26,19 +27,19 @@
   background: var(--bg);
   border-bottom: 1px solid var(--line);
 }
-/* Logo centred, actions on the right; the nav is a second row underneath. */
+/* One row: logo on the left, the menu, then search, language and cart. */
 .bar {
   display: grid;
-  grid-template-columns: 1fr auto 1fr;
+  grid-template-columns: auto 1fr auto;
   align-items: center;
-  column-gap: 16px;
+  column-gap: 28px;
   position: relative;
 }
 .logoLink {
-  grid-column: 2;
+  grid-column: 1;
   grid-row: 1;
   display: block;
-  padding-block: 22px;
+  padding-block: 20px;
   text-decoration: none;
   transition: padding 0.3s ease;
 }
@@ -54,23 +55,21 @@
   gap: 14px;
 }
 .nav {
-  grid-column: 1 / -1;
-  grid-row: 2;
+  grid-column: 2;
+  grid-row: 1;
+  justify-self: end;
 }
 .nav > ul {
   display: flex;
   justify-content: center;
-  gap: 40px;
+  gap: 30px;
   list-style: none;
   margin: 0;
-  padding: 14px 0 16px;
-  border-top: 1px solid var(--line);
-  font-size: 0.72rem;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  transition: padding 0.3s ease;
+  padding: 0;
+  font-size: 0.95rem;
+  font-weight: 500;
 }
-/* Top-level links: a gold line grows from the middle on hover. */
+/* Top-level links: a sun-coloured line grows under them on hover. */
 .nav > ul > li > a {
   position: relative;
   text-decoration: none;
@@ -83,10 +82,12 @@
   position: absolute;
   left: 0;
   right: 0;
-  bottom: -1px;
-  height: 1px;
-  background: var(--gold-text);
+  bottom: -3px;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--accent);
   transform: scaleX(0);
+  transform-origin: left;
   transition: transform var(--dur-base) var(--ease-out);
 }
 .nav > ul > li > a:hover {
@@ -98,7 +99,7 @@
   transform: scaleX(1);
 }
 .nav > ul > li > a[aria-current="page"] {
-  color: var(--gold-text);
+  color: var(--ink);
 }
 .menuToggle,
 .menuHead,
@@ -203,9 +204,8 @@
   border: 0;
   background: none;
   color: var(--ink);
-  font-size: 0.7rem;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
+  font-size: 0.95rem;
+  font-weight: 500;
   cursor: pointer;
 }
 .searchButton:hover {
@@ -216,8 +216,14 @@
   height: 20px;
 }
 @media (max-width: 1100px) {
+  /* The word stays for screen readers. */
   .searchButton span {
-    display: none;
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
   }
 }
 @media (max-width: 760px) {
@@ -233,9 +239,9 @@
 /* Phones and small tablets: one row, and the nav drops down from Menu. */
 @media (max-width: 1000px) {
   .menuToggle {
-    grid-column: 1;
+    grid-column: 2;
     grid-row: 1;
-    justify-self: start;
+    justify-self: end;
     display: inline-flex;
     align-items: center;
     gap: 8px;
@@ -244,9 +250,8 @@
     border: 0;
     background: none;
     color: var(--ink);
-    font-size: 0.7rem;
-    letter-spacing: 0.22em;
-    text-transform: uppercase;
+    font-size: 0.95rem;
+    font-weight: 500;
     cursor: pointer;
   }
   .menuToggle svg {
@@ -254,7 +259,7 @@
     height: 22px;
   }
   .logoLink {
-    padding-block: 18px;
+    padding-block: 16px;
   }
   .drop {
     display: none;
@@ -336,7 +341,7 @@
     display: none;
   }
   .logo {
-    font-size: 1.45rem;
+    font-size: 1.5rem;
   }
   .actions .langBar {
     display: none;
@@ -352,17 +357,11 @@
   padding-block: 12px;
 }
 :global(html[data-scrolled]) .logo {
-  font-size: 1.7rem;
-}
-:global(html[data-scrolled]) .nav > ul {
-  padding-block: 10px 11px;
+  font-size: 1.5rem;
 }
 @media (max-width: 560px) {
-  :global(html[data-scrolled]) .logoLink {
-    padding-block: 12px;
-  }
   :global(html[data-scrolled]) .logo {
-    font-size: 1.25rem;
+    font-size: 1.35rem;
   }
 }
 @media (prefers-reduced-motion: reduce) {
@@ -387,5 +386,83 @@
   }
   :global(html[data-scroll-down]) .top:not(:has(.isOpen)) {
     transform: translateY(-100%);
+  }
+}
+
+/* On the home page the header takes on the light of the chapter under it
+   (HomeMotion names the moment on <html>). */
+.top {
+  transition:
+    background-color 0.7s var(--ease-out),
+    color 0.7s var(--ease-out),
+    transform var(--dur-base) var(--ease-out);
+}
+:global(html[data-moment="walk"]) .top {
+  --bg: #e6d8c0;
+  --surface: #efe3cf;
+}
+:global(html[data-moment="clean"]) .top {
+  --bg: #eef4f1;
+  --surface: #f6faf8;
+  --ink: #14231d;
+  --gold: #14231d;
+  --gold-hover: #2b4037;
+  --on-gold: #eef4f1;
+  --logo-heart: #14231d;
+  --logo-name: #14231d;
+}
+:global(html[data-moment="nap"]) .top {
+  --bg: #f4d39c;
+  --surface: #f9e2bb;
+  --ink: #3a2408;
+  --gold: #3a2408;
+  --gold-hover: #573912;
+  --on-gold: #f9e6c4;
+  --accent: #c8792c;
+  --logo-paw: #c8792c;
+  --logo-heart: #3a2408;
+  --logo-name: #3a2408;
+}
+:global(html[data-moment="night"]) .top,
+:global(html[data-moment="end"]) .top {
+  --bg: #141b33;
+  --surface: #1b2444;
+  --panel: #1f294d;
+  --ink: #f3ebdd;
+  --ink-soft: #d9d0c0;
+  --muted: #b9b1a3;
+  --line: rgba(243, 235, 221, 0.16);
+  --gold: #f3ebdd;
+  --gold-text: #f6c66a;
+  --gold-ink: #f9d58c;
+  --gold-hover: #ffffff;
+  --on-gold: #141b33;
+  --ghost-line: rgba(243, 235, 221, 0.55);
+  --logo-paw: #f6c66a;
+  --logo-heart: #f3ebdd;
+  --logo-name: #f3ebdd;
+  color: var(--ink);
+}
+
+/* Narrow computers: keep the menu on one line. */
+.nav > ul > li > a {
+  white-space: nowrap;
+}
+@media (min-width: 1001px) and (max-width: 1240px) {
+  .bar {
+    column-gap: 18px;
+  }
+  .nav > ul {
+    gap: 18px;
+    font-size: 0.9rem;
+  }
+  /* The word stays for screen readers. */
+  .searchButton span {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
   }
 }

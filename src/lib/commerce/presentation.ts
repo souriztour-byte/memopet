@@ -177,37 +177,3 @@ export function collectionPresentation(handle: string, title = ""): CollectionPr
   const illustration = illustrationFor([], "", `${handle} ${title}`);
   return { tile: tileFor(illustration), illustration };
 }
-
-/**
- * Photos the home hero cross-fades between (the first one loads first).
- * `ai` marks an AI illustration, which shows the AI note while it's on screen;
- * `focus` is the part of the photo to keep in view when it's cropped.
- */
-export const HERO_SLIDES = [
-  { src: photoUrl("luxury-cat-sofa-bed/cat-lounging.jpg"), alt: "comfortBeds", ai: false },
-  { src: photoUrl("warming-sleeping-bag-bed/cat-sleeping.jpg"), alt: "catAsleep", ai: false },
-  { src: photoUrl("paw-washer-cup/in-use-ai.jpg"), alt: "corgiInUse", ai: true, focus: "center 12%" },
-  { src: photoUrl("luxury-cat-sofa-bed/cat-playing.jpg"), alt: "sofaPlay", ai: false },
-] as const satisfies readonly { src: string; alt: PhotoAlt; ai: boolean; focus?: string }[];
-
-/** Photos for the home page's story sections and guide (public/photos). */
-export const HOME_PHOTOS = {
-  comfort: [
-    { src: photoUrl("luxury-cat-sofa-bed/cat-lounging.jpg"), alt: "comfortBeds" },
-    { src: photoUrl("warming-sleeping-bag-bed/cat-sleeping.jpg"), alt: "catAsleep" },
-    { src: photoUrl("warming-sleeping-bag-bed/ears.jpg"), alt: "bedEars" },
-  ],
-  care: [
-    { src: photoUrl("paw-washer-cup/colours.jpg"), alt: "cupColours" },
-    { src: photoUrl("silicone-paw-washer/dog-and-cats.jpg"), alt: "pawInCup" },
-    { src: photoUrl("silicone-paw-washer/in-use-ai.jpg"), alt: "dogInUse", ai: true },
-    { src: photoUrl("paw-washer-cup/brushes.jpg"), alt: "cupBrushes" },
-  ],
-  guideMain: { src: photoUrl("warming-sleeping-bag-bed/cat-sleeping.jpg"), alt: "catAsleep" },
-  guideOrder: { src: photoUrl("paw-washer-cup/brushes.jpg"), alt: "cupBrushes" },
-  guideDelivery: { src: photoUrl("luxury-cat-sofa-bed/coffee.jpg"), alt: "sofaCoffee" },
-  guideFaq: { src: photoUrl("warming-sleeping-bag-bed/ears.jpg"), alt: "bedEars" },
-} as const satisfies {
-  comfort: readonly { src: string; alt: PhotoAlt }[];
-  care: readonly { src: string; alt: PhotoAlt; ai?: boolean }[];
-} & Record<`guide${string}`, { src: string; alt: PhotoAlt }>;

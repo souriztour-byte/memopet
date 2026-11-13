@@ -56,7 +56,7 @@ export function WelcomeSignup() {
   };
 
   return (
-    <section className={styles.band} aria-labelledby="welcome-title">
+    <section className={`night ${styles.band}`} aria-labelledby="welcome-title">
       <span className={styles.watermark} aria-hidden="true">
         Club
       </span>

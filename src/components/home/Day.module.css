@@ -391,8 +391,7 @@
   .cta {
     animation-delay: 0.42s;
   }
-  .sunrise,
-  .hero::before {
+  .sunrise {
     animation: sun-up 2.2s var(--ease-out) both;
   }
   .arch {
@@ -1370,28 +1369,6 @@
   .ch.ch {
     scroll-margin-top: 0px;
   }
-  /* A warm glow rises behind the first words, so the first screen has its sun. */
-  .hero {
-    position: relative;
-    isolation: isolate;
-  }
-  .hero::before {
-    content: "";
-    position: absolute;
-    z-index: -1;
-    right: -170px;
-    top: -70px;
-    width: 400px;
-    height: 400px;
-    border-radius: 50%;
-    background: radial-gradient(
-      circle,
-      rgba(255, 205, 120, 0.75) 0%,
-      rgba(240, 160, 60, 0.32) 40%,
-      rgba(240, 160, 60, 0) 70%
-    );
-    pointer-events: none;
-  }
   .sunset {
     left: 70%;
     top: 22px;
@@ -1428,15 +1405,31 @@
     margin-left: 4px;
   }
 
+  /* The first screen opens on the product: photo, name and price first,
+     then the headline and the buttons; the longer sentence follows them. */
   .dawn .content {
-    padding-top: 76px;
+    padding-top: 18px;
+  }
+  .hero {
+    gap: 26px;
+  }
+  .heroText {
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 0;
   }
   .heroTitle {
-    margin: 14px 0 18px;
-    font-size: clamp(3rem, 15.4vw, 3.9rem);
+    margin: 10px 0 0;
+    font-size: clamp(2.6rem, 12.8vw, 3.3rem);
   }
   .cta {
-    margin-top: 24px;
+    order: 1;
+    margin-top: 22px;
+  }
+  .lead {
+    order: 2;
+    margin-top: 22px;
+    font-size: 1rem;
   }
   .cta :global(.btn) {
     flex: 1 1 auto;
@@ -1444,9 +1437,10 @@
     white-space: nowrap;
   }
   .window {
+    order: -1;
     justify-self: center;
-    width: min(330px, 86%);
-    margin-top: 30px;
+    width: min(300px, 76%);
+    margin-top: 0;
   }
   .sunrise {
     top: -50px;
@@ -1455,8 +1449,8 @@
     margin-left: -190px;
   }
   .arch {
-    aspect-ratio: 330 / 400;
-    border-radius: 170px 170px 0 0;
+    aspect-ratio: 300 / 330;
+    border-radius: 150px 150px 0 0;
   }
   .caption {
     left: -22px;
@@ -1610,5 +1604,47 @@
   }
   .quiz {
     margin-top: 28px;
+  }
+}
+
+/* Short or narrow phones (iPhone SE, small Androids): a smaller photo and
+   headline, and both buttons side by side, so the first screen still holds
+   the product, the headline and the buttons. */
+@media (max-width: 760px) and (max-height: 760px) {
+  .window {
+    width: min(232px, 62%);
+  }
+  .sunrise {
+    top: -40px;
+    width: 300px;
+    height: 300px;
+    margin-left: -150px;
+  }
+  .dawn .content {
+    padding-top: 10px;
+  }
+  .hero {
+    gap: 16px;
+  }
+  .heroTitle {
+    margin-top: 6px;
+    font-size: clamp(2.2rem, 10.6vw, 2.6rem);
+  }
+  .cta {
+    margin-top: 16px;
+  }
+}
+@media (max-width: 400px) {
+  .cta {
+    flex-wrap: nowrap;
+    gap: 8px;
+  }
+  .hero .cta :global(.btn.btn) {
+    flex: 1 1 auto;
+    min-width: 0;
+    min-height: 50px;
+    padding-inline: 12px;
+    gap: 8px;
+    font-size: 0.88rem;
   }
 }

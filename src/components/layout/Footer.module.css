@@ -13,6 +13,17 @@
   margin-top: 16px;
   color: var(--muted);
 }
+.email {
+  display: inline-block;
+  margin-top: 14px;
+  color: var(--ink);
+  text-decoration: underline;
+  text-decoration-color: var(--gold-line);
+  text-underline-offset: 5px;
+}
+.email:hover {
+  text-decoration-color: currentColor;
+}
 .logo {
   font-size: 1.6rem;
 }

@@ -200,11 +200,14 @@ The route checks each webhook’s HMAC signature before it clears the cache (bot
 
 ## Store details
 
-Business facts are never hard-coded. Set these and the Contact page, FAQ and policies pick them up:
+Business facts come from the shop owner, never invented. The shop's email,
+mimipets2026@gmail.com, is set in `src/lib/config.ts` and shows on the Contact page, in the
+footer, the FAQ and the policies. The rest are set here (`NEXT_PUBLIC_SUPPORT_EMAIL` replaces
+the email if set):
 
 ```
 NEXT_PUBLIC_SITE_URL=https://mimipets.shop
-NEXT_PUBLIC_SUPPORT_EMAIL=hello@mimipets.shop
+NEXT_PUBLIC_SUPPORT_EMAIL=
 NEXT_PUBLIC_INSTAGRAM_HANDLE=mimipets
 NEXT_PUBLIC_LEGAL_BUSINESS_NAME=...
 NEXT_PUBLIC_LEGAL_BUSINESS_ADDRESS=...

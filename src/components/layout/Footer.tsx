@@ -28,6 +28,11 @@ export async function Footer() {
         <div className={styles.brand}>
           <Wordmark className={styles.logo} />
           <p>{dict.brand.tagline}</p>
+          {siteConfig.contact.email ? (
+            <a href={`mailto:${siteConfig.contact.email}`} className={styles.email}>
+              {siteConfig.contact.email}
+            </a>
+          ) : null}
         </div>
         <nav aria-label={t.shop} className={styles.col}>
           <h2>{t.shop}</h2>

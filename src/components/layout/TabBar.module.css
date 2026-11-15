@@ -128,3 +128,13 @@
   --gold-text: #f6c66a;
   --gold-ink: #f9d58c;
 }
+/* Home page: like the header, the bar has no edge line and lets the day's
+   colours through, softly blurred. */
+@media (max-width: 760px) {
+  :global(html[data-moment]) .bar {
+    border-top-color: transparent;
+    background-color: color-mix(in srgb, var(--surface) 72%, transparent);
+    -webkit-backdrop-filter: blur(18px) saturate(1.15);
+    backdrop-filter: blur(18px) saturate(1.15);
+  }
+}

@@ -13,6 +13,10 @@
 .ch.ch {
   scroll-margin-top: calc(var(--header-h) - 16px);
 }
+/* The morning is the top of the page: going back to it shows the header too. */
+.dawn.dawn.dawn {
+  scroll-margin-top: 100vh;
+}
 .inner {
   position: relative;
   display: grid;
@@ -122,29 +126,6 @@
       animation: paw-land linear both;
       animation-timeline: view();
       animation-range: entry 10% entry 90%;
-    }
-  }
-}
-@media (prefers-reduced-motion: no-preference) {
-  @supports (animation-timeline: view()) {
-    .steps svg {
-      animation: paw-land linear both;
-      animation-timeline: view();
-    }
-    .steps svg:nth-child(1) {
-      animation-range: cover 6% cover 13%;
-    }
-    .steps svg:nth-child(2) {
-      animation-range: cover 10% cover 17%;
-    }
-    .steps svg:nth-child(3) {
-      animation-range: cover 14% cover 21%;
-    }
-    .steps svg:nth-child(4) {
-      animation-range: cover 18% cover 25%;
-    }
-    .steps svg:nth-child(5) {
-      animation-range: cover 22% cover 29%;
     }
   }
 }
@@ -884,16 +865,26 @@
   font-size: 0.94rem;
   opacity: 0.75;
 }
+/* The closing links: soft cream, in plain readable text, with a faint
+   underline that firms up under the pointer. */
 .quiz {
   display: inline-block;
-  text-decoration: none;
   margin-top: 64px;
-  padding: 16px 0;
-  color: #f6c66a;
-  font-size: 0.8rem;
+  padding: 14px 0;
+  color: rgba(243, 235, 221, 0.78);
+  font-size: 1.02rem;
+  line-height: 1.5;
+  text-decoration: underline;
+  text-decoration-color: rgba(246, 198, 106, 0.35);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 6px;
+  transition:
+    color var(--dur-fast),
+    text-decoration-color var(--dur-fast);
 }
 .quiz:hover {
-  color: #fff;
+  color: #f3ebdd;
+  text-decoration-color: rgba(246, 198, 106, 0.8);
 }
 .quiz span {
   display: inline-block;
@@ -1145,11 +1136,6 @@
   opacity: 1;
 }
 
-/* The paw steps between chapters are for phones only. */
-.steps {
-  display: none;
-}
-
 .endLinks {
   display: flex;
   flex-wrap: wrap;
@@ -1161,8 +1147,8 @@
   margin-top: 0;
 }
 .again {
-  color: #f3ebdd;
-  opacity: 0.8;
+  color: rgba(243, 235, 221, 0.55);
+  text-decoration-color: rgba(243, 235, 221, 0.2);
 }
 .again:hover span {
   translate: 0 -5px;
@@ -1487,11 +1473,10 @@
   .walkGrid {
     display: block;
   }
-  .splat {
-    position: absolute;
-    right: -6px;
-    top: 20px;
-    width: 150px;
+  /* Phones keep the walk clean: no muddy prints, no line along the top. */
+  .splat,
+  .dial {
+    display: none;
   }
   .clean .content,
   .nap .content {
@@ -1612,31 +1597,6 @@
   .endLinks {
     display: grid;
     margin-top: 28px;
-  }
-  /* The trail on phones: five prints walk across at the end of a chapter,
-     each landing as it scrolls into view. */
-  .steps {
-    display: flex;
-    justify-content: center;
-    gap: 26px;
-    margin-top: 52px;
-  }
-  .steps svg {
-    flex: none;
-    width: 22px;
-    height: 24px;
-  }
-  .steps svg:nth-child(odd) {
-    rotate: 78deg;
-    translate: 0 -9px;
-  }
-  .steps svg:nth-child(even) {
-    rotate: 102deg;
-    translate: 0 9px;
-  }
-  .dawn .steps {
-    margin-top: 36px;
-    padding-bottom: 28px;
   }
   .three {
     grid-template-columns: 1fr;

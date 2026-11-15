@@ -374,11 +374,15 @@ export default async function HomePage(props: PageProps<"/[lang]">) {
           ))}
         </ul>
         <div className={styles.endLinks}>
-          <Link href={href("/quiz")} className={`mono ${styles.quiz}`}>
-            {t.quiz} <span aria-hidden="true">→</span>
+          <Link href={href("/quiz")} className={styles.quiz}>
+            {t.quiz}
+            {"\u00a0"}
+            <span aria-hidden="true">→</span>
           </Link>
-          <a href="#dawn" className={`mono ${styles.quiz} ${styles.again}`}>
-            {t.backToMorning} <span aria-hidden="true">↑</span>
+          <a href="#dawn" className={`${styles.quiz} ${styles.again}`}>
+            {t.backToMorning}
+            {"\u00a0"}
+            <span aria-hidden="true">↑</span>
           </a>
         </div>
       </DayChapter>

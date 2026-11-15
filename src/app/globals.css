@@ -34,9 +34,10 @@
   --on-photo: #f4efe6;
   --on-photo-soft: #e2dacd;
   --gold-photo: #c9a96e;
-  --display: var(--font-display), "Fraunces", Georgia, "Times New Roman", serif;
-  --body: var(--font-body), "Instrument Sans", "Segoe UI", system-ui, -apple-system, sans-serif;
-  --mono: var(--font-mono), "DM Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  --display: var(--font-display), "Cormorant Garamond", Georgia, "Times New Roman", serif;
+  --body: var(--font-body), "Inter", "Segoe UI", system-ui, -apple-system, sans-serif;
+  /* The small labels (times of day, spec names) are Inter too, in spaced capitals. */
+  --mono: var(--body);
   /* Corners: controls (buttons, pills, fields) and cards (boxes, FAQ rows). */
   --radius: 10px;
   --card-radius: 14px;
@@ -1167,19 +1168,21 @@ html.motion img.soft-img:not([data-loaded]) {
   --header-h: 72px;
 }
 /* ─── Day look: type and controls ────────────────────────────────────────
-   Light Fraunces headings, sentence-case pill buttons, and DM Mono for the
-   small labels. */
+   Cormorant Garamond headings, Inter for the rest, sentence-case pill
+   buttons, and small labels in spaced capitals. Cormorant's lower-case
+   letters are small for their size, so headings are scaled up to match
+   (font-size-adjust keeps every heading size in proportion). */
 :root[data-theme="day"] :is(h1, h2, h3, h4) {
-  font-weight: 300;
-  letter-spacing: -0.03em;
+  font-weight: 500;
+  letter-spacing: -0.015em;
   line-height: 1;
-  font-optical-sizing: auto;
+  font-size-adjust: 0.46;
 }
 :root[data-theme="day"] :is(h1, h2, h3, h4) :is(em, i) {
-  font-weight: 300;
+  font-weight: 500;
 }
 :root[data-theme="day"] h3 {
-  letter-spacing: -0.02em;
+  letter-spacing: -0.01em;
   line-height: 1.1;
 }
 :root[data-theme="day"] .eyebrow {
@@ -1235,12 +1238,14 @@ html.motion img.soft-img:not([data-loaded]) {
 :root[data-theme="day"] .btn:active:not(:disabled) {
   transform: scale(0.97);
 }
-/* The mono label used across the day pages: times, numbers, spec names. */
+/* The small label used across the day pages: times and spec names. */
 .mono {
   font-family: var(--mono);
-  font-size: 0.75rem;
+  font-size: 0.72rem;
+  font-weight: 500;
   letter-spacing: 0.14em;
   text-transform: uppercase;
+  font-variant-numeric: tabular-nums;
 }
 :root[data-theme="day"] .btn-gold::after {
   background: linear-gradient(105deg, transparent 30%, rgba(255, 244, 222, 0.2) 50%, transparent 70%);

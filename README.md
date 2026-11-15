@@ -2,11 +2,10 @@
 
 A Next.js storefront for **MimiPets** (“Little things. Happier pets.” / “Pequeños detalles.
 Mascotas más felices.”), first built from the `mimopets_4.html` prototype and now in a
-luxury look with three palettes: **white & gold** (current: warm ivory, champagne gold,
-espresso and soft beige), **sand** and **black & gold**, switched with `look` in
-`src/lib/config.ts` (palettes in `src/app/globals.css`). All use Playfair Display for headings
-and the MIMIPETS wordmark, and Inter for text. The home page is laid out like a catalogue: the name over a framed photo, a row
-of products on stone tiles, product + lifestyle pairs, the promises and a guide block. Products,
+"One good day" look (`look = "day"` in `src/lib/config.ts`, palettes in
+`src/app/globals.css`): the home page follows a pet's day from sunrise to lights out, each
+product in its moment. Headings and the MimiPets wordmark use Cormorant Garamond; text,
+prices, buttons and the small labels use Inter. See `docs/MOTION.md` for the scroll story. Products,
 prices, the cart and checkout come from Shopify through the **Storefront API**. The site is in
 **English and Spanish**. The share-preview images (`src/lib/og/frame.tsx`) still use the
 prototype's purple and pink.

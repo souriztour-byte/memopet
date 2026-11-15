@@ -711,23 +711,31 @@
 }
 .buy {
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
   gap: 16px;
   margin-top: 22px;
+}
+/* The button keeps its words on one line; where there is no room beside
+   the price, it moves under it. */
+.buy :global(.btn) {
+  white-space: nowrap;
 }
 .priceBox {
   display: grid;
   gap: 2px;
 }
 .price {
-  font-family: var(--display);
-  font-size: 2.1rem;
-  font-weight: 400;
+  font-family: var(--body);
+  font-size: 1.75rem;
+  font-weight: 600;
   letter-spacing: -0.02em;
-  line-height: 1.1;
+  line-height: 1.15;
+  font-variant-numeric: tabular-nums;
 }
 .details {
+  white-space: nowrap;
   font-size: 0.875rem;
   font-weight: 500;
   color: var(--ink-soft);
@@ -1201,6 +1209,10 @@
 
 /* ── Small tablets: the opening stacks, as on phones ─────────────────── */
 @media (max-width: 900px) {
+  /* One product card per row, so its colours and sizes have room. */
+  .plates {
+    grid-template-columns: minmax(0, 560px);
+  }
   .hero {
     grid-template-columns: 1fr;
     gap: 34px;
@@ -1516,10 +1528,13 @@
     margin-top: 18px;
   }
   .price {
-    font-size: 1.75rem;
+    font-size: 1.5rem;
   }
-  .buy :global(.btn) {
-    padding-inline: 22px;
+  .buy :global(.btn.btn) {
+    flex: none;
+    padding-inline: 18px;
+    font-size: 0.92rem;
+    white-space: nowrap;
   }
   .proof {
     margin-top: 48px;

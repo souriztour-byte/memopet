@@ -182,10 +182,11 @@
   line-height: 1;
 }
 .price {
-  font-family: var(--display);
-  font-weight: 500;
+  font-family: var(--body);
+  font-weight: 600;
+  letter-spacing: -0.02em;
   color: var(--gold-ink);
-  font-size: 2rem;
+  font-size: 1.75rem;
   line-height: 1;
   font-variant-numeric: lining-nums tabular-nums;
 }
@@ -459,8 +460,10 @@
   color: var(--ink-soft);
 }
 .offerPrice {
-  font-family: var(--display);
-  font-size: 1.35rem;
+  font-family: var(--body);
+  font-weight: 600;
+  font-size: 1.2rem;
+  letter-spacing: -0.01em;
   line-height: 1.1;
 }
 .offerPrice s {

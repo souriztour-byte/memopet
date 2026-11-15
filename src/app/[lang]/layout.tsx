@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { DM_Mono, Fraunces, Instrument_Sans } from "next/font/google";
+import { Cormorant_Garamond, Inter } from "next/font/google";
 import { notFound } from "next/navigation";
 import { CartDrawer } from "@/components/cart/CartDrawer";
 import { CartProvider } from "@/components/cart/CartProvider";
@@ -20,27 +20,20 @@ import { getProducts, isDemoMode } from "@/lib/commerce";
 import { look, lookColor, siteConfig } from "@/lib/config";
 import "../globals.css";
 
-// Fraunces (light, with its optical-size axis) for headings and the wordmark,
-// Instrument Sans for text, DM Mono for the small labels and times of day.
-// The first two are variable fonts: loading them without a `weight` list
-// fetches each file once (listing weights makes Google repeat the files, which
-// breaks the Turbopack build). DM Mono has no variable version.
-const fraunces = Fraunces({
+// Cormorant Garamond for headings and the wordmark (elegant and warm), Inter
+// for everything else: text, prices, buttons and the small labels. Both are
+// variable fonts: loading them without a `weight` list fetches each file once
+// (listing weights makes Google repeat the files, which breaks the Turbopack
+// build).
+const cormorant = Cormorant_Garamond({
   subsets: ["latin"],
   style: ["normal", "italic"],
-  axes: ["opsz"],
   variable: "--font-display",
   display: "swap",
 });
-const instrument = Instrument_Sans({
+const inter = Inter({
   subsets: ["latin"],
   variable: "--font-body",
-  display: "swap",
-});
-const mono = DM_Mono({
-  subsets: ["latin"],
-  weight: ["400", "500"],
-  variable: "--font-mono",
   display: "swap",
 });
 
@@ -90,7 +83,7 @@ export default async function RootLayout({ children, params }: LayoutProps<"/[la
       lang={lang}
       data-theme={look}
       data-scroll-behavior="smooth"
-      className={`${fraunces.variable} ${instrument.variable} ${mono.variable}`}
+      className={`${cormorant.variable} ${inter.variable}`}
     >
       <body>
         <a className="skip" href="#main">

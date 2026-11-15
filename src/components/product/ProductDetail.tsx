@@ -39,7 +39,7 @@ export function ProductDetail({
   children,
 }: {
   product: Product;
-  /** "No. 03 · 14:00 · The nap": the product's place in the day. */
+  /** "14:00 · The nap": the product's place in the day. */
   moment?: string | null;
   perks?: React.ReactNode;
   children?: React.ReactNode;

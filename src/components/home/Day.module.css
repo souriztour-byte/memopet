@@ -13,6 +13,10 @@
 .ch.ch {
   scroll-margin-top: calc(var(--header-h) - 16px);
 }
+/* The morning is the top of the page: going back to it shows the header too. */
+.dawn.dawn.dawn {
+  scroll-margin-top: 100vh;
+}
 .inner {
   position: relative;
   display: grid;
@@ -125,29 +129,6 @@
     }
   }
 }
-@media (prefers-reduced-motion: no-preference) {
-  @supports (animation-timeline: view()) {
-    .steps svg {
-      animation: paw-land linear both;
-      animation-timeline: view();
-    }
-    .steps svg:nth-child(1) {
-      animation-range: cover 6% cover 13%;
-    }
-    .steps svg:nth-child(2) {
-      animation-range: cover 10% cover 17%;
-    }
-    .steps svg:nth-child(3) {
-      animation-range: cover 14% cover 21%;
-    }
-    .steps svg:nth-child(4) {
-      animation-range: cover 18% cover 25%;
-    }
-    .steps svg:nth-child(5) {
-      animation-range: cover 22% cover 29%;
-    }
-  }
-}
 @keyframes paw-land {
   from {
     opacity: 0;
@@ -155,13 +136,33 @@
   }
 }
 
+/* Each chapter's light flows into the next: every chapter starts with the
+   colour the one before it ends on, and each fade is eased (it starts and ends
+   softly, mixed in OKLab), so no edge or crease shows where they meet. */
 /* ── Light for each moment ───────────────────────────────────────────── */
 .dawn {
   --trail-line: rgba(42, 31, 26, 0.28);
   --chip: #fbe6d3;
   --orb: radial-gradient(circle at 35% 30%, #ffd58a, #f0a03c);
   --glow: rgba(240, 160, 60, 0.45);
-  background: linear-gradient(180deg, #fdf1e4 0%, #fbe4cf 46%, #f8e3cd 100%);
+  background: linear-gradient(
+    180deg,
+    #fdf1e4 0.0%,
+    #fdf1e4 7.14%,
+    #fdf0e2 14.29%,
+    #fdefe0 21.43%,
+    #fcedde 28.57%,
+    #fcebdb 35.71%,
+    #fce9d7 42.86%,
+    #fce7d4 50.0%,
+    #fbe5d1 57.14%,
+    #fbe4cf 64.29%,
+    #fae4ce 71.43%,
+    #f9e3ce 78.57%,
+    #f8e3cd 85.71%,
+    #f8e3cd 92.86%,
+    #f8e3cd 100.0%
+  );
 }
 .walk {
   --ink: #33261a;
@@ -170,7 +171,24 @@
   --chip: #e6d8c0;
   --orb: radial-gradient(circle at 35% 30%, #ffe19a, #f3b24a);
   --glow: rgba(243, 178, 74, 0.45);
-  background: linear-gradient(180deg, #f8e3cd 0%, #e9dcc6 30%, #e3d4ba 100%);
+  background: linear-gradient(
+    180deg,
+    #f8e3cd 0.0%,
+    #f8e3cd 7.14%,
+    #f7e3cd 14.29%,
+    #f6e2cc 21.43%,
+    #f4e2cc 28.57%,
+    #f2e1cb 35.71%,
+    #efe1cb 42.86%,
+    #ede0ca 50.0%,
+    #ebddc6 57.14%,
+    #e9dbc3 64.29%,
+    #e7d9c0 71.43%,
+    #e5d7bd 78.57%,
+    #e4d5bc 85.71%,
+    #e3d4ba 92.86%,
+    #e3d4ba 100.0%
+  );
 }
 .clean {
   --ink: #14231d;
@@ -185,7 +203,27 @@
   --chip: #eef4f1;
   --orb: radial-gradient(circle at 35% 30%, #fff3c4, #ffd45e);
   --glow: rgba(255, 212, 94, 0.6);
-  background: linear-gradient(180deg, #e3d4ba 0, #eef4f1 220px, #eef4f1 100%);
+  background: linear-gradient(
+    180deg,
+    #e3d4ba 0px,
+    #e3d4bb 35px,
+    #e3d5bc 70px,
+    #e4d7bf 105px,
+    #e5d9c2 140px,
+    #e6dbc6 175px,
+    #e7decb 210px,
+    #e8e1d1 245px,
+    #e9e4d6 280px,
+    #eae7db 315px,
+    #ebeae0 350px,
+    #ecede5 385px,
+    #edefe9 420px,
+    #edf1ec 455px,
+    #eef3ef 490px,
+    #eef4f0 525px,
+    #eef4f1 560px,
+    #eef4f1 100%
+  );
 }
 .nap {
   --ink: #3a2408;
@@ -201,7 +239,34 @@
   --chip: #f3cf96;
   --orb: radial-gradient(circle at 35% 30%, #fff0bf, #f6b545);
   --glow: rgba(255, 236, 170, 0.9);
-  background: linear-gradient(180deg, #eef4f1 0, #f6dcae 240px, #f1c283 100%);
+  background: linear-gradient(
+    180deg,
+    #eef4f1 0px,
+    #eef4f0 32px,
+    #eef3ee 65px,
+    #eff2eb 98px,
+    #f0f0e6 130px,
+    #f0eee1 162px,
+    #f1ebda 195px,
+    #f2e9d3 228px,
+    #f3e6cc 260px,
+    #f4e4c6 292px,
+    #f4e2c1 325px,
+    #f5e0bb 358px,
+    #f5dfb7 390px,
+    #f6deb3 422px,
+    #f6ddb0 455px,
+    #f6dcaf 488px,
+    #f6dcae 520px,
+    #f6dbac calc(520px + (100% - 520px) * 0.125),
+    #f5d8a8 calc(520px + (100% - 520px) * 0.25),
+    #f5d4a1 calc(520px + (100% - 520px) * 0.375),
+    #f4cf99 calc(520px + (100% - 520px) * 0.5),
+    #f3ca91 calc(520px + (100% - 520px) * 0.625),
+    #f2c689 calc(520px + (100% - 520px) * 0.75),
+    #f1c385 calc(520px + (100% - 520px) * 0.875),
+    #f1c283 calc(520px + (100% - 520px) * 1.0)
+  );
 }
 .night {
   --trail-line: rgba(243, 235, 221, 0.3);
@@ -209,10 +274,31 @@
   --dusk: 230px;
   background-image: linear-gradient(
     180deg,
-    #f1c283 0,
-    #c9856a 90px,
-    #4b3a5e 200px,
-    #141b33 350px,
+    #f1c283 0px,
+    #f1c283 23px,
+    #f0c082 47px,
+    #efbe81 70px,
+    #edb97f 93px,
+    #e9b37c 117px,
+    #e4ab79 140px,
+    #dfa274 163px,
+    #d8976f 187px,
+    #cf8a6b 210px,
+    #be7d6b 233px,
+    #a7706f 257px,
+    #8e6170 280px,
+    #72516b 303px,
+    #584163 327px,
+    #44365b 350px,
+    #383153 373px,
+    #2f2c4c 397px,
+    #272845 420px,
+    #20233f 443px,
+    #1b203a 467px,
+    #171d36 490px,
+    #151c34 513px,
+    #141b33 537px,
+    #141b33 560px,
     #141b33 100%
   );
 }
@@ -410,8 +496,7 @@
   .cta {
     animation-delay: 0.42s;
   }
-  .sunrise,
-  .hero::before {
+  .sunrise {
     animation: sun-up 2.2s var(--ease-out) both;
   }
   .arch {
@@ -593,19 +678,12 @@
     scale: 1.04;
   }
 }
-.no,
 .flag {
   position: absolute;
   top: 16px;
   z-index: 1;
   padding: 7px 13px;
   border-radius: 999px;
-}
-.no {
-  left: 16px;
-  background: #fff;
-  color: #14231d;
-  box-shadow: 0 4px 12px -6px rgba(20, 35, 29, 0.35);
 }
 .flag {
   right: 16px;
@@ -738,23 +816,31 @@
 }
 .buy {
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
   gap: 16px;
   margin-top: 22px;
+}
+/* The button keeps its words on one line; where there is no room beside
+   the price, it moves under it. */
+.buy :global(.btn) {
+  white-space: nowrap;
 }
 .priceBox {
   display: grid;
   gap: 2px;
 }
 .price {
-  font-family: var(--display);
-  font-size: 2.1rem;
-  font-weight: 400;
+  font-family: var(--body);
+  font-size: 1.75rem;
+  font-weight: 600;
   letter-spacing: -0.02em;
-  line-height: 1.1;
+  line-height: 1.15;
+  font-variant-numeric: tabular-nums;
 }
 .details {
+  white-space: nowrap;
   font-size: 0.875rem;
   font-weight: 500;
   color: var(--ink-soft);
@@ -820,13 +906,8 @@
   opacity: 0.85;
 }
 .featureTitle {
-  display: grid;
-  gap: 10px;
   margin: 34px 0 16px;
   font-size: clamp(1.9rem, 3vw, 2.5rem);
-}
-.featureNo {
-  opacity: 0.75;
 }
 .night .content {
   padding-top: calc(var(--dusk) + 90px);
@@ -884,16 +965,26 @@
   font-size: 0.94rem;
   opacity: 0.75;
 }
+/* The closing links: soft cream, in plain readable text, with a faint
+   underline that firms up under the pointer. */
 .quiz {
   display: inline-block;
-  text-decoration: none;
   margin-top: 64px;
-  padding: 16px 0;
-  color: #f6c66a;
-  font-size: 0.8rem;
+  padding: 14px 0;
+  color: rgba(243, 235, 221, 0.78);
+  font-size: 1.02rem;
+  line-height: 1.5;
+  text-decoration: underline;
+  text-decoration-color: rgba(246, 198, 106, 0.35);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 6px;
+  transition:
+    color var(--dur-fast),
+    text-decoration-color var(--dur-fast);
 }
 .quiz:hover {
-  color: #fff;
+  color: #f3ebdd;
+  text-decoration-color: rgba(246, 198, 106, 0.8);
 }
 .quiz span {
   display: inline-block;
@@ -1145,11 +1236,6 @@
   opacity: 1;
 }
 
-/* The paw steps between chapters are for phones only. */
-.steps {
-  display: none;
-}
-
 .endLinks {
   display: flex;
   flex-wrap: wrap;
@@ -1161,8 +1247,8 @@
   margin-top: 0;
 }
 .again {
-  color: #f3ebdd;
-  opacity: 0.8;
+  color: rgba(243, 235, 221, 0.55);
+  text-decoration-color: rgba(243, 235, 221, 0.2);
 }
 .again:hover span {
   translate: 0 -5px;
@@ -1228,6 +1314,10 @@
 
 /* ── Small tablets: the opening stacks, as on phones ─────────────────── */
 @media (max-width: 900px) {
+  /* One product card per row, so its colours and sizes have room. */
+  .plates {
+    grid-template-columns: minmax(0, 560px);
+  }
   .hero {
     grid-template-columns: 1fr;
     gap: 34px;
@@ -1274,6 +1364,9 @@
   }
   .lineup a > :not(.thumb) {
     grid-column: 2;
+  }
+  .lineupMoment {
+    display: none;
   }
   .thumb {
     position: relative;
@@ -1384,28 +1477,6 @@
   .ch.ch {
     scroll-margin-top: 0px;
   }
-  /* A warm glow rises behind the first words, so the first screen has its sun. */
-  .hero {
-    position: relative;
-    isolation: isolate;
-  }
-  .hero::before {
-    content: "";
-    position: absolute;
-    z-index: -1;
-    right: -170px;
-    top: -70px;
-    width: 400px;
-    height: 400px;
-    border-radius: 50%;
-    background: radial-gradient(
-      circle,
-      rgba(255, 205, 120, 0.75) 0%,
-      rgba(240, 160, 60, 0.32) 40%,
-      rgba(240, 160, 60, 0) 70%
-    );
-    pointer-events: none;
-  }
   .sunset {
     left: 70%;
     top: 22px;
@@ -1442,15 +1513,31 @@
     margin-left: 4px;
   }
 
+  /* The first screen opens on the product: photo, name and price first,
+     then the headline and the buttons; the longer sentence follows them. */
   .dawn .content {
-    padding-top: 76px;
+    padding-top: 18px;
+  }
+  .hero {
+    gap: 26px;
+  }
+  .heroText {
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 0;
   }
   .heroTitle {
-    margin: 14px 0 18px;
-    font-size: clamp(3rem, 15.4vw, 3.9rem);
+    margin: 10px 0 0;
+    font-size: clamp(2.6rem, 12.8vw, 3.3rem);
   }
   .cta {
-    margin-top: 24px;
+    order: 1;
+    margin-top: 22px;
+  }
+  .lead {
+    order: 2;
+    margin-top: 22px;
+    font-size: 1rem;
   }
   .cta :global(.btn) {
     flex: 1 1 auto;
@@ -1458,9 +1545,10 @@
     white-space: nowrap;
   }
   .window {
+    order: -1;
     justify-self: center;
-    width: min(330px, 86%);
-    margin-top: 30px;
+    width: min(300px, 76%);
+    margin-top: 0;
   }
   .sunrise {
     top: -50px;
@@ -1469,8 +1557,8 @@
     margin-left: -190px;
   }
   .arch {
-    aspect-ratio: 330 / 400;
-    border-radius: 170px 170px 0 0;
+    aspect-ratio: 300 / 330;
+    border-radius: 150px 150px 0 0;
   }
   .caption {
     left: -22px;
@@ -1487,11 +1575,10 @@
   .walkGrid {
     display: block;
   }
-  .splat {
-    position: absolute;
-    right: -6px;
-    top: 20px;
-    width: 150px;
+  /* Phones keep the walk clean: no muddy prints, no line along the top. */
+  .splat,
+  .dial {
+    display: none;
   }
   .clean .content,
   .nap .content {
@@ -1546,10 +1633,13 @@
     margin-top: 18px;
   }
   .price {
-    font-size: 1.75rem;
+    font-size: 1.5rem;
   }
-  .buy :global(.btn) {
-    padding-inline: 22px;
+  .buy :global(.btn.btn) {
+    flex: none;
+    padding-inline: 18px;
+    font-size: 0.92rem;
+    white-space: nowrap;
   }
   .proof {
     margin-top: 48px;
@@ -1591,10 +1681,31 @@
     --dusk: 210px;
     background-image: linear-gradient(
       180deg,
-      #f1c283 0,
-      #c9856a 80px,
-      #4b3a5e 180px,
-      #141b33 300px,
+      #f1c283 0px,
+      #f1c283 20px,
+      #f0c082 40px,
+      #efbe81 60px,
+      #edb97f 80px,
+      #e9b37c 100px,
+      #e4ab79 120px,
+      #dfa274 140px,
+      #d8976f 160px,
+      #cf8a6b 180px,
+      #be7d6b 200px,
+      #a7706f 220px,
+      #8e6170 240px,
+      #72516b 260px,
+      #584163 280px,
+      #44365b 300px,
+      #383153 320px,
+      #2f2c4c 340px,
+      #272845 360px,
+      #20233f 380px,
+      #1b203a 400px,
+      #171d36 420px,
+      #151c34 440px,
+      #141b33 460px,
+      #141b33 480px,
       #141b33 100%
     );
   }
@@ -1613,31 +1724,6 @@
     display: grid;
     margin-top: 28px;
   }
-  /* The trail on phones: five prints walk across at the end of a chapter,
-     each landing as it scrolls into view. */
-  .steps {
-    display: flex;
-    justify-content: center;
-    gap: 26px;
-    margin-top: 52px;
-  }
-  .steps svg {
-    flex: none;
-    width: 22px;
-    height: 24px;
-  }
-  .steps svg:nth-child(odd) {
-    rotate: 78deg;
-    translate: 0 -9px;
-  }
-  .steps svg:nth-child(even) {
-    rotate: 102deg;
-    translate: 0 9px;
-  }
-  .dawn .steps {
-    margin-top: 36px;
-    padding-bottom: 28px;
-  }
   .three {
     grid-template-columns: 1fr;
     margin-top: 36px;
@@ -1650,5 +1736,47 @@
   }
   .quiz {
     margin-top: 28px;
+  }
+}
+
+/* Short or narrow phones (iPhone SE, small Androids): a smaller photo and
+   headline, and both buttons side by side, so the first screen still holds
+   the product, the headline and the buttons. */
+@media (max-width: 760px) and (max-height: 760px) {
+  .window {
+    width: min(232px, 62%);
+  }
+  .sunrise {
+    top: -40px;
+    width: 300px;
+    height: 300px;
+    margin-left: -150px;
+  }
+  .dawn .content {
+    padding-top: 10px;
+  }
+  .hero {
+    gap: 16px;
+  }
+  .heroTitle {
+    margin-top: 6px;
+    font-size: clamp(2.2rem, 10.6vw, 2.6rem);
+  }
+  .cta {
+    margin-top: 16px;
+  }
+}
+@media (max-width: 400px) {
+  .cta {
+    flex-wrap: nowrap;
+    gap: 8px;
+  }
+  .hero .cta :global(.btn.btn) {
+    flex: 1 1 auto;
+    min-width: 0;
+    min-height: 50px;
+    padding-inline: 12px;
+    gap: 8px;
+    font-size: 0.88rem;
   }
 }

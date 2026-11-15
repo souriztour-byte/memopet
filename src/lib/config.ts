@@ -1,8 +1,8 @@
 /**
- * Store-wide settings. Anything that is a business fact (contact details,
- * legal entity) comes from environment variables so nothing is invented in
- * code — when a value is missing the UI says "Coming soon" instead, exactly
- * like the prototype did. Interface text lives in `src/i18n/dictionaries`.
+ * Store-wide settings. Business facts (contact details, legal entity) come
+ * from the shop owner, never invented: the email they gave is set here, the
+ * rest come from environment variables. When a value is missing the UI says
+ * "Coming soon" instead. Interface text lives in `src/i18n/dictionaries`.
  */
 
 const clean = (value: string | undefined) => {
@@ -32,7 +32,8 @@ export const siteConfig = {
     clean(process.env.NEXT_PUBLIC_FEATURED_PRODUCT_HANDLE) ?? "silicone-paw-washer",
 
   contact: {
-    email: clean(process.env.NEXT_PUBLIC_SUPPORT_EMAIL),
+    /** The shop's email, given by the owner; NEXT_PUBLIC_SUPPORT_EMAIL replaces it. */
+    email: clean(process.env.NEXT_PUBLIC_SUPPORT_EMAIL) ?? "mimipets2026@gmail.com",
     instagram: instagramHandle
       ? { handle: `@${instagramHandle}`, url: `https://www.instagram.com/${instagramHandle}/` }
       : null,

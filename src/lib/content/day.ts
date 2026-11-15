@@ -3,7 +3,7 @@ import type { Illustration } from "@/lib/commerce/types";
 
 /**
  * "One good day": the shop is told as a pet's day. Each product belongs to a
- * moment of it, and carries a number in the order the day meets them.
+ * moment of it, in the order the day meets them.
  */
 export type Moment = "dawn" | "walk" | "clean" | "nap" | "night";
 export type ProductMoment = "clean" | "nap" | "night";
@@ -19,7 +19,7 @@ export const DAY_TIMES: Record<Moment, string> = {
 export type DayEntry<T> = {
   product: T;
   moment: ProductMoment;
-  /** "01", "02"… in the order of the day. */
+  /** "01", "02"… in the order of the day; it names the product's place on the home page. */
   number: string;
   time: string;
 };

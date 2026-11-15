@@ -2,11 +2,10 @@
 
 A Next.js storefront for **MimiPets** (“Little things. Happier pets.” / “Pequeños detalles.
 Mascotas más felices.”), first built from the `mimopets_4.html` prototype and now in a
-luxury look with three palettes: **white & gold** (current: warm ivory, champagne gold,
-espresso and soft beige), **sand** and **black & gold**, switched with `look` in
-`src/lib/config.ts` (palettes in `src/app/globals.css`). All use Playfair Display for headings
-and the MIMIPETS wordmark, and Inter for text. The home page is laid out like a catalogue: the name over a framed photo, a row
-of products on stone tiles, product + lifestyle pairs, the promises and a guide block. Products,
+"One good day" look (`look = "day"` in `src/lib/config.ts`, palettes in
+`src/app/globals.css`): the home page follows a pet's day from sunrise to lights out, each
+product in its moment. Headings and the MimiPets wordmark use Cormorant Garamond; text,
+prices, buttons and the small labels use Inter. See `docs/MOTION.md` for the scroll story. Products,
 prices, the cart and checkout come from Shopify through the **Storefront API**. The site is in
 **English and Spanish**. The share-preview images (`src/lib/og/frame.tsx`) still use the
 prototype's purple and pink.
@@ -201,11 +200,14 @@ The route checks each webhook’s HMAC signature before it clears the cache (bot
 
 ## Store details
 
-Business facts are never hard-coded. Set these and the Contact page, FAQ and policies pick them up:
+Business facts come from the shop owner, never invented. The shop's email,
+mimipets2026@gmail.com, is set in `src/lib/config.ts` and shows on the Contact page, in the
+footer, the FAQ and the policies. The rest are set here (`NEXT_PUBLIC_SUPPORT_EMAIL` replaces
+the email if set):
 
 ```
 NEXT_PUBLIC_SITE_URL=https://mimipets.shop
-NEXT_PUBLIC_SUPPORT_EMAIL=hello@mimipets.shop
+NEXT_PUBLIC_SUPPORT_EMAIL=
 NEXT_PUBLIC_INSTAGRAM_HANDLE=mimipets
 NEXT_PUBLIC_LEGAL_BUSINESS_NAME=...
 NEXT_PUBLIC_LEGAL_BUSINESS_ADDRESS=...

@@ -76,17 +76,7 @@ export function DayChapter({ moment, paws = 0, labelledBy, dayLabel, children }:
             </div>
           ) : null}
         </div>
-        <div className={styles.content}>
-          {children}
-          {/* Phones have no side trail: the prints walk across between chapters instead. */}
-          {paws && moment !== "night" ? (
-            <div className={styles.steps} aria-hidden="true">
-              {Array.from({ length: 5 }, (_, i) => (
-                <PawPrint key={i} clean={clean} />
-              ))}
-            </div>
-          ) : null}
-        </div>
+        <div className={styles.content}>{children}</div>
       </div>
     </section>
   );

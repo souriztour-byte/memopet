@@ -76,10 +76,10 @@ export default async function ProductPage(props: PageProps<"/[lang]/products/[ha
   const compare = beforeAfterImages(product.images);
   const catalogue = await getProducts(lang, { sort: "best-selling", limit: 8 });
   const related = pairsWith(catalogue, [product], 3);
-  // The product's number and moment in the day (see the home page).
+  // When in the day the product is met (see the home page).
   const entry = dayLineup(catalogue).find((e) => e.product.handle === product.handle);
   const moment = entry
-    ? `${fmt(dict.home.number, { n: entry.number })} · ${entry.time} · ${dict.home.moments[entry.moment]}`
+    ? `${entry.time} · ${dict.home.moments[entry.moment]}`
     : null;
   // Similar products (the other paw washer, the other bed) to compare with this one.
   const kind = kindOf(product.illustration);

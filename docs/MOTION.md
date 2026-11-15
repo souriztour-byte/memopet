@@ -75,18 +75,18 @@ its own light, and each product sits in its moment, ready to buy.
 Down the side runs the trail: the sun (a moon at night) with the time,
 which stays in view while its chapter scrolls, and paw prints that land as
 they scroll into view: muddy before the wash, clean outlines after. On
-phones the time is a small floating chip. The header and the phone tab bar
+phones the trail, the paw prints and the dial are left out for a cleaner
+page; the time is a small floating chip. The header and the phone tab bar
 take on the colour of the chapter under them (`html[data-moment]`, set by
 `HomeMotion.tsx`). Scrolling the day:
 
 - The day dial: a sun travels along a line as the page scrolls and becomes a
   moon at night. On computers it is on the right edge, with a dot per
   chapter to jump there (times slide out on hover or keyboard focus); on
-  smaller screens it is a thin line across the top.
+  tablets it is a thin line across the top; phones go without it.
 - Photos drift a little inside their frames (more on phones, gently on
-  computers), the sun behind the first photo keeps rising, and the muddy
-  prints of the walk appear one after another.
-- On phones, five paw prints walk across at the end of each chapter.
+  computers), the sun behind the first photo keeps rising, and on computers
+  the muddy prints of the walk appear one after another.
 - "Back to the morning" at the end glides to the top.
 - The time stamp is a button: it opens the day's list (a sheet that slides
   up on phones), to jump to any moment and see which products are there.
@@ -101,7 +101,7 @@ buttons give a little when pressed, and the menu opens with large numbered
 links.
 
 Products are placed by `dayLineup` in
-`src/lib/content/day.ts`; the same number and moment show on each product
+`src/lib/content/day.ts`; the same time and moment show on each product
 page. With reduced motion everything is simply in place.
 
 ## Shop and collections

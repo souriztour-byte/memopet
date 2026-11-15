@@ -2,7 +2,6 @@
   text-align: center;
   background: var(--bg);
   color: var(--gold-text);
-  border-bottom: 1px solid var(--gold-line);
   padding: 9px 16px;
   font-family: var(--mono);
   font-size: 0.7rem;
@@ -509,4 +508,19 @@
     font-size: 0.9rem;
     letter-spacing: 0;
   }
+}
+
+/* Home page: no edge under the header. It is see-through and softly blurred,
+   so the colours of the day pass under it without a line. The open phone
+   menu needs a solid header (a blurred one would hold the menu inside it). */
+:global(html[data-moment]) .top {
+  border-bottom-color: transparent;
+  background-color: color-mix(in srgb, var(--bg) 70%, transparent);
+  -webkit-backdrop-filter: blur(18px) saturate(1.15);
+  backdrop-filter: blur(18px) saturate(1.15);
+}
+:global(html[data-moment]) .top:has(.isOpen) {
+  background-color: var(--bg);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
 }

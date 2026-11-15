@@ -101,7 +101,7 @@ buttons give a little when pressed, and the menu opens with large numbered
 links.
 
 Products are placed by `dayLineup` in
-`src/lib/content/day.ts`; the same number and moment show on each product
+`src/lib/content/day.ts`; the same time and moment show on each product
 page. With reduced motion everything is simply in place.
 
 ## Shop and collections

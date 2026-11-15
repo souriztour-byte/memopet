@@ -31,8 +31,8 @@ type Props = {
   layout: "plate" | "feature";
   /** Feature only: photo on the right. */
   flip?: boolean;
-  /** "No. 01" */
-  number: string;
+  /** The id the day's line-up links to. */
+  anchor: string;
   /** A photo of the product at home, shown until a colour is picked. */
   scene?: Image | null;
   /** The real measurements, from the product's size chart. */
@@ -46,7 +46,7 @@ type Props = {
  * A product inside the day's story, ready to buy where it stands: the colour
  * dots change the photo, sizes are one tap, and Add to cart works right here.
  */
-export function DayProduct({ product, layout, flip, number, scene, measurements, href, intro }: Props) {
+export function DayProduct({ product, layout, flip, anchor, scene, measurements, href, intro }: Props) {
   const { dict } = useI18n();
   const t = dict.product;
   const h = dict.home;
@@ -112,11 +112,8 @@ export function DayProduct({ product, layout, flip, number, scene, measurements,
           />
         </span>
       </div>
-      {layout === "plate" ? (
-        <>
-          <span className={`mono ${styles.no}`}>{number}</span>
-          {product.badge ? <span className={`mono ${styles.flag}`}>{product.badge}</span> : null}
-        </>
+      {layout === "plate" && product.badge ? (
+        <span className={`mono ${styles.flag}`}>{product.badge}</span>
       ) : null}
     </div>
   );
@@ -193,7 +190,6 @@ export function DayProduct({ product, layout, flip, number, scene, measurements,
     </div>
   );
 
-  const anchor = `no-${number.replace(/\D/g, "")}`;
   if (layout === "plate") {
     return (
       <article className={styles.plate} id={anchor}>
@@ -212,7 +208,6 @@ export function DayProduct({ product, layout, flip, number, scene, measurements,
       <div className={styles.featureText}>
         {intro}
         <h3 className={styles.featureTitle}>
-          <span className={`mono ${styles.featureNo}`}>{number}</span>
           <Link href={href}>{product.title}</Link>
         </h3>
         {specs}

@@ -82,7 +82,6 @@ export const en = {
     shopAll: "Shop all {n}",
     shopAllPlain: "Shop all",
     lineupLabel: "The day’s line-up",
-    number: "No. {n}",
     walkEyebrow: "The walk",
     walkTitle: "It starts outside. Puddles, grass, {em}",
     walkTitleEm: "the good kind of mud.",

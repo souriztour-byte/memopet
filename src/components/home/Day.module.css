@@ -573,19 +573,12 @@
     scale: 1.04;
   }
 }
-.no,
 .flag {
   position: absolute;
   top: 16px;
   z-index: 1;
   padding: 7px 13px;
   border-radius: 999px;
-}
-.no {
-  left: 16px;
-  background: #fff;
-  color: #14231d;
-  box-shadow: 0 4px 12px -6px rgba(20, 35, 29, 0.35);
 }
 .flag {
   right: 16px;
@@ -800,13 +793,8 @@
   opacity: 0.85;
 }
 .featureTitle {
-  display: grid;
-  gap: 10px;
   margin: 34px 0 16px;
   font-size: clamp(1.9rem, 3vw, 2.5rem);
-}
-.featureNo {
-  opacity: 0.75;
 }
 .night .content {
   padding-top: calc(var(--dusk) + 90px);
@@ -1259,6 +1247,9 @@
   }
   .lineup a > :not(.thumb) {
     grid-column: 2;
+  }
+  .lineupMoment {
+    display: none;
   }
   .thumb {
     position: relative;

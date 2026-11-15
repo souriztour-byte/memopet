@@ -78,7 +78,6 @@ export const es: Dictionary = {
     shopAll: "Ver los {n}",
     shopAllPlain: "Ver todo",
     lineupLabel: "Los productos del día",
-    number: "N.º {n}",
     walkEyebrow: "El paseo",
     walkTitle: "Todo empieza fuera. Charcos, hierba, {em}",
     walkTitleEm: "barro del bueno.",

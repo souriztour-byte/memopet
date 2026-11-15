@@ -63,7 +63,8 @@ export default async function HomePage(props: PageProps<"/[lang]">) {
   const count = lineup.length;
   const word = t.numberWords[count] ?? String(count);
   const things = count === 1 ? t.thingsOne : fmt(t.thingsMany, { n: word });
-  const numberOf = (e: DayEntry<Product>) => fmt(t.number, { n: e.number });
+  // "08:45 · Patas limpias": when in the day a product is met.
+  const momentOf = (e: DayEntry<Product>) => `${e.time} · ${t.moments[e.moment]}`;
   const sceneOf = (p: Product) => p.images[0] ?? p.featuredImage;
   const measurementsOf = (p: Product) => sizeChartImage(p.images)?.altText ?? null;
   const from = (p: Product) =>
@@ -83,7 +84,7 @@ export default async function HomePage(props: PageProps<"/[lang]">) {
       product={slim(e.product)}
       layout="feature"
       flip={e.moment === "night" ? i % 2 === 0 : i % 2 === 1}
-      number={numberOf(e)}
+      anchor={`no-${e.number}`}
       scene={sceneOf(e.product)}
       measurements={measurementsOf(e.product)}
       href={href(`/products/${e.product.handle}`)}
@@ -224,7 +225,7 @@ export default async function HomePage(props: PageProps<"/[lang]">) {
               </Link>
               <Link href={href(`/products/${first.product.handle}`)} className={styles.caption}>
                 <span className="mono">
-                  {numberOf(first)} · {first.time}
+                  {momentOf(first)}
                 </span>
                 <b>{first.product.title}</b>
                 <span>{from(first.product)}</span>
@@ -250,7 +251,9 @@ export default async function HomePage(props: PageProps<"/[lang]">) {
                     ) : null}
                   </span>
                   <span className="mono">
-                    {numberOf(e)} · {e.time}
+                    {e.time}
+                    {/* The moment's name is left out on the narrow cards of small screens. */}
+                    <span className={styles.lineupMoment}> · {t.moments[e.moment]}</span>
                   </span>
                   <b>{e.product.title}</b>
                   <span>{from(e.product)}</span>
@@ -319,7 +322,7 @@ export default async function HomePage(props: PageProps<"/[lang]">) {
                 key={e.product.handle}
                 product={slim(e.product)}
                 layout="plate"
-                number={numberOf(e)}
+                anchor={`no-${e.number}`}
                 measurements={measurementsOf(e.product)}
                 href={href(`/products/${e.product.handle}`)}
               />

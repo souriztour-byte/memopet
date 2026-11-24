@@ -10,6 +10,7 @@ import { EASE, useScrollScene } from "@/lib/motion/gsap";
  * - `data-rise` titles rise into place the first time they scroll into view;
  * - the day dial (`data-day-dial`) is told how far through the day the page
  *   is, and which of its stops is the current one;
+ * - text marked `data-float` drifts in layers as it scrolls by (see below);
  * - photos in `data-drift` frames move a little inside their frame as the
  *   page scrolls, for a sense of depth (more on phones, gently on computers).
  * Nothing here holds up scrolling, and it's all skipped with reduced motion.
@@ -80,14 +81,16 @@ export function HomeMotion({ children }: { children: ReactNode }) {
     for (const title of root.querySelectorAll<HTMLElement>("[data-rise]")) {
       gsap.fromTo(
         title,
-        { y: 36, opacity: 0, clipPath: "inset(0% 0% 100% 0%)" },
+        // The rise moves `--rise-y`, which adds to the float on `translate`
+        // (globals.css), so the two never fight over the title's position.
+        { "--rise-y": 36, opacity: 0, clipPath: "inset(0% 0% 100% 0%)" },
         {
-          y: 0,
+          "--rise-y": 0,
           opacity: 1,
           clipPath: "inset(0% 0% -20% 0%)",
           duration: 1.1,
           ease: EASE.out,
-          clearProps: "clipPath,transform,opacity",
+          clearProps: "clipPath,opacity",
           scrollTrigger: { trigger: title, start: "top 92%", once: true },
         },
       );
@@ -136,6 +139,26 @@ export function HomeMotion({ children }: { children: ReactNode }) {
       );
     }
 
+    // Floating text: labels, headlines and paragraphs marked `data-float` drift
+    // up as they pass through the screen, each at its own depth, so the words
+    // hover in layers over the day's colours. They are in place (no offset)
+    // when they cross the middle of the screen. The drift is set through a
+    // CSS variable on `translate`, so it adds to the titles' rise (`transform`).
+    const float = (reach: number) => {
+      for (const el of root.querySelectorAll<HTMLElement>("[data-float]")) {
+        const depth = Number(el.dataset.float) || 1;
+        gsap.fromTo(
+          el,
+          { "--float-y": reach * depth },
+          {
+            "--float-y": -reach * depth,
+            ease: "none",
+            scrollTrigger: { trigger: el, start: "top bottom", end: "bottom top", scrub: 0.6 },
+          },
+        );
+      }
+    };
+
     // Photos move a little inside their frames: more on phones, gently on computers.
     const drift = (shift: number, scale: number) => {
       for (const frame of root.querySelectorAll<HTMLElement>("[data-drift]")) {
@@ -155,9 +178,13 @@ export function HomeMotion({ children }: { children: ReactNode }) {
       }
     };
     const mm = gsap.matchMedia();
-    mm.add("(max-width: 900px)", () => drift(7, 1.16));
+    mm.add("(max-width: 900px)", () => {
+      drift(7, 1.16);
+      float(22);
+    });
     mm.add("(min-width: 901px)", () => {
       drift(3.5, 1.08);
+      float(38);
       // The sun behind the first photo keeps rising as the morning scrolls away.
       for (const sun of root.querySelectorAll<HTMLElement>("[data-sun]")) {
         gsap.to(sun, {

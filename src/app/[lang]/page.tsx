@@ -92,13 +92,17 @@ export default async function HomePage(props: PageProps<"/[lang]">) {
         <>
           {i === 0 ? (
             <div className={styles.featureHead}>
-              <p className="mono">{eyebrow}</p>
-              <h2 id={titleId} className={styles.title} data-rise>
+              <p className="mono" data-float="0.6">
+                {eyebrow}
+              </p>
+              <h2 id={titleId} className={styles.title} data-rise data-float="1">
                 {rich(title, { em: em(titleEm) })}
               </h2>
             </div>
           ) : null}
-          <p className={styles.text}>{opening(e.product.description)}</p>
+          <p className={styles.text} data-float="1.2">
+            {opening(e.product.description)}
+          </p>
         </>
       }
     />
@@ -188,12 +192,16 @@ export default async function HomePage(props: PageProps<"/[lang]">) {
       <DayChapter moment="dawn" paws={6} labelledBy="dawn-title" dayLabel={t.dialLabel}>
         <div className={styles.hero}>
           <div className={styles.heroText}>
-            <p className="mono">{t.dawnEyebrow}</p>
-            <h1 id="dawn-title" className={styles.heroTitle}>
+            <p className="mono" data-float="0.6">
+              {t.dawnEyebrow}
+            </p>
+            <h1 id="dawn-title" className={styles.heroTitle} data-float="1">
               <span>{t.dawnLine1}</span>
               <span>{rich(t.dawnLine2, { things: em(things) })}</span>
             </h1>
-            <p className={styles.lead}>{t.dawnLead}</p>
+            <p className={styles.lead} data-float="1.2">
+              {t.dawnLead}
+            </p>
             <div className={styles.cta}>
               <Link href={href("/shop")} className="btn btn-gold">
                 {dict.common.shopAll}
@@ -268,13 +276,17 @@ export default async function HomePage(props: PageProps<"/[lang]">) {
       <DayChapter moment="walk" paws={3} labelledBy="walk-title" dayLabel={t.dialLabel}>
         <div className={styles.walkGrid}>
           <div>
-            <p className="mono">{t.walkEyebrow}</p>
-            <h2 id="walk-title" className={styles.title} data-rise>
+            <p className="mono" data-float="0.6">
+              {t.walkEyebrow}
+            </p>
+            <h2 id="walk-title" className={styles.title} data-rise data-float="1">
               {rich(t.walkTitle, { em: em(t.walkTitleEm) })}
             </h2>
-            <p className={styles.text}>{t.walkText}</p>
+            <p className={styles.text} data-float="1.2">
+              {t.walkText}
+            </p>
           </div>
-          <svg className={styles.splat} viewBox="0 0 340 300" aria-hidden="true" data-splat>
+          <svg className={styles.splat} viewBox="0 0 340 300" aria-hidden="true" data-splat data-float="2">
           <g transform="translate(20 150) rotate(-18 46 48) scale(0.46)">
             <PawShape />
           </g>
@@ -298,12 +310,14 @@ export default async function HomePage(props: PageProps<"/[lang]">) {
         <DayChapter moment="clean" paws={6} labelledBy="clean-title" dayLabel={t.dialLabel}>
           <div className={styles.chead}>
             <div>
-              <p className="mono">{t.cleanEyebrow}</p>
-              <h2 id="clean-title" className={styles.title} data-rise>
+              <p className="mono" data-float="0.6">
+                {t.cleanEyebrow}
+              </p>
+              <h2 id="clean-title" className={styles.title} data-rise data-float="1">
                 {rich(t.cleanTitle, { em: em(t.cleanTitleEm) })}
               </h2>
             </div>
-            <ol className={styles.how} aria-label={t.cleanStepsLabel}>
+            <ol className={styles.how} aria-label={t.cleanStepsLabel} data-float="1.2">
               {t.cleanSteps.map((step, i) => (
                 <li key={step}>
                   {i + 1} · {step}
@@ -363,8 +377,10 @@ export default async function HomePage(props: PageProps<"/[lang]">) {
 
       {/* And then */}
       <DayChapter moment="end" labelledBy="end-title" dayLabel={t.dialLabel}>
-        <p className="mono">{t.endEyebrow}</p>
-        <h2 id="end-title" className={styles.endTitle} data-rise>
+        <p className="mono" data-float="0.6">
+          {t.endEyebrow}
+        </p>
+        <h2 id="end-title" className={styles.endTitle} data-rise data-float="1">
           {rich(t.endTitle, { em: em(t.endTitleEm) })}
         </h2>
         <ul className={styles.three} aria-label={t.factsLabel}>

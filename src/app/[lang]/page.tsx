@@ -195,12 +195,12 @@ export default async function HomePage(props: PageProps<"/[lang]">) {
             </h1>
             <p className={styles.lead}>{t.dawnLead}</p>
             <div className={styles.cta}>
-              <a href="#walk" className="btn btn-gold">
+              <Link href={href("/shop")} className="btn btn-gold">
+                {dict.common.shopAll}
+              </Link>
+              <a href="#walk" className="btn btn-ghost">
                 {t.start} <span aria-hidden="true">↓</span>
               </a>
-              <Link href={href("/shop")} className="btn btn-ghost">
-                {count > 1 ? fmt(t.shopAll, { n: word }) : t.shopAllPlain}
-              </Link>
             </div>
           </div>
           {first && firstScene ? (

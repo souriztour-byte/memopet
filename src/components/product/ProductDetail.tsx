@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState, useTransition, ViewTransition } from "react";
+import { useEffect, useId, useMemo, useRef, useState, useTransition, ViewTransition } from "react";
 import { Illustration } from "@/components/art/Illustration";
 import { useCart } from "@/components/cart/CartProvider";
 import { SoftImage } from "@/components/ui/SoftImage";
@@ -47,6 +47,7 @@ export function ProductDetail({
   const { addItem, notify } = useCart();
   const { lang, dict } = useI18n();
   const t = dict.product;
+  const purchaseId = useId();
   const [selection, setSelection] = useState<Selection>(() => initialSelection(product));
   const [quantity, setQuantity] = useState(1);
   const [pending, startTransition] = useTransition();
@@ -264,7 +265,7 @@ export function ProductDetail({
         <p className={styles.price}>{price}</p>
         {perks}
 
-        {product.options.map((option) => (
+        {product.options.map((option, index) => (
           <fieldset key={option.name} className={styles.option}>
             <legend>
               {option.name}
@@ -282,59 +283,69 @@ export function ProductDetail({
               ) : null}
             </legend>
 
-            <div className={styles.values} role="radiogroup" aria-label={option.name}>
-              {option.values.map((value) => (
-                <button
-                  key={value}
-                  type="button"
-                  role="radio"
-                  className="pill"
-                  aria-checked={selection[option.name] === value}
-                  disabled={!isValueAvailable(option.name, value)}
-                  onClick={() => choose(option.name, value)}
-                >
-                  {isColourOption(option.name) && swatchFor(value) ? (
-                    <span className={styles.dot} style={{ background: swatchFor(value)! }} aria-hidden="true" />
-                  ) : null}
-                  {value}
-                </button>
-              ))}
+            <div className={styles.values}>
+              {option.values.map((value) => {
+                const shade = isColourOption(option.name) ? swatchFor(value) : null;
+                return (
+                  <label key={value} className={styles.choice}>
+                    <input
+                      type="radio"
+                      name={`${purchaseId}-option-${index}`}
+                      className="sr-only"
+                      value={value}
+                      checked={selection[option.name] === value}
+                      disabled={!isValueAvailable(option.name, value)}
+                      onChange={() => choose(option.name, value)}
+                    />
+                    <span className="pill">
+                      {shade ? <span className={styles.dot} style={{ background: shade }} aria-hidden="true" /> : null}
+                      {value}
+                    </span>
+                  </label>
+                );
+              })}
             </div>
           </fieldset>
         ))}
 
         {one && more && available ? (
-          <div className={styles.offers} role="radiogroup" aria-label={t.offerLabel}>
-            <button
-              type="button"
-              role="radio"
-              className={styles.offer}
-              aria-checked={quantity < offers.bundle.minItems}
-              onClick={() => setQuantity(1)}
-            >
-              <span className={styles.offerName}>{t.offerOne}</span>
-              <span className={styles.offerPrice}>{money(one.total)}</span>
-            </button>
-            <button
-              type="button"
-              role="radio"
-              className={styles.offer}
-              aria-checked={quantity >= offers.bundle.minItems}
-              onClick={() => setQuantity(bundleCount)}
-            >
-              <span className={styles.offerName}>
-                {fmt(t.offerMore, { count: bundleCount, percent: offers.bundle.percent })}
+          <div className={styles.offers} role="group" aria-label={t.offerLabel}>
+            <label className={styles.choice}>
+              <input
+                type="radio"
+                name={`${purchaseId}-offer`}
+                className="sr-only"
+                checked={quantity < offers.bundle.minItems}
+                onChange={() => setQuantity(1)}
+              />
+              <span className={styles.offer}>
+                <span className={styles.offerName}>{t.offerOne}</span>
+                <span className={styles.offerPrice}>{money(one.total)}</span>
               </span>
-              <span className={styles.offerPrice}>
-                {money(more.total)} <s>{money(more.full)}</s>
-              </span>
-              {more.freeShipping ? (
-                <span className={styles.offerTag}>
-                  <TruckIcon />
-                  {fmt(t.offerFreeShipping, { destination: offers.shipping.destination[lang] })}
+            </label>
+            <label className={styles.choice}>
+              <input
+                type="radio"
+                name={`${purchaseId}-offer`}
+                className="sr-only"
+                checked={quantity >= offers.bundle.minItems}
+                onChange={() => setQuantity(bundleCount)}
+              />
+              <span className={styles.offer}>
+                <span className={styles.offerName}>
+                  {fmt(t.offerMore, { count: bundleCount, percent: offers.bundle.percent })}
                 </span>
-              ) : null}
-            </button>
+                <span className={styles.offerPrice}>
+                  {money(more.total)} <s>{money(more.full)}</s>
+                </span>
+                {more.freeShipping ? (
+                  <span className={styles.offerTag}>
+                    <TruckIcon />
+                    {fmt(t.offerFreeShipping, { destination: offers.shipping.destination[lang] })}
+                  </span>
+                ) : null}
+              </span>
+            </label>
           </div>
         ) : null}
 

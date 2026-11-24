@@ -9,6 +9,7 @@ import { getDictionary } from "@/i18n/dictionaries";
 import { fmt } from "@/i18n/format";
 import { rich } from "@/i18n/rich";
 import { getCollections, getProducts } from "@/lib/commerce";
+import { MAX_PRODUCT_SEARCH_LENGTH } from "@/lib/commerce/search";
 import { parseSort } from "@/lib/commerce/sort";
 import { siteConfig } from "@/lib/config";
 
@@ -31,7 +32,7 @@ export default async function ShopPage(props: PageProps<"/[lang]/shop">) {
   const t = getDictionary(lang).shop;
 
   const sp = await props.searchParams;
-  const query = (first(sp.q) ?? "").trim().slice(0, 100);
+  const query = (first(sp.q) ?? "").trim().slice(0, MAX_PRODUCT_SEARCH_LENGTH);
   const sort = parseSort(first(sp.sort));
 
   const collections = await getCollections(lang);

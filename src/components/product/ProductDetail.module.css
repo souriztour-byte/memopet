@@ -208,6 +208,19 @@
   margin-left: 0.5em;
   color: var(--muted);
 }
+.choice {
+  position: relative;
+  display: grid;
+}
+.choice > input:focus-visible + span {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+.choice > input:disabled + span {
+  opacity: 0.45;
+  cursor: not-allowed;
+  text-decoration: line-through;
+}
 /* Colour choices carry a dot of the colour; the chosen one gets a gold ring. */
 .dot {
   width: 16px;
@@ -226,17 +239,24 @@
     background var(--dur-base) var(--ease-out),
     transform var(--dur-fast) var(--ease-out);
 }
-.values :global(.pill[aria-checked="true"]) {
+.choice > input:checked + :global(.pill) {
+  border-color: var(--gold-text);
   background: var(--surface);
+  color: var(--gold-ink);
 }
-.values :global(.pill[aria-checked="true"]) .dot {
+:global(:root[data-theme="day"]) .choice > input:checked + :global(.pill) {
+  border-color: var(--ink);
+  background: var(--ink);
+  color: var(--bg);
+}
+.choice > input:checked + :global(.pill) .dot {
   box-shadow:
     inset 0 0 0 1px rgba(48, 40, 32, 0.15),
     0 0 0 2px var(--bg),
     0 0 0 3.5px var(--accent);
 }
 @media (prefers-reduced-motion: no-preference) {
-  .values :global(.pill):active:not(:disabled) {
+  .choice > input:not(:disabled) + :global(.pill):active {
     transform: scale(0.96);
   }
   .chosen {
@@ -448,7 +468,7 @@
 .offer:hover {
   border-color: var(--muted);
 }
-.offer[aria-checked="true"] {
+.choice > input:checked + .offer {
   border-color: var(--accent);
   background: var(--surface);
   box-shadow: inset 0 0 0 1px var(--accent);

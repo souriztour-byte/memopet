@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useEffect, useRef } from "react";
 import { localizePath, type Locale } from "@/i18n/config";
 import { useI18n } from "@/i18n/I18nProvider";
+import { MAX_PRODUCT_SEARCH_LENGTH } from "@/lib/commerce/search";
 import { SORT_OPTIONS } from "@/lib/commerce/sort";
 import type { ProductSort } from "@/lib/commerce/types";
 import styles from "./ShopToolbar.module.css";
@@ -53,6 +54,7 @@ export function ShopToolbar({ query, sort, category, categories }: Props) {
           id="shop-search"
           name="q"
           type="search"
+          maxLength={MAX_PRODUCT_SEARCH_LENGTH}
           defaultValue={query}
           placeholder={t.searchPlaceholder}
         />

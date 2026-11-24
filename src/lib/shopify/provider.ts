@@ -2,6 +2,7 @@ import "server-only";
 
 import { shopifyLanguage, type Locale } from "@/i18n/config";
 import { aiNoteFor, illustrationFor, readLocalizedTag, tileFor } from "@/lib/commerce/presentation";
+import { matchesProductSearch, productSearchTerms } from "@/lib/commerce/search";
 import type {
   Cart,
   Collection,
@@ -219,8 +220,8 @@ export async function getProducts(
     });
     const products = (data.collection?.products.nodes ?? []).map((p) => reshapeSummary(p, lang));
     // Collection product lists have no text search argument; filter here.
-    const q = query?.trim().toLowerCase();
-    return q ? products.filter((p) => p.title.toLowerCase().includes(q)) : products;
+    const terms = productSearchTerms(query ?? "");
+    return terms.length ? products.filter((p) => matchesProductSearch(p, terms)) : products;
   }
 
   const { sortKey, reverse } = PRODUCT_SORT[sort] ?? PRODUCT_SORT.featured;

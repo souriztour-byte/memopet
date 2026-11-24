@@ -5,6 +5,7 @@ import type {
   ProductQuery,
   ProductSummary,
 } from "@/lib/commerce/types";
+import { matchesProductSearch, productSearchTerms } from "@/lib/commerce/search";
 import type { Locale } from "@/i18n/config";
 import { offers } from "@/lib/content/offers";
 import { DEMO_CURRENCY, getDemoCatalog } from "./catalog";
@@ -47,10 +48,10 @@ export async function getProducts(
   lang: Locale,
   { query, sort = "featured", collection, limit = 100 }: ProductQuery = {},
 ): Promise<ProductSummary[]> {
-  const q = query?.trim().toLowerCase();
+  const terms = productSearchTerms(query ?? "");
   const list = getDemoCatalog(lang)
     .products.filter((p) => !collection || p.collections.includes(collection))
-    .filter((p) => !q || `${p.title} ${p.petType ?? ""}`.toLowerCase().includes(q))
+    .filter((p) => matchesProductSearch(p, terms))
     .map(toSummary);
   if (sort === "price-asc") list.sort((a, b) => price(a) - price(b));
   if (sort === "price-desc") list.sort((a, b) => price(b) - price(a));

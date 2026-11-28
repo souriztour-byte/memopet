@@ -33,7 +33,7 @@ export const siteConfig = {
 
   contact: {
     /** The shop's email, given by the owner; NEXT_PUBLIC_SUPPORT_EMAIL replaces it. */
-    email: clean(process.env.NEXT_PUBLIC_SUPPORT_EMAIL) ?? "mimipets2026@gmail.com",
+    email: clean(process.env.NEXT_PUBLIC_SUPPORT_EMAIL) ?? "hello@mimipets.shop",
     instagram: instagramHandle
       ? { handle: `@${instagramHandle}`, url: `https://www.instagram.com/${instagramHandle}/` }
       : null,

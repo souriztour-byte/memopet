@@ -9,17 +9,12 @@ import { ProductMedia } from "@/components/product/ProductMedia";
 import { localizePath } from "@/i18n/config";
 import { fmt } from "@/i18n/format";
 import { useI18n } from "@/i18n/I18nProvider";
+import { matchesProductSearch, MAX_PRODUCT_SEARCH_LENGTH, productSearchTerms } from "@/lib/commerce/search";
 import { OPEN_SEARCH_EVENT } from "./open-search";
 import styles from "./SearchOverlay.module.css";
 
-const normalise = (s: string) =>
-  s
-    .toLowerCase()
-    .normalize("NFD")
-    .replace(/[̀-ͯ]/g, "");
-
 /**
- * Search panel that drops down over the page: results from the catalogue
+ * Search panel that drops down over the page: featured product matches
  * appear as you type, and Enter opens the full results in the shop. Built on
  * a native <dialog>, so focus stays inside and Esc closes it.
  */
@@ -57,14 +52,8 @@ export function SearchOverlay() {
     setTimeout(finish, 260);
   };
 
-  const words = normalise(query).split(/\s+/).filter(Boolean);
-  const matches = words.length
-    ? catalogue.filter((p) => {
-        const hay = normalise(`${p.title} ${p.petType ?? ""}`);
-        return words.every((w) => hay.includes(w));
-      })
-    : catalogue;
-  const shown = matches.slice(0, 6);
+  const terms = productSearchTerms(query);
+  const shown = catalogue.filter((p) => matchesProductSearch(p, terms)).slice(0, 6);
   const shopHref = localizePath(lang, "/shop");
 
   return (
@@ -100,6 +89,7 @@ export function SearchOverlay() {
               name="q"
               type="search"
               autoComplete="off"
+              maxLength={MAX_PRODUCT_SEARCH_LENGTH}
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder={dict.shop.searchPlaceholder}
@@ -111,7 +101,7 @@ export function SearchOverlay() {
           </Form>
 
           <p className={styles.label} aria-live="polite">
-            {words.length ? (shown.length ? t.searchResults : fmt(t.searchNone, { query })) : t.searchPopular}
+            {terms.length ? (shown.length ? t.searchResults : t.searchNone) : t.searchPopular}
           </p>
           <ul className={styles.results}>
             {shown.map((p, i) => (
@@ -128,7 +118,7 @@ export function SearchOverlay() {
               </li>
             ))}
           </ul>
-          {words.length ? (
+          {terms.length ? (
             <Link href={`${shopHref}?q=${encodeURIComponent(query.trim())}`} className={styles.all} onClick={finish}>
               {fmt(t.searchAll, { query: query.trim() })} →
             </Link>

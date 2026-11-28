@@ -1234,6 +1234,13 @@ html.motion img.soft-img:not([data-loaded]) {
 :root[data-theme="day"] .text-link:hover {
   color: var(--gold-ink);
 }
+/* Floating text on the home page: HomeMotion.tsx sets --float-y while
+   scrolling and --rise-y as a title rises in. Without it, or with reduced
+   motion, the text sits still. */
+[data-float],
+[data-rise] {
+  translate: 0 calc((var(--float-y, 0) + var(--rise-y, 0)) * 1px);
+}
 /* Buttons give a little under the finger. */
 :root[data-theme="day"] .btn:active:not(:disabled) {
   transform: scale(0.97);

@@ -88,6 +88,13 @@ take on the colour of the chapter under them (`html[data-moment]`, set by
   computers), the sun behind the first photo keeps rising, and on computers
   the muddy prints of the walk appear one after another.
 - "Back to the morning" at the end glides to the top.
+- Floating text: each chapter's small label, headline and paragraph drift
+  up at different speeds as they pass through the screen (`data-float`, the
+  number is the depth), so the words hover in layers over the colours; they
+  sit exactly in place as they cross the middle of the screen. The drift
+  and the titles' rise share `translate` through two CSS variables
+  (`--float-y`, `--rise-y`), so they never fight. On the first screen the
+  headline lines and the product card bob gently.
 - The time stamp is a button: it opens the day's list (a sheet that slides
   up on phones), to jump to any moment and see which products are there.
 - Sunset: at the top of the night chapter the last of the sun sinks into the

@@ -201,7 +201,8 @@ The route checks each webhook’s HMAC signature before it clears the cache (bot
 ## Store details
 
 Business facts come from the shop owner, never invented. The shop's email,
-mimipets2026@gmail.com, is set in `src/lib/config.ts` and shows on the Contact page, in the
+hello@mimipets.shop (mail for mimipets.shop is handled by Zoho Mail), is set in
+`src/lib/config.ts` and shows on the Contact page, in the
 footer, the FAQ and the policies. The rest are set here (`NEXT_PUBLIC_SUPPORT_EMAIL` replaces
 the email if set):
 
